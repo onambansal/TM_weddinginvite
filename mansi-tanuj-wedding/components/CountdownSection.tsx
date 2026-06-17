@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { weddingDate, weddingDateDisplay, weddingDay } from "@/config/weddingConfig";
 
-const WEDDING_DATE = new Date("2026-12-05T00:00:00");
+const WEDDING_DATE = new Date(weddingDate);
 
 interface TimeLeft {
   days: number;
@@ -166,9 +167,9 @@ export default function CountdownSection() {
             className="text-2xl text-maroon"
             style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
           >
-            5th December 2026
+            {weddingDateDisplay}
           </p>
-          <p className="text-maroon/50 text-sm font-poppins mt-1">Saturday</p>
+          <p className="text-maroon/50 text-sm font-poppins mt-1">{weddingDay}</p>
         </motion.div>
 
         <motion.p

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { bride, groom, weddingDateDisplay } from "@/config/weddingConfig";
 
 interface EnvelopeIntroProps {
   onComplete: () => void;
@@ -256,7 +257,7 @@ export default function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
                     transition={{ delay: 0.4, duration: 0.6 }}
                     style={{ fontFamily: "'Great Vibes', cursive", fontSize: "2.6rem", color: "#6B0F1A", fontWeight: 400, lineHeight: 1.1, marginBottom: "0.1rem" }}
                   >
-                    Mansi Gupta
+                    {bride.fullName}
                   </motion.h1>
 
                   <motion.p
@@ -275,7 +276,7 @@ export default function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
                     transition={{ delay: 0.65, duration: 0.6 }}
                     style={{ fontFamily: "'Great Vibes', cursive", fontSize: "2.6rem", color: "#6B0F1A", fontWeight: 400, lineHeight: 1.1, marginBottom: "0.9rem" }}
                   >
-                    Tanuj Goyal
+                    {groom.fullName}
                   </motion.h1>
 
                   <div style={{ width: 70, height: 1, background: "linear-gradient(90deg, transparent, #C9A84C, transparent)", margin: "0 auto 0.6rem" }} />
@@ -295,7 +296,7 @@ export default function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
                     transition={{ delay: 0.9, duration: 0.5 }}
                     style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1rem", color: "#5C3D2E", letterSpacing: "0.05rem" }}
                   >
-                    5th December 2026
+                    {weddingDateDisplay}
                   </motion.p>
 
                   <div style={{ width: 70, height: 1, background: "linear-gradient(90deg, transparent, #C9A84C, transparent)", margin: "0.6rem auto 0.4rem" }} />

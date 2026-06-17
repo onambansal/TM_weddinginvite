@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Clock, MapPin, Calendar } from "lucide-react";
+import { ceremonies } from "@/config/weddingConfig";
 
 export default function MehendiSangeet() {
   return (
@@ -100,8 +101,9 @@ export default function MehendiSangeet() {
                 <div className="text-left">
                   <p className="text-xs text-gray-500 font-poppins uppercase tracking-wider">Date</p>
                   <p className="text-gray-800 text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                    3rd December 2026
+                    {ceremonies.mehendiSangeet.date}
                   </p>
+                  <p className="text-gray-500 text-xs font-poppins">{ceremonies.mehendiSangeet.day}</p>
                 </div>
               </div>
 
@@ -110,7 +112,7 @@ export default function MehendiSangeet() {
                 <div className="text-left">
                   <p className="text-xs text-gray-500 font-poppins uppercase tracking-wider">Time</p>
                   <p className="text-gray-800 text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                    6:00 PM onwards
+                    {ceremonies.mehendiSangeet.time}
                   </p>
                 </div>
               </div>
@@ -120,9 +122,9 @@ export default function MehendiSangeet() {
                 <div className="text-left">
                   <p className="text-xs text-gray-500 font-poppins uppercase tracking-wider">Venue</p>
                   <p className="text-gray-800 text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                    Vaishali Inn
+                    {ceremonies.mehendiSangeet.venue}
                   </p>
-                  <p className="text-gray-500 text-sm font-poppins">Vaishali, Ghaziabad</p>
+                  <p className="text-gray-500 text-sm font-poppins">{ceremonies.mehendiSangeet.address}</p>
                 </div>
               </div>
             </div>

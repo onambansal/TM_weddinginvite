@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
+import { bride, groom, weddingDateDisplay, ceremonies } from "@/config/weddingConfig";
 
 export default function ThankYouSection() {
   return (
@@ -101,7 +102,7 @@ export default function ThankYouSection() {
             className="text-3xl md:text-4xl text-maroon"
             style={{ fontFamily: "'Great Vibes', cursive" }}
           >
-            Mansi ❤️ Tanuj
+            {bride.firstName} ❤️ {groom.firstName}
           </p>
         </motion.div>
 
@@ -137,7 +138,7 @@ export default function ThankYouSection() {
         >
           <p className="text-gold text-2xl tracking-widest mb-3">✦ ❧ ✦</p>
           <p className="text-maroon/40 text-xs font-poppins tracking-widest uppercase">
-            5th December 2026 · Wedding Crown, Noida
+            {weddingDateDisplay} · {ceremonies.wedding.venue}, {ceremonies.wedding.address}
           </p>
         </motion.div>
       </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { bride, groom } from "@/config/weddingConfig";
 
 export default function HeroSection() {
   const [opened, setOpened] = useState(false);
@@ -100,7 +101,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.7, duration: 0.8 }}
         >
-          Mansi Gupta
+          {bride.fullName}
         </motion.h1>
 
         {/* Ampersand */}
@@ -121,7 +122,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 1.1, duration: 0.8 }}
         >
-          Tanuj Goyal
+          {groom.fullName}
         </motion.h1>
 
         {/* Gold divider */}
