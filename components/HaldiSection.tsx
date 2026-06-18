@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Clock, MapPin, Calendar } from "lucide-react";
+import { ceremonies } from "@/config/weddingConfig";
 
 export default function HaldiSection() {
   return (
@@ -101,8 +102,9 @@ export default function HaldiSection() {
                 <div className="text-left">
                   <p className="text-xs text-gray-500 font-poppins uppercase tracking-wider">Date</p>
                    <p className="text-gray-800 font-playfair text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                    4th December 2026
+                    {ceremonies.haldi.date}
                   </p>
+                  <p className="text-gray-500 text-xs font-poppins">{ceremonies.haldi.day}</p>
                 </div>
               </div>
 
@@ -111,7 +113,7 @@ export default function HaldiSection() {
                 <div className="text-left">
                   <p className="text-xs text-gray-500 font-poppins uppercase tracking-wider">Time</p>
                   <p className="text-gray-800 font-playfair text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                    11:00 AM onwards
+                    {ceremonies.haldi.time}
                   </p>
                 </div>
               </div>
@@ -121,9 +123,9 @@ export default function HaldiSection() {
                 <div className="text-left">
                   <p className="text-xs text-gray-500 font-poppins uppercase tracking-wider">Venue</p>
                   <p className="text-gray-800 font-playfair text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                    Vaishali Inn
+                    {ceremonies.haldi.venue}
                   </p>
-                  <p className="text-gray-500 text-sm font-poppins">Vaishali, Ghaziabad</p>
+                  <p className="text-gray-500 text-sm font-poppins">{ceremonies.haldi.address}</p>
                 </div>
               </div>
             </div>

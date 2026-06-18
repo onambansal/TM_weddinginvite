@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
 
@@ -8,7 +8,7 @@ import dynamic from "next/dynamic";
 const EnvelopeIntro = dynamic(() => import("@/components/EnvelopeIntro"), { ssr: false });
 
 import FloatingPetals from "@/components/FloatingPetals";
-import MusicPlayer from "@/components/MusicPlayer";
+import MusicPlayer, { MusicPlayerHandle } from "@/components/MusicPlayer";
 import FamilyIntro from "@/components/FamilyIntro";
 import CountdownSection from "@/components/CountdownSection";
 import PhotoCarousel from "@/components/PhotoCarousel";
@@ -24,15 +24,23 @@ import ThankYouSection from "@/components/ThankYouSection";
 
 export default function Home() {
   const [showMain, setShowMain] = useState(false);
+  const musicPlayerRef = useRef<MusicPlayerHandle>(null);
 
   const handleEnvelopeComplete = () => {
     setShowMain(true);
+    // Auto-play music when envelope is opened (user interaction already happened)
+    setTimeout(() => {
+      musicPlayerRef.current?.play();
+    }, 600);
   };
 
   return (
     <>
       {/* Envelope intro overlay */}
       <EnvelopeIntro onComplete={handleEnvelopeComplete} />
+
+      {/* Music player — always mounted so audio element is ready */}
+      <MusicPlayer ref={musicPlayerRef} />
 
       {/* Main content — fades in after envelope */}
       <AnimatePresence>
@@ -45,9 +53,6 @@ export default function Home() {
           >
             {/* Global floating petals */}
             <FloatingPetals />
-
-            {/* Music player */}
-            <MusicPlayer />
 
             {/* Page 1: Family Introduction with Ganesh idol */}
             <FamilyIntro />

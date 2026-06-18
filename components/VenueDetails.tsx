@@ -2,49 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MapPin, Navigation, ExternalLink } from "lucide-react";
-
-const venues = [
-  {
-    id: 1,
-    name: "[Engagement Venue]",
-    address: "[Venue Address]",
-    events: ["Engagement"],
-    dates: "29th November 2026",
-    emoji: "💍",
-    color: "#C9A84C",
-    mapUrl: "https://maps.google.com/?q=Noida",
-  },
-  {
-    id: 2,
-    name: "Vaishali Inn",
-    address: "Vaishali, Ghaziabad",
-    events: ["Mehendi & Sangeet"],
-    dates: "3rd December 2026",
-    emoji: "🌿",
-    color: "#2D6A4F",
-    mapUrl: "https://maps.google.com/?q=Vaishali+Inn+Vaishali+Ghaziabad",
-  },
-  {
-    id: 3,
-    name: "Vaishali Inn",
-    address: "Vaishali, Ghaziabad",
-    events: ["Haldi Ceremony"],
-    dates: "4th December 2026",
-    emoji: "🌼",
-    color: "#D4A017",
-    mapUrl: "https://maps.google.com/?q=Vaishali+Inn+Vaishali+Ghaziabad",
-  },
-  {
-    id: 4,
-    name: "Wedding Crown",
-    address: "Sector 76, Noida",
-    events: ["Ghur Chari", "Wedding Ceremony"],
-    dates: "5th December 2026",
-    emoji: "👑",
-    color: "#6B0F1A",
-    mapUrl: "https://maps.google.com/?q=Wedding+Crown+Sector+76+Noida",
-  },
-];
+import { venues } from "@/config/weddingConfig";
 
 export default function VenueDetails() {
   return (

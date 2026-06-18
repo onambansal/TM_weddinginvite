@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Clock, MapPin, Calendar, Star } from "lucide-react";
+import { ceremonies, bride, groom } from "@/config/weddingConfig";
 
 export default function WeddingCeremony() {
   return (
@@ -114,7 +115,7 @@ export default function WeddingCeremony() {
                 className="text-2xl text-gold"
                 style={{ fontFamily: "'Great Vibes', cursive", fontSize: "2rem" }}
               >
-                Mansi
+                {bride.firstName}
               </p>
               <p className="text-gold/60 text-lg font-playfair italic my-1" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                 &amp;
@@ -123,7 +124,7 @@ export default function WeddingCeremony() {
                 className="text-2xl text-gold"
                 style={{ fontFamily: "'Great Vibes', cursive", fontSize: "2rem" }}
               >
-                Tanuj
+                {groom.firstName}
               </p>
             </motion.div>
 
@@ -140,8 +141,9 @@ export default function WeddingCeremony() {
                 <div className="text-left">
                   <p className="text-xs text-gold/50 font-poppins uppercase tracking-wider">Date</p>
                   <p className="text-cream text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                    5th December 2026
+                    {ceremonies.wedding.date}
                   </p>
+                  <p className="text-cream/50 text-xs font-poppins">{ceremonies.wedding.day}</p>
                 </div>
               </div>
 
@@ -150,7 +152,7 @@ export default function WeddingCeremony() {
                 <div className="text-left">
                   <p className="text-xs text-gold/50 font-poppins uppercase tracking-wider">Time</p>
                   <p className="text-cream text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                    7:00 PM onwards
+                    {ceremonies.wedding.time}
                   </p>
                 </div>
               </div>
@@ -160,9 +162,9 @@ export default function WeddingCeremony() {
                 <div className="text-left">
                   <p className="text-xs text-gold/50 font-poppins uppercase tracking-wider">Venue</p>
                   <p className="text-cream text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                    Wedding Crown
+                    {ceremonies.wedding.venue}
                   </p>
-                  <p className="text-cream/60 text-sm font-poppins">Sector 76, Noida</p>
+                  <p className="text-cream/60 text-sm font-poppins">{ceremonies.wedding.address}</p>
                 </div>
               </div>
             </div>

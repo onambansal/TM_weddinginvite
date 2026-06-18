@@ -2,14 +2,10 @@
 
 import { motion } from "framer-motion";
 import { MessageCircle, Heart } from "lucide-react";
-
-const WHATSAPP_NUMBER = "919999999999"; // Replace with actual number
-const WHATSAPP_MESSAGE = encodeURIComponent(
-  "Hello! I would like to confirm my attendance at Mansi & Tanuj's wedding on 5th December 2026. 🎊"
-);
+import { rsvp, bride, groom } from "@/config/weddingConfig";
 
 export default function RSVPSection() {
-  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
+  const whatsappUrl = `https://wa.me/${rsvp.whatsappNumber}?text=${encodeURIComponent(rsvp.message)}`;
 
   return (
     <section
@@ -132,7 +128,7 @@ export default function RSVPSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.6 }}
         >
-          Mansi <Heart className="w-3 h-3 text-rose fill-rose" /> Tanuj
+          {bride.firstName} <Heart className="w-3 h-3 text-rose fill-rose" /> {groom.firstName}
         </motion.p>
       </div>
     </section>

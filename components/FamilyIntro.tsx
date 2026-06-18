@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
+import { bride, groom } from "@/config/weddingConfig";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -99,7 +100,7 @@ export default function FamilyIntro() {
             className="mb-4"
             style={{ fontFamily: "'Great Vibes', cursive", fontSize: "3.2rem", color: "#6B0F1A", fontWeight: 400, lineHeight: 1.1, textShadow: "0 2px 8px rgba(107, 15, 26, 0.15)" }}
           >
-            Tanuj Goyal
+            {groom.fullName}
           </h2>
           <div className="flex flex-col gap-2">
             <div
@@ -107,18 +108,18 @@ export default function FamilyIntro() {
               style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1rem", color: "#5C3D2E" }}
             >
               <span className="italic text-sm" style={{ color: "#8B6355" }}>Son of</span>
-              <span className="font-medium" style={{ color: "#2C1810" }}>Shri [Father&apos;s Name]</span>
+              <span className="font-medium" style={{ color: "#2C1810" }}>{groom.father}</span>
               <span className="italic" style={{ color: "#C9A84C" }}>&amp;</span>
-              <span className="font-medium" style={{ color: "#2C1810" }}>Smt. [Mother&apos;s Name]</span>
+              <span className="font-medium" style={{ color: "#2C1810" }}>{groom.mother}</span>
             </div>
             <div
               className="flex flex-wrap items-center justify-center gap-1"
               style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1rem", color: "#5C3D2E" }}
             >
               <span className="italic text-sm" style={{ color: "#8B6355" }}>Grandson of</span>
-              <span className="font-medium" style={{ color: "#2C1810" }}>Late Shri [Grandfather&apos;s Name]</span>
+              <span className="font-medium" style={{ color: "#2C1810" }}>{groom.grandfather}</span>
               <span className="italic" style={{ color: "#C9A84C" }}>&amp;</span>
-              <span className="font-medium" style={{ color: "#2C1810" }}>Smt. [Grandmother&apos;s Name]</span>
+              <span className="font-medium" style={{ color: "#2C1810" }}>{groom.grandmother}</span>
             </div>
           </div>
         </motion.div>
@@ -162,7 +163,7 @@ export default function FamilyIntro() {
             className="mb-4"
             style={{ fontFamily: "'Great Vibes', cursive", fontSize: "3.2rem", color: "#6B0F1A", fontWeight: 400, lineHeight: 1.1, textShadow: "0 2px 8px rgba(107, 15, 26, 0.15)" }}
           >
-            Mansi Gupta
+            {bride.fullName}
           </h2>
           <div className="flex flex-col gap-2">
             <div
@@ -170,18 +171,18 @@ export default function FamilyIntro() {
               style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1rem", color: "#5C3D2E" }}
             >
               <span className="italic text-sm" style={{ color: "#8B6355" }}>Daughter of</span>
-              <span className="font-medium" style={{ color: "#2C1810" }}>Shri [Father&apos;s Name]</span>
+              <span className="font-medium" style={{ color: "#2C1810" }}>{bride.father}</span>
               <span className="italic" style={{ color: "#C9A84C" }}>&amp;</span>
-              <span className="font-medium" style={{ color: "#2C1810" }}>Smt. [Mother&apos;s Name]</span>
+              <span className="font-medium" style={{ color: "#2C1810" }}>{bride.mother}</span>
             </div>
             <div
               className="flex flex-wrap items-center justify-center gap-1"
               style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1rem", color: "#5C3D2E" }}
             >
               <span className="italic text-sm" style={{ color: "#8B6355" }}>Granddaughter of</span>
-              <span className="font-medium" style={{ color: "#2C1810" }}>Late Shri [Grandfather&apos;s Name]</span>
+              <span className="font-medium" style={{ color: "#2C1810" }}>{bride.grandfather}</span>
               <span className="italic" style={{ color: "#C9A84C" }}>&amp;</span>
-              <span className="font-medium" style={{ color: "#2C1810" }}>Smt. [Grandmother&apos;s Name]</span>
+              <span className="font-medium" style={{ color: "#2C1810" }}>{bride.grandmother}</span>
             </div>
           </div>
         </motion.div>

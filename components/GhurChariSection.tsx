@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Clock, MapPin, Calendar } from "lucide-react";
+import { ceremonies, groom } from "@/config/weddingConfig";
 
 export default function GhurChariSection() {
   return (
@@ -115,7 +116,7 @@ export default function GhurChariSection() {
                 className="text-2xl text-gold"
                 style={{ fontFamily: "'Great Vibes', cursive", fontSize: "2rem" }}
               >
-                Tanuj
+                {groom.firstName}
               </p>
             </motion.div>
 
@@ -140,9 +141,9 @@ export default function GhurChariSection() {
                 <div className="text-left">
                   <p className="text-xs text-gold/50 font-poppins uppercase tracking-wider">Date</p>
                   <p className="text-cream text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                    5th December 2026
+                    {ceremonies.ghurChari.date}
                   </p>
-                  <p className="text-cream/50 text-xs font-poppins">Saturday</p>
+                  <p className="text-cream/50 text-xs font-poppins">{ceremonies.ghurChari.day}</p>
                 </div>
               </div>
 
@@ -151,7 +152,7 @@ export default function GhurChariSection() {
                 <div className="text-left">
                   <p className="text-xs text-gold/50 font-poppins uppercase tracking-wider">Time</p>
                   <p className="text-cream text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                    5:00 PM onwards
+                    {ceremonies.ghurChari.time}
                   </p>
                 </div>
               </div>
@@ -161,9 +162,9 @@ export default function GhurChariSection() {
                 <div className="text-left">
                   <p className="text-xs text-gold/50 font-poppins uppercase tracking-wider">Venue</p>
                   <p className="text-cream text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                    Wedding Crown
+                    {ceremonies.ghurChari.venue}
                   </p>
-                  <p className="text-cream/60 text-sm font-poppins">Sector 76, Noida</p>
+                  <p className="text-cream/60 text-sm font-poppins">{ceremonies.ghurChari.address}</p>
                 </div>
               </div>
             </div>
