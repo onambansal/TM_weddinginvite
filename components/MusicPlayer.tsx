@@ -3,11 +3,7 @@
 import { useState, useRef, useEffect, useImperativeHandle, forwardRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Volume2, VolumeX } from "lucide-react";
-
-// A beautiful royalty-free Indian wedding instrumental (sitar/classical)
-// Using a reliable public domain / CC0 track
-const MUSIC_URL =
-  "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3";
+import { weddingConfig } from "@/config/weddingConfig";
 
 export interface MusicPlayerHandle {
   play: () => void;
@@ -22,7 +18,7 @@ const MusicPlayer = forwardRef<MusicPlayerHandle>((_, ref) => {
   useImperativeHandle(ref, () => ({
     play() {
       if (!audioRef.current) return;
-      audioRef.current.volume = 0.5;
+      audioRef.current.volume = weddingConfig.music.volume;
       audioRef.current.play().then(() => {
         setIsPlaying(true);
       }).catch(() => {
@@ -51,7 +47,7 @@ const MusicPlayer = forwardRef<MusicPlayerHandle>((_, ref) => {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      audioRef.current.volume = 0.5;
+      audioRef.current.volume = weddingConfig.music.volume;
       audioRef.current.play().catch(() => {});
       setIsPlaying(true);
     }
@@ -60,9 +56,9 @@ const MusicPlayer = forwardRef<MusicPlayerHandle>((_, ref) => {
 
   return (
     <>
-      {/* Audio element — online source, loops */}
+      {/* Audio element — source from config, loops */}
       <audio ref={audioRef} loop preload="auto">
-        <source src={MUSIC_URL} type="audio/mpeg" />
+        <source src={weddingConfig.music.src} type="audio/mpeg" />
       </audio>
 
       {/* Floating music button — bottom right */}

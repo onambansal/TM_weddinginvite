@@ -106,6 +106,18 @@ export const weddingConfig = {
     },
   ],
 
+  // ── Background Music ─────────────────────────────────────
+  music: {
+    /**
+     * URL or local path to the background music file.
+     * • Online URL  → "https://example.com/song.mp3"
+     * • Local file  → place the file in the /public folder and use "/your-song.mp3"
+     */
+    src: "/music.mp3",
+    /** Playback volume: 0.0 (silent) → 1.0 (full) */
+    volume: 0.5,
+  },
+
   // ── RSVP / Contact ───────────────────────────────────────
   rsvp: {
     whatsappNumber: "919999999999",   // Country code + number, no + or spaces
