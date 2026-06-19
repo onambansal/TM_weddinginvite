@@ -11,6 +11,7 @@ import FloatingPetals from "@/components/FloatingPetals";
 import MusicPlayer, { MusicPlayerHandle } from "@/components/MusicPlayer";
 import FamilyIntro from "@/components/FamilyIntro";
 import CountdownSection from "@/components/CountdownSection";
+import SaveTheDate from "@/components/SaveTheDate";
 import PhotoCarousel from "@/components/PhotoCarousel";
 import EngagementSection from "@/components/EngagementSection";
 import MehendiSangeet from "@/components/MehendiSangeet";
@@ -60,7 +61,10 @@ export default function Home() {
             {/* Page 2: Countdown timer */}
             <CountdownSection />
 
-            {/* Page 3: Photo Carousel — Our Beautiful Moments */}
+            {/* Page 3: Save The Date */}
+            <SaveTheDate />
+
+            {/* Page 4: Photo Carousel — Our Beautiful Moments */}
             <PhotoCarousel />
 
             {/* Page 4+: Sacred Ceremonies in order */}

@@ -2,6 +2,14 @@
 
 import { motion } from "framer-motion";
 import { Calendar } from "lucide-react";
+import { weddingConfig } from "@/config/weddingConfig";
+
+// Parse the wedding date for display
+const weddingDateObj = new Date(weddingConfig.weddingDate);
+const weddingDay = weddingDateObj.getDate();
+const weddingMonth = weddingDateObj.toLocaleString("en-US", { month: "long" });
+const weddingYear = weddingDateObj.getFullYear();
+const weddingMonthYear = `${weddingMonth} ${weddingYear}`;
 
 export default function SaveTheDate() {
   return (
@@ -66,7 +74,7 @@ export default function SaveTheDate() {
             >
               <Calendar className="w-5 h-5 text-maroon" />
               <span className="font-poppins text-maroon font-semibold text-sm tracking-widest uppercase">
-                December 2026
+                {weddingMonthYear}
               </span>
             </div>
 
@@ -80,7 +88,7 @@ export default function SaveTheDate() {
                 viewport={{ once: true }}
                 transition={{ delay: 0.5 }}
               >
-                Saturday
+                {weddingConfig.weddingDay}
               </motion.p>
 
               {/* Date number */}
@@ -101,7 +109,7 @@ export default function SaveTheDate() {
                     backgroundClip: "text",
                   }}
                 >
-                  5
+                  {weddingDay}
                 </span>
               </motion.div>
 
@@ -114,7 +122,7 @@ export default function SaveTheDate() {
                 viewport={{ once: true }}
                 transition={{ delay: 0.6 }}
               >
-                December
+                {weddingMonth}
               </motion.p>
 
               {/* Year */}
@@ -125,7 +133,7 @@ export default function SaveTheDate() {
                 viewport={{ once: true }}
                 transition={{ delay: 0.7 }}
               >
-                2026
+                {weddingYear}
               </motion.p>
 
               <div className="gold-divider my-5" />
@@ -138,7 +146,7 @@ export default function SaveTheDate() {
                 viewport={{ once: true }}
                 transition={{ delay: 0.8 }}
               >
-                Mansi &amp; Tanuj
+                {weddingConfig.bride.firstName} &amp; {weddingConfig.groom.firstName}
               </motion.p>
             </div>
           </div>
