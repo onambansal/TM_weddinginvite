@@ -58,11 +58,11 @@ export default function Home() {
             {/* Page 1: Family Introduction with Ganesh idol */}
             <FamilyIntro />
 
-            {/* Page 2: Countdown timer */}
-            <CountdownSection />
-
-            {/* Page 3: Save The Date */}
+            {/* Page 2: Save The Date */}
             <SaveTheDate />
+
+            {/* Page 3: Countdown timer */}
+            <CountdownSection />
 
             {/* Page 4: Photo Carousel — Our Beautiful Moments */}
             <PhotoCarousel />

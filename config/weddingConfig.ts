@@ -39,6 +39,8 @@ export const weddingConfig = {
       venue: "Vaishali Inn",
       address: "Vaishali, Ghaziabad",
       mapUrl: "https://maps.google.com/?q=Vaishali+Inn+Vaishali+Ghaziabad",
+      /** Place your photo in /public and set the filename, e.g. "/engagement.jpg" */
+      image: "",
     },
     mehendiSangeet: {
       title: "Mehendi & Ladies Sangeet",
@@ -49,6 +51,8 @@ export const weddingConfig = {
       venue: "Vaishali Inn",
       address: "Vaishali, Ghaziabad",
       mapUrl: "https://maps.google.com/?q=Vaishali+Inn+Vaishali+Ghaziabad",
+      /** Place your photo in /public and set the filename, e.g. "/mehendi.jpg" */
+      image: "",
     },
     haldi: {
       title: "Haldi Ceremony",
@@ -59,6 +63,8 @@ export const weddingConfig = {
       venue: "Vaishali Inn",
       address: "Vaishali, Ghaziabad",
       mapUrl: "https://maps.google.com/?q=Vaishali+Inn+Vaishali+Ghaziabad",
+      /** Place your photo in /public and set the filename, e.g. "/haldi.jpg" */
+      image: "",
     },
     ghurChari: {
       title: "Ghur Chari",
@@ -69,6 +75,8 @@ export const weddingConfig = {
       venue: "Wedding Crown",
       address: "Sector 76, Noida",
       mapUrl: "https://maps.google.com/?q=Wedding+Crown+Sector+76+Noida",
+      /** Place your photo in /public and set the filename, e.g. "/ghurchari.jpg" */
+      image: "",
     },
     wedding: {
       title: "Wedding Ceremony",
@@ -79,6 +87,8 @@ export const weddingConfig = {
       venue: "Wedding Crown",
       address: "Sector 76, Noida",
       mapUrl: "https://maps.google.com/?q=Wedding+Crown+Sector+76+Noida",
+      /** Place your photo in /public and set the filename, e.g. "/wedding.jpg" */
+      image: "/a.jpg",
     },
   },
 
