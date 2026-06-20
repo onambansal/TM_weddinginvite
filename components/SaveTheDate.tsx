@@ -147,8 +147,8 @@ function RevealBox({ value, label, delay = 0, accentColor = "#C9A84C", onReveal 
 
   return (
     <motion.div
-      className="relative flex-1 min-w-[90px] max-w-[160px] cursor-pointer select-none"
-      style={{ aspectRatio: "3/4" }}
+      className="relative flex-1 min-w-0 cursor-pointer select-none"
+      style={{ aspectRatio: "3/4", maxWidth: "30vw" }}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -181,10 +181,11 @@ function RevealBox({ value, label, delay = 0, accentColor = "#C9A84C", onReveal 
           {revealed && (
             <motion.p
               key="value"
-              className="font-bold leading-none"
+              className="font-bold leading-none w-full text-center px-1"
               style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: value.length > 4 ? "1.8rem" : "3.5rem",
+                fontSize: value.length > 6 ? "clamp(0.9rem, 4vw, 1.4rem)" : value.length > 4 ? "clamp(1.1rem, 5vw, 1.8rem)" : "clamp(1.8rem, 8vw, 3.5rem)",
+                wordBreak: "break-word",
                 background: `linear-gradient(135deg, ${accentColor}, #E8C97A, ${accentColor})`,
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
