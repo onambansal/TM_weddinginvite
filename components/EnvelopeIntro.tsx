@@ -6,6 +6,7 @@ import Image from "next/image";
 
 interface EnvelopeIntroProps {
   onComplete: () => void;
+  onStart?: () => void;
 }
 
 // Petal config — random positions & delays
@@ -33,13 +34,14 @@ const CONFETTI = Array.from({ length: 20 }, (_, i) => {
   };
 });
 
-export default function EnvelopeIntro({ onComplete }: EnvelopeIntroProps) {
+export default function EnvelopeIntro({ onComplete, onStart }: EnvelopeIntroProps) {
   const [stage, setStage] = useState<"idle" | "opening" | "card" | "done">("idle");
   const [showConfetti, setShowConfetti] = useState(false);
   const [showScrollHint, setShowScrollHint] = useState(false);
 
   const handleClick = () => {
     if (stage !== "idle") return;
+    onStart?.();   // ← start music immediately on tap
     setStage("opening");
     setTimeout(() => {
       setStage("card");

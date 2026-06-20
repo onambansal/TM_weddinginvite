@@ -27,18 +27,19 @@ export default function Home() {
   const [showMain, setShowMain] = useState(false);
   const musicPlayerRef = useRef<MusicPlayerHandle>(null);
 
+  const handleEnvelopeStart = () => {
+    // Start music as soon as user taps the envelope (user interaction = autoplay allowed)
+    musicPlayerRef.current?.play();
+  };
+
   const handleEnvelopeComplete = () => {
     setShowMain(true);
-    // Auto-play music when envelope is opened (user interaction already happened)
-    setTimeout(() => {
-      musicPlayerRef.current?.play();
-    }, 600);
   };
 
   return (
     <>
       {/* Envelope intro overlay */}
-      <EnvelopeIntro onComplete={handleEnvelopeComplete} />
+      <EnvelopeIntro onComplete={handleEnvelopeComplete} onStart={handleEnvelopeStart} />
 
       {/* Music player — always mounted so audio element is ready */}
       <MusicPlayer ref={musicPlayerRef} />
