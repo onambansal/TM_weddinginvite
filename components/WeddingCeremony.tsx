@@ -115,7 +115,7 @@ export default function WeddingCeremony() {
                 className="text-2xl text-gold"
                 style={{ fontFamily: "'Great Vibes', cursive", fontSize: "2rem" }}
               >
-                {bride.firstName}
+                {groom.firstName}
               </p>
               <p className="text-gold/60 text-lg font-playfair italic my-1" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                 &amp;
@@ -124,7 +124,7 @@ export default function WeddingCeremony() {
                 className="text-2xl text-gold"
                 style={{ fontFamily: "'Great Vibes', cursive", fontSize: "2rem" }}
               >
-                {groom.firstName}
+                {bride.firstName}
               </p>
             </motion.div>
 

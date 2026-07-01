@@ -102,7 +102,7 @@ export default function ThankYouSection() {
             className="text-3xl md:text-4xl text-maroon"
             style={{ fontFamily: "'Great Vibes', cursive" }}
           >
-            {bride.firstName} ❤️ {groom.firstName}
+            {groom.firstName} ❤️ {bride.firstName}
           </p>
         </motion.div>
 

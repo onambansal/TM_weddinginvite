@@ -285,7 +285,7 @@ export default function EnvelopeIntro({ onComplete, onStart }: EnvelopeIntroProp
                         animate={{ opacity: [0.5, 1, 0.5] }}
                         transition={{ duration: 1.8, repeat: Infinity }}
                         style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "0.75rem", color: "rgba(201,168,76,0.8)", letterSpacing: "0.2rem", fontStyle: "italic" }}
-                      >scroll to explore ↓</motion.p>
+                      >/*scroll to explore ↓*/ </motion.p>
                     </motion.div>
                   )}
                 </AnimatePresence>
