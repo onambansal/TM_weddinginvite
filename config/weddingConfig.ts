@@ -8,19 +8,19 @@ export const weddingConfig = {
   bride: {
     fullName: "Mansi Gupta",
     firstName: "Mansi",
-    father: "Shri Rajesh Gupta",
-    mother: "Smt. Sunita Gupta",
-    grandfather: "Late Shri Ram Prasad Gupta",
-    grandmother: "Smt. Savitri Gupta",
+    father: "Shri ABC Gupta",
+    mother: "Smt. ABC Gupta",
+    grandfather: "Shri ABC Gupta",
+    grandmother: "Smt. ABC Gupta",
   },
 
   groom: {
     fullName: "Tanuj Goyal",
     firstName: "Tanuj",
-    father: "Shri Suresh Goyal",
-    mother: "Smt. Rekha Goyal",
-    grandfather: "Late Shri Mohan Lal Goyal",
-    grandmother: "Smt. Kamla Goyal",
+    father: "Shri Anil Goyal",
+    mother: "Smt. Anu Goyal",
+    grandfather: "Late Shri Kanta Pershad Gupta",
+    grandmother: "Late Smt. Susheela Devi",
   },
 
   // ── Wedding Date ─────────────────────────────────────────
