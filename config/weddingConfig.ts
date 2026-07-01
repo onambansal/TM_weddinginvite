@@ -11,6 +11,7 @@ export const weddingConfig = {
     father: "Shri ABC Gupta",
     mother: "Smt. ABC Gupta",
     grandfather: "Shri ABC Gupta",
+    grandmother: "Smt. ABC Gupta",
   },
 
   groom: {
