@@ -35,7 +35,7 @@ export const weddingConfig = {
       titleHindi: "सगाई",
       date: "29th November 2026",
       day: "Sunday",
-      time: "11:00 AM onwards",
+      time: "6:00 PM onwards",
       venue: "Rutba",
       address: "Vasundhara, Ghaziabad",
       mapUrl: "https://maps.google.com/?q=Rutba+CP-08+Sector+18+Vasundhara+Ghaziabad",
