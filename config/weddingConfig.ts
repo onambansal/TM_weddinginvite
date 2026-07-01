@@ -11,7 +11,6 @@ export const weddingConfig = {
     father: "Shri ABC Gupta",
     mother: "Smt. ABC Gupta",
     grandfather: "Shri ABC Gupta",
-    grandmother: "Smt. ABC Gupta",
   },
 
   groom: {
@@ -36,9 +35,9 @@ export const weddingConfig = {
       date: "29th November 2026",
       day: "Sunday",
       time: "11:00 AM onwards",
-      venue: "Vaishali Inn",
-      address: "Vaishali, Ghaziabad",
-      mapUrl: "https://maps.google.com/?q=Vaishali+Inn+Vaishali+Ghaziabad",
+      venue: "Rutba",
+      address: "Vasundhara, Ghaziabad",
+      mapUrl: "https://maps.google.com/?q=Rutba+CP-08+Sector+18+Vasundhara+Ghaziabad",
       /** Place your photo in /public and set the filename, e.g. "/engagement.jpg" */
       image: "",
     },
@@ -95,11 +94,21 @@ export const weddingConfig = {
   // ── Venues (for the Venue Details section) ───────────────
   venues: [
     {
+      id: 3,
+      name: "Rutba",
+      address: "Sector 18, Vasundhara, Ghaziabad",
+      events: ["Engagement"],
+      dates: "29 November 2026",
+      emoji: "💍",
+      color: "#B8860B",
+      mapUrl: "https://maps.google.com/?q=Rutba+CP-08+Sector+18+Vasundhara+Ghaziabad",
+    },
+    {
       id: 1,
       name: "Vaishali Inn",
-      address: "Vaishali, Ghaziabad",
-      events: ["Engagement", "Mehendi & Sangeet", "Haldi Ceremony"],
-      dates: "29 Nov – 4 Dec 2026",
+      address: "Sector-4, Vaishali, Ghaziabad",
+      events: ["Mehendi & Sangeet", "Haldi Ceremony"],
+      dates: "3 – 4 Dec 2026",
       emoji: "🌿",
       color: "#2D6A4F",
       mapUrl: "https://maps.google.com/?q=Vaishali+Inn+Vaishali+Ghaziabad",
