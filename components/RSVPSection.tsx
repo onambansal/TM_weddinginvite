@@ -128,7 +128,7 @@ export default function RSVPSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.6 }}
         >
-          {bride.firstName} <Heart className="w-3 h-3 text-rose fill-rose" /> {groom.firstName}
+          {groom.firstName} <Heart className="w-3 h-3 text-rose fill-rose" /> {bride.firstName}
         </motion.p>
       </div>
     </section>
