@@ -100,7 +100,7 @@ export default function FamilyIntro() {
             className="mb-4"
             style={{ fontFamily: "'Great Vibes', cursive", fontSize: "3.2rem", color: "#6B0F1A", fontWeight: 400, lineHeight: 1.1, textShadow: "0 2px 8px rgba(107, 15, 26, 0.15)" }}
           >
-            {groom.fullName}
+            {groom.firstName}
           </h2>
           <div className="flex flex-col gap-2">
             <div
@@ -163,7 +163,7 @@ export default function FamilyIntro() {
             className="mb-4"
             style={{ fontFamily: "'Great Vibes', cursive", fontSize: "3.2rem", color: "#6B0F1A", fontWeight: 400, lineHeight: 1.1, textShadow: "0 2px 8px rgba(107, 15, 26, 0.15)" }}
           >
-            {bride.fullName}
+            {bride.firstName}
           </h2>
           <div className="flex flex-col gap-2">
             <div

@@ -140,8 +140,8 @@ export const weddingConfig = {
 
   // ── RSVP / Contact ───────────────────────────────────────
   rsvp: {
-    whatsappNumber: "919999999999",   // Country code + number, no + or spaces
-    message: "Hello! I would like to confirm my attendance at Mansi & Tanuj's wedding on 5th December 2026. 🎊",
+    whatsappNumber: "+919818335572",   // Country code + number, no + or spaces
+    message: "Hello! I would like to confirm my attendance at Tanuj & Mansi's wedding on 5th December 2026. 🎊",
   },
 } as const;
 
