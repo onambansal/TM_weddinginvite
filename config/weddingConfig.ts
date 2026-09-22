@@ -51,6 +51,9 @@ export const weddingConfig = {
       venue: "Vaishali Inn",
       address: "Vaishali, Ghaziabad",
       mapUrl: "https://maps.google.com/?q=Vaishali+Inn+Vaishali+Ghaziabad",
+      /** Dress code / colour theme shown on the card so guests can plan their outfits */
+      theme: "Multicolor",
+      themeNote: "Wear your brightest, most vibrant festive colours!",
       /** Place your photo in /public and set the filename, e.g. "/mehendi.jpg" */
       image: "",
     },
@@ -63,6 +66,9 @@ export const weddingConfig = {
       venue: "Vaishali Inn",
       address: "Vaishali, Ghaziabad",
       mapUrl: "https://maps.google.com/?q=Vaishali+Inn+Vaishali+Ghaziabad",
+      /** Dress code / colour theme shown on the card so guests can plan their outfits */
+      theme: "Pink",
+      themeNote: "Come dressed in shades of pink",
       /** Place your photo in /public and set the filename, e.g. "/haldi.jpg" */
       image: "",
     },

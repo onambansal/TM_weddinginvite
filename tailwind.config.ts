@@ -26,8 +26,8 @@ const config: Config = {
         },
         ivory: "#FFFDF7",
         rose: "#E8A0A0",
-        haldi: "#F5C518",
-        mehendi: "#2D6A4F",
+        haldi: "#EC4899",
+        mehendi: "#7C3AED",
       },
       fontFamily: {
         playfair: ["var(--font-playfair)", "Georgia", "serif"],

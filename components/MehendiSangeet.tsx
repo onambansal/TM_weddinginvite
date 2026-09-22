@@ -1,8 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Clock, MapPin, Calendar } from "lucide-react";
+import { Clock, MapPin, Calendar, Palette } from "lucide-react";
 import { ceremonies } from "@/config/weddingConfig";
+
+/** Vibrant multicolor palette used across the Mehendi & Sangeet card */
+const MULTICOLOR_GRADIENT =
+  "linear-gradient(135deg, #7C3AED 0%, #EC4899 25%, #F97316 50%, #FACC15 75%, #14B8A6 100%)";
 
 export default function MehendiSangeet() {
   return (
@@ -10,7 +14,8 @@ export default function MehendiSangeet() {
       id="mehendi-sangeet"
       className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4"
       style={{
-        background: "linear-gradient(160deg, #1B4332 0%, #2D6A4F 40%, #40916C 70%, #1B4332 100%)",
+        background:
+          "linear-gradient(160deg, #6D28D9 0%, #BE185D 30%, #EA580C 55%, #CA8A04 75%, #0F766E 100%)",
       }}
     >
       {/* Animated festive lights */}
@@ -56,7 +61,7 @@ export default function MehendiSangeet() {
         <div
           className="rounded-3xl overflow-hidden shadow-luxury border-2"
           style={{
-            borderColor: "rgba(64, 145, 108, 0.6)",
+            borderColor: "rgba(255, 255, 255, 0.7)",
             background: "rgba(255, 255, 255, 0.92)",
             backdropFilter: "blur(10px)",
           }}
@@ -64,9 +69,9 @@ export default function MehendiSangeet() {
           {/* Card header */}
           <div
             className="py-6 px-6 text-center"
-            style={{ background: "linear-gradient(135deg, #2D6A4F, #40916C)" }}
+            style={{ background: MULTICOLOR_GRADIENT }}
           >
-            <p className="text-white/70 text-xs tracking-[0.3em] uppercase font-poppins mb-1">
+            <p className="text-white/80 text-xs tracking-[0.3em] uppercase font-poppins mb-1">
               ✦ Celebration ✦
             </p>
             <h2
@@ -90,14 +95,14 @@ export default function MehendiSangeet() {
 
             {/* Divider */}
             <div
-              className="w-24 h-px mx-auto mb-6"
-              style={{ background: "linear-gradient(90deg, transparent, #2D6A4F, transparent)" }}
+              className="w-24 h-0.5 mx-auto mb-6 rounded-full"
+              style={{ background: MULTICOLOR_GRADIENT }}
             />
 
             {/* Details */}
             <div className="space-y-4">
               <div className="flex items-center gap-3 justify-center">
-                <Calendar className="w-4 h-4 text-green-700 flex-shrink-0" />
+                <Calendar className="w-4 h-4 text-purple-600 flex-shrink-0" />
                 <div className="text-left">
                   <p className="text-xs text-gray-500 font-poppins uppercase tracking-wider">Date</p>
                   <p className="text-gray-800 text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
@@ -108,7 +113,7 @@ export default function MehendiSangeet() {
               </div>
 
               <div className="flex items-center gap-3 justify-center">
-                <Clock className="w-4 h-4 text-green-700 flex-shrink-0" />
+                <Clock className="w-4 h-4 text-pink-600 flex-shrink-0" />
                 <div className="text-left">
                   <p className="text-xs text-gray-500 font-poppins uppercase tracking-wider">Time</p>
                   <p className="text-gray-800 text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
@@ -118,7 +123,7 @@ export default function MehendiSangeet() {
               </div>
 
               <div className="flex items-start gap-3 justify-center">
-                <MapPin className="w-4 h-4 text-green-700 flex-shrink-0 mt-1" />
+                <MapPin className="w-4 h-4 text-orange-500 flex-shrink-0 mt-1" />
                 <div className="text-left">
                   <p className="text-xs text-gray-500 font-poppins uppercase tracking-wider">Venue</p>
                   <p className="text-gray-800 text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
@@ -127,17 +132,41 @@ export default function MehendiSangeet() {
                   <p className="text-gray-500 text-sm font-poppins">{ceremonies.mehendiSangeet.address}</p>
                 </div>
               </div>
+
+              {/* Theme / Dress code */}
+              <div className="flex items-center gap-3 justify-center">
+                <Palette className="w-4 h-4 text-teal-600 flex-shrink-0" />
+                <div className="text-left">
+                  <p className="text-xs text-gray-500 font-poppins uppercase tracking-wider">Theme / Dress Code</p>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="inline-block w-4 h-4 rounded-full border border-white shadow-sm flex-shrink-0"
+                      style={{ background: MULTICOLOR_GRADIENT }}
+                      aria-hidden="true"
+                    />
+                    <p
+                      className="font-semibold text-base bg-clip-text text-transparent"
+                      style={{
+                        fontFamily: "'Playfair Display', Georgia, serif",
+                        backgroundImage: MULTICOLOR_GRADIENT,
+                      }}
+                    >
+                      {ceremonies.mehendiSangeet.theme}
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Divider */}
             <div
-              className="w-24 h-px mx-auto mt-6"
-              style={{ background: "linear-gradient(90deg, transparent, #2D6A4F, transparent)" }}
+              className="w-24 h-0.5 mx-auto mt-6 rounded-full"
+              style={{ background: MULTICOLOR_GRADIENT }}
             />
 
             {/* Bottom note */}
             <p className="text-gray-500 text-xs font-poppins italic mt-4">
-              Dress in festive colours &amp; dance the night away! 🎶
+              {ceremonies.mehendiSangeet.themeNote} Dance the night away! 🎶
             </p>
           </div>
         </div>
