@@ -30,6 +30,7 @@ const config: Config = {
         mehendi: "#7C3AED",
       },
       fontFamily: {
+        cormorant: ["var(--font-cormorant)", "var(--font-playfair)", "Georgia", "serif"],
         playfair: ["var(--font-playfair)", "Georgia", "serif"],
         poppins: ["var(--font-poppins)", "sans-serif"],
         script: ["var(--font-great-vibes)", "cursive"],

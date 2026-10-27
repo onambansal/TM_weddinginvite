@@ -1,102 +1,143 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ZoomIn } from "lucide-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, EffectFade } from "swiper/modules";
+import { gallery } from "@/config/weddingConfig";
+import SectionDivider from "./SectionDivider";
+import CornerOrnament from "./CornerOrnament";
 
-const photos = [
-  { id: 1, src: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&q=80", caption: "Our first meeting" },
-  { id: 2, src: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80", caption: "A love story begins" },
-  { id: 3, src: "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&q=80", caption: "Together always" },
-  { id: 4, src: "https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=800&q=80", caption: "Our favourite moments" },
-  { id: 5, src: "https://images.unsplash.com/photo-1529636798458-92182e662485?w=800&q=80", caption: "Forever in your arms" },
-  { id: 6, src: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80", caption: "You complete me" },
-  { id: 7, src: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=800&q=80", caption: "Our journey together" },
-  { id: 8, src: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800&q=80", caption: "Cherished memories" },
-  { id: 9, src: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800&q=80", caption: "Two hearts, one soul" },
-  { id: 10, src: "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=800&q=80", caption: "Our beautiful story" },
-];
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/effect-fade";
 
+const serif = "var(--font-cormorant), var(--font-playfair), Georgia, serif";
+
+/**
+ * Single gallery section: a slow fade carousel of featured moments,
+ * followed by a tappable masonry grid with lightbox.
+ */
 export default function PhotoMemories() {
   const [selected, setSelected] = useState<number | null>(null);
-
-  const selectedPhoto = photos.find((p) => p.id === selected);
+  const photos = gallery.map((p, i) => ({ id: i + 1, ...p }));
+  const selectedPhoto = selected !== null ? photos.find((p) => p.id === selected) : undefined;
 
   return (
     <section
       id="memories"
-      className="relative py-20 px-4 overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #F5EDE0 0%, #FFF8F0 100%)" }}
+      className="relative py-24 px-4 overflow-hidden paper-grain"
+      style={{ background: "linear-gradient(180deg, #FFF8F0 0%, #F5EDE0 100%)" }}
     >
-      {/* Section header */}
-      <div className="text-center mb-14">
-        <motion.p
-          className="text-gold text-xs tracking-[0.4em] uppercase font-poppins mb-3"
-          initial={{ opacity: 0, y: 20 }}
+      <div
+        className="absolute inset-0 opacity-[0.06] pointer-events-none"
+        style={{ backgroundImage: "radial-gradient(circle at 30% 30%, #C9A84C 1px, transparent 1px)", backgroundSize: "28px 28px" }}
+      />
+      <CornerOrnament color="#C9A84C" opacity={0.35} />
+
+      <div className="relative z-10 max-w-3xl mx-auto">
+        {/* Heading */}
+        <motion.div
+          className="text-center mb-10"
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
         >
-          ✦ Photo Memories ✦
-        </motion.p>
-        <motion.h2
-          className="text-4xl md:text-5xl text-maroon mb-2"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-        >
-          Beautiful Moments
-        </motion.h2>
-        <div className="gold-divider my-4" />
-        <motion.p
-          className="text-maroon/60 text-sm font-poppins"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-        >
-          Tap any photo to view it
-        </motion.p>
-      </div>
+          <p className="text-gold text-[0.7rem] tracking-[0.4em] uppercase font-poppins mb-3">✦ A Glimpse of Our Journey ✦</p>
+          <h2 className="text-4xl md:text-5xl text-maroon" style={{ fontFamily: serif, fontWeight: 600 }}>
+            Our Beautiful Moments
+          </h2>
+          <SectionDivider color="#C9A84C" width={200} className="my-5" />
+          <p className="text-maroon/60 italic" style={{ fontFamily: serif, fontSize: "1.05rem" }}>
+            Cherished memories that led us to this beautiful day
+          </p>
+        </motion.div>
 
-      {/* Masonry-style grid */}
-      <div className="max-w-4xl mx-auto columns-2 md:columns-3 gap-4 space-y-4">
-        {photos.map((photo, i) => (
-          <motion.div
-            key={photo.id}
-            className="relative group overflow-hidden rounded-2xl shadow-gold border border-gold/20 cursor-pointer break-inside-avoid mb-4"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: i * 0.06 }}
-            whileHover={{ scale: 1.02 }}
-            onClick={() => setSelected(photo.id)}
+        {/* Featured carousel */}
+        <motion.div
+          className="relative mb-12"
+          initial={{ opacity: 0, scale: 0.97 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.15 }}
+        >
+          {["-top-2 -left-2 border-t border-l", "-top-2 -right-2 border-t border-r", "-bottom-2 -left-2 border-b border-l", "-bottom-2 -right-2 border-b border-r"].map((c) => (
+            <div key={c} className={`absolute ${c} w-8 h-8 z-10 pointer-events-none border-gold`} />
+          ))}
+          <Swiper
+            modules={[Autoplay, Pagination, EffectFade]}
+            effect="fade"
+            speed={1400}
+            autoplay={{ delay: 4000, disableOnInteraction: false }}
+            pagination={{ clickable: true }}
+            loop
+            className="rounded-2xl overflow-hidden shadow-luxury"
+            style={{ border: "1px solid rgba(201,168,76,0.35)" }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={photo.src}
-              alt={photo.caption}
-              className="w-full object-cover transition-transform duration-500 group-hover:scale-110"
-              style={{ aspectRatio: i % 3 === 0 ? "3/4" : "4/3" }}
-            />
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-maroon/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-3">
-              <div className="flex items-center gap-2 text-cream text-xs font-poppins">
-                <ZoomIn className="w-4 h-4" />
-                <span>{photo.caption}</span>
+            {photos.slice(0, 5).map((photo) => (
+              <SwiperSlide key={photo.id}>
+                <div className="relative" style={{ aspectRatio: "16/10" }}>
+                  <Image src={photo.src} alt={photo.caption} fill sizes="(max-width: 768px) 100vw, 768px" className="object-cover" />
+                  <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 55%, rgba(42,6,8,0.75) 100%)" }} />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
+                    <p className="text-cream italic" style={{ fontFamily: serif, fontSize: "1.15rem" }}>
+                      {photo.caption}
+                    </p>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </motion.div>
+
+        {/* Masonry grid */}
+        <p className="text-center text-maroon/50 text-xs font-poppins tracking-[0.3em] uppercase mb-5">Tap any photo to view</p>
+        <div className="columns-2 md:columns-3 gap-4">
+          {photos.map((photo, i) => (
+            <motion.button
+              type="button"
+              key={photo.id}
+              className="relative group overflow-hidden rounded-2xl border border-gold/30 cursor-pointer break-inside-avoid mb-4 w-full text-left"
+              style={{ boxShadow: "0 10px 30px rgba(201,168,76,0.18)" }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: (i % 3) * 0.08 }}
+              whileHover={{ y: -3 }}
+              onClick={() => setSelected(photo.id)}
+              aria-label={`View photo: ${photo.caption}`}
+            >
+              <div className="relative w-full" style={{ aspectRatio: i % 3 === 0 ? "3/4" : "4/3" }}>
+                <Image
+                  src={photo.src}
+                  alt={photo.caption}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 256px"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
               </div>
-            </div>
-          </motion.div>
-        ))}
+              <div className="absolute inset-0 bg-gradient-to-t from-maroon/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-3">
+                <div className="flex items-center gap-2 text-cream text-xs font-poppins">
+                  <ZoomIn className="w-4 h-4" />
+                  <span>{photo.caption}</span>
+                </div>
+              </div>
+            </motion.button>
+          ))}
+        </div>
+
+        <p className="text-center text-gold text-xl tracking-widest mt-8">✦ ❧ ✦</p>
       </div>
 
       {/* Lightbox */}
       <AnimatePresence>
-        {selected && selectedPhoto && (
+        {selectedPhoto && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+            className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+            style={{ background: "rgba(20,4,6,0.92)", backdropFilter: "blur(6px)" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -104,23 +145,26 @@ export default function PhotoMemories() {
           >
             <motion.div
               className="relative max-w-lg w-full"
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={{ scale: 0.88, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
+              exit={{ scale: 0.88, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 260, damping: 24 }}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={selectedPhoto.src}
-                alt={selectedPhoto.caption}
-                className="w-full rounded-2xl shadow-luxury"
-              />
-              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent rounded-b-2xl">
-                <p className="text-cream text-sm font-poppins text-center">{selectedPhoto.caption}</p>
+              <div className="relative w-full rounded-2xl overflow-hidden" style={{ aspectRatio: "4/5", boxShadow: "0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,168,76,0.6)" }}>
+                <Image src={selectedPhoto.src} alt={selectedPhoto.caption} fill sizes="512px" className="object-cover" />
+                <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/70 to-transparent">
+                  <p className="text-cream text-center italic" style={{ fontFamily: serif, fontSize: "1.1rem" }}>
+                    {selectedPhoto.caption}
+                  </p>
+                </div>
               </div>
               <button
+                type="button"
                 onClick={() => setSelected(null)}
-                className="absolute -top-4 -right-4 w-10 h-10 bg-maroon text-gold rounded-full flex items-center justify-center shadow-maroon border border-gold/30"
+                className="absolute -top-4 -right-4 w-10 h-10 bg-maroon text-gold rounded-full flex items-center justify-center border border-gold/50"
+                style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.5)" }}
+                aria-label="Close"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -128,6 +172,11 @@ export default function PhotoMemories() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <style jsx global>{`
+        .swiper-pagination-bullet { background: #C9A84C !important; opacity: 0.4; }
+        .swiper-pagination-bullet-active { opacity: 1; }
+      `}</style>
     </section>
   );
 }

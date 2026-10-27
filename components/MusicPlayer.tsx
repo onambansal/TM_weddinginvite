@@ -73,7 +73,7 @@ const MusicPlayer = forwardRef<MusicPlayerHandle>((_, ref) => {
               className="bg-maroon text-cream text-xs px-3 py-2 rounded-full shadow-lg whitespace-nowrap font-poppins"
               style={{ boxShadow: "0 4px 20px rgba(107,15,26,0.5)" }}
             >
-              🎵 Tap to play wedding music
+              ♪ Tap to play wedding music
             </motion.div>
           )}
         </AnimatePresence>

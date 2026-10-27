@@ -1,166 +1,40 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Clock, MapPin, Calendar, Palette } from "lucide-react";
 import { ceremonies } from "@/config/weddingConfig";
+import CeremonyCard from "./CeremonyCard";
 
+/**
+ * Haldi — the dress code is PINK, so the whole screen is pink,
+ * but rendered as dusty rose / rose-gold so it sits with the gold palette.
+ */
 export default function HaldiSection() {
   return (
-    <section
+    <CeremonyCard
       id="haldi"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4"
-      style={{
-        background: "linear-gradient(160deg, #FFE4EC 0%, #FFC1D9 30%, #F472B6 60%, #EC4899 100%)",
-      }}
-    >
-      {/* Animated pink background blobs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full opacity-20"
-            style={{
-              width: 150 + i * 60,
-              height: 150 + i * 60,
-              background: "radial-gradient(circle, #F9A8D4, #DB2777)",
-              left: `${(i * 20) % 100}%`,
-              top: `${(i * 30) % 100}%`,
-            }}
-            animate={{
-              scale: [1, 1.2, 1],
-              x: [0, 20, 0],
-              y: [0, -15, 0],
-            }}
-            transition={{
-              duration: 5 + i,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Decorative pink blossoms */}
-      <div className="absolute top-8 left-8 text-4xl opacity-40">🌸</div>
-      <div className="absolute top-8 right-8 text-4xl opacity-40">🌸</div>
-      <div className="absolute bottom-8 left-8 text-4xl opacity-40">💗</div>
-      <div className="absolute bottom-8 right-8 text-4xl opacity-40">💗</div>
-
-      {/* Card */}
-      <motion.div
-        className="relative z-10 max-w-sm w-full mx-auto"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
+      ceremony={ceremonies.haldi}
+      pretitle="✦ Ceremony ✦"
+      motif="marigold"
+      description="A morning of turmeric, laughter and blessings — as family and friends shower the couple with love."
+      note="Come dressed in shades of pink & bring your blessings"
+      sectionBackground="linear-gradient(160deg, #F9E4E9 0%, #EFC2CC 35%, #D9919F 70%, #B76E79 100%)"
+      headerBackground="linear-gradient(135deg, #B76E79 0%, #D4919B 50%, #B76E79 100%)"
+      headerTitleColor="#FFFDF7"
+      headerPretitleColor="rgba(255,253,247,0.85)"
+      accent="#B76E79"
+      particleColors={["#C9A84C", "#F9D5E0", "#E8A0B0"]}
+      ornamentColor="#8E4A58"
+      ornamentOpacity={0.4}
+      backdrop={
         <div
-          className="rounded-3xl overflow-hidden shadow-luxury border-2"
+          className="absolute inset-0 pointer-events-none"
           style={{
-            borderColor: "rgba(219, 39, 119, 0.6)",
-            background: "rgba(255, 255, 255, 0.85)",
-            backdropFilter: "blur(10px)",
+            backgroundImage: `
+              radial-gradient(circle at 15% 20%, rgba(255,255,255,0.35) 0%, transparent 45%),
+              radial-gradient(circle at 85% 80%, rgba(201,168,76,0.18) 0%, transparent 45%)
+            `,
           }}
-        >
-          {/* Card header */}
-          <div
-            className="py-6 px-6 text-center"
-            style={{ background: "linear-gradient(135deg, #F472B6, #DB2777)" }}
-          >
-            <p className="text-white/80 text-xs tracking-[0.3em] uppercase font-poppins mb-1">
-              ✦ Ceremony ✦
-            </p>
-            <h2
-              className="text-3xl md:text-4xl text-white"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              Haldi Ceremony
-            </h2>
-          </div>
-
-          {/* Card body */}
-          <div className="py-8 px-8 text-center">
-            {/* Emoji */}
-            <motion.div
-              className="text-5xl mb-6"
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 3, repeat: Infinity }}
-            >
-              🌸
-            </motion.div>
-
-            {/* Divider */}
-            <div
-              className="w-24 h-px mx-auto mb-6"
-              style={{ background: "linear-gradient(90deg, transparent, #EC4899, transparent)" }}
-            />
-
-            {/* Details */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 justify-center">
-                <Calendar className="w-4 h-4 text-pink-600 flex-shrink-0" />
-                <div className="text-left">
-                  <p className="text-xs text-gray-500 font-poppins uppercase tracking-wider">Date</p>
-                   <p className="text-gray-800 font-playfair text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                    {ceremonies.haldi.date}
-                  </p>
-                  <p className="text-gray-500 text-xs font-poppins">{ceremonies.haldi.day}</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 justify-center">
-                <Clock className="w-4 h-4 text-pink-600 flex-shrink-0" />
-                <div className="text-left">
-                  <p className="text-xs text-gray-500 font-poppins uppercase tracking-wider">Time</p>
-                  <p className="text-gray-800 font-playfair text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                    {ceremonies.haldi.time}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 justify-center">
-                <MapPin className="w-4 h-4 text-pink-600 flex-shrink-0 mt-1" />
-                <div className="text-left">
-                  <p className="text-xs text-gray-500 font-poppins uppercase tracking-wider">Venue</p>
-                  <p className="text-gray-800 font-playfair text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                    {ceremonies.haldi.venue}
-                  </p>
-                  <p className="text-gray-500 text-sm font-poppins">{ceremonies.haldi.address}</p>
-                </div>
-              </div>
-
-              {/* Theme / Dress code */}
-              <div className="flex items-center gap-3 justify-center">
-                <Palette className="w-4 h-4 text-pink-600 flex-shrink-0" />
-                <div className="text-left">
-                  <p className="text-xs text-gray-500 font-poppins uppercase tracking-wider">Theme / Dress Code</p>
-                  <div className="flex items-center gap-2">
-                    <span
-                      className="inline-block w-4 h-4 rounded-full border border-white shadow-sm flex-shrink-0"
-                      style={{ background: "linear-gradient(135deg, #F9A8D4, #DB2777)" }}
-                      aria-hidden="true"
-                    />
-                    <p className="text-pink-700 font-semibold text-base" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                      {ceremonies.haldi.theme}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Divider */}
-            <div
-              className="w-24 h-px mx-auto mt-6"
-              style={{ background: "linear-gradient(90deg, transparent, #EC4899, transparent)" }}
-            />
-
-            {/* Bottom note */}
-            <p className="text-gray-500 text-xs font-poppins italic mt-4">
-              {ceremonies.haldi.themeNote} &amp; bring your blessings 🌸
-            </p>
-          </div>
-        </div>
-      </motion.div>
-    </section>
+        />
+      }
+    />
   );
 }

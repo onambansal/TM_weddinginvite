@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
@@ -9,15 +9,30 @@ interface EnvelopeIntroProps {
   onStart?: () => void;
 }
 
-// Petal config — random positions & delays
-const PETALS = Array.from({ length: 18 }, (_, i) => ({
+// Petal config — deterministic positions & delays (no hydration mismatch)
+const PETAL_COLORS = ["#E8A0A0", "#D98C8C", "#E8C97A", "#C9A84C", "#F0B86E"];
+const PETALS = Array.from({ length: 14 }, (_, i) => ({
   id: i,
-  emoji: ["🌸", "🌹", "🌺", "✿", "❀"][i % 5],
-  left: `${(i * 5.8 + 3) % 100}%`,
-  delay: (i * 0.6) % 8,
-  duration: 6 + (i % 4) * 1.5,
-  size: 0.7 + (i % 3) * 0.25,
+  color: PETAL_COLORS[i % PETAL_COLORS.length],
+  left: `${(i * 7.3 + 3) % 100}%`,
+  delay: (i * 0.7) % 8,
+  duration: 9 + (i % 4) * 2,
+  size: 12 + (i % 3) * 5,
+  rose: i % 2 === 0,
 }));
+
+function Petal({ size, color, rose }: { size: number; color: string; rose: boolean }) {
+  return rose ? (
+    <svg width={size} height={size * 1.25} viewBox="0 0 20 25" fill="none" aria-hidden="true">
+      <path d="M10 1 C16 6, 20 12, 16 20 C13 24, 7 24, 4 20 C0 12, 4 6, 10 1 Z" fill={color} />
+      <path d="M10 4 C10 10, 10 15, 10 21" stroke="rgba(255,255,255,0.35)" strokeWidth="0.8" strokeLinecap="round" />
+    </svg>
+  ) : (
+    <svg width={size} height={size} viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path d="M10 18 C4 14, 2 8, 5 3 C7 5, 8 5, 10 2 C12 5, 13 5, 15 3 C18 8, 16 14, 10 18 Z" fill={color} />
+    </svg>
+  );
+}
 
 // Confetti particles for card reveal
 const CONFETTI = Array.from({ length: 20 }, (_, i) => {
@@ -38,6 +53,15 @@ export default function EnvelopeIntro({ onComplete, onStart }: EnvelopeIntroProp
   const [stage, setStage] = useState<"idle" | "opening" | "card" | "done">("idle");
   const [showConfetti, setShowConfetti] = useState(false);
   const [showScrollHint, setShowScrollHint] = useState(false);
+  const finishTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  /** Finish the intro (auto after a delay, or early when the guest taps the card) */
+  const finish = useCallback(() => {
+    if (finishTimer.current) clearTimeout(finishTimer.current);
+    finishTimer.current = null;
+    setStage("done");
+    onComplete();
+  }, [onComplete]);
 
   const handleClick = () => {
     if (stage !== "idle") return;
@@ -47,18 +71,16 @@ export default function EnvelopeIntro({ onComplete, onStart }: EnvelopeIntroProp
       setStage("card");
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 1200);
-      setTimeout(() => setShowScrollHint(true), 2500);
+      setTimeout(() => setShowScrollHint(true), 2000);
     }, 1000);
-    setTimeout(() => {
-      setStage("done");
-      onComplete();
-    }, 5800);
+    finishTimer.current = setTimeout(finish, 5800);
   };
 
-  // Reset scroll hint when done
+  // Reset scroll hint when done + clear pending timer on unmount
   useEffect(() => {
     if (stage === "done") setShowScrollHint(false);
   }, [stage]);
+  useEffect(() => () => { if (finishTimer.current) clearTimeout(finishTimer.current); }, []);
 
   return (
     <AnimatePresence>
@@ -85,11 +107,11 @@ export default function EnvelopeIntro({ onComplete, onStart }: EnvelopeIntroProp
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             {PETALS.map((p) => (
               <motion.span key={p.id} className="absolute select-none"
-                style={{ left: p.left, top: "-5%", fontSize: `${p.size}rem`, opacity: 0.55 }}
+                style={{ left: p.left, top: "-5%", lineHeight: 0, filter: "drop-shadow(0 2px 3px rgba(0,0,0,0.3))" }}
                 animate={{ y: ["0vh", "110vh"], x: [0, 20, -15, 10, 0], rotate: [0, 180, 360], opacity: [0, 0.6, 0.6, 0] }}
                 transition={{ duration: p.duration, repeat: Infinity, delay: p.delay, ease: "linear" }}
               >
-                {p.emoji}
+                <Petal size={p.size} color={p.color} rose={p.rose} />
               </motion.span>
             ))}
           </div>
@@ -181,7 +203,7 @@ export default function EnvelopeIntro({ onComplete, onStart }: EnvelopeIntroProp
                       <motion.p
                         animate={{ opacity: [0.5, 1, 0.5] }}
                         transition={{ duration: 2, repeat: Infinity }}
-                        style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "0.9rem", color: "rgba(201,168,76,0.9)", letterSpacing: "0.15rem", fontStyle: "italic" }}
+                        style={{ fontFamily: "var(--font-playfair), Georgia, serif", fontSize: "0.9rem", color: "rgba(201,168,76,0.9)", letterSpacing: "0.15rem", fontStyle: "italic" }}
                       >✦ Tap to Open Your Invitation ✦</motion.p>
                       {/* Bouncing arrow */}
                       <motion.div
@@ -198,11 +220,14 @@ export default function EnvelopeIntro({ onComplete, onStart }: EnvelopeIntroProp
             {/* ── CARD STAGE ── */}
             {stage === "card" && (
               <motion.div key="card-scene" className="relative mx-3 z-10"
-                style={{ maxWidth: 340, width: "100%" }}
+                style={{ maxWidth: 340, width: "100%", cursor: "pointer" }}
                 initial={{ opacity: 0, scale: 0.7, rotateY: -25 }}
                 animate={{ opacity: 1, scale: 1, rotateY: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
+                onClick={finish}
+                role="button"
+                aria-label="Continue to the invitation"
               >
                 {/* Confetti burst */}
                 <AnimatePresence>
@@ -284,8 +309,8 @@ export default function EnvelopeIntro({ onComplete, onStart }: EnvelopeIntroProp
                       <motion.p
                         animate={{ opacity: [0.5, 1, 0.5] }}
                         transition={{ duration: 1.8, repeat: Infinity }}
-                        style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "0.75rem", color: "rgba(201,168,76,0.8)", letterSpacing: "0.2rem", fontStyle: "italic" }}
-                      >↓ </motion.p>
+                        style={{ fontFamily: "var(--font-cormorant), var(--font-playfair), Georgia, serif", fontSize: "0.85rem", color: "rgba(201,168,76,0.85)", letterSpacing: "0.2rem", fontStyle: "italic" }}
+                      >Tap the card to continue ↓</motion.p>
                     </motion.div>
                   )}
                 </AnimatePresence>

@@ -1,29 +1,45 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MapPin, Navigation, ExternalLink } from "lucide-react";
-import { venues } from "@/config/weddingConfig";
+import { MapPin, Navigation, Calendar } from "lucide-react";
+import { venues, ceremonies } from "@/config/weddingConfig";
+import SectionDivider from "./SectionDivider";
+import CornerOrnament from "./CornerOrnament";
+import Motif, { type MotifName } from "./Motif";
+
+const serif = "var(--font-cormorant), var(--font-playfair), Georgia, serif";
+
+/** Chronological timeline strip derived from the ceremonies config */
+const TIMELINE = [
+  ceremonies.engagement,
+  ceremonies.mehendiSangeet,
+  ceremonies.haldi,
+  ceremonies.ghurChari,
+  ceremonies.wedding,
+].map((c) => ({
+  title: c.title,
+  date: c.date.replace(/\s\d{4}$/, ""), // drop the year for compactness
+  time: c.time.replace(/\s*onwards/i, ""),
+  venue: c.venue,
+}));
 
 export default function VenueDetails() {
   return (
     <section
       id="venues"
-      className="relative py-20 px-4 overflow-hidden"
+      className="relative py-24 px-4 overflow-hidden paper-grain"
       style={{ background: "linear-gradient(180deg, #FFF8F0 0%, #F5EDE0 100%)" }}
     >
-      {/* Background pattern */}
       <div
-        className="absolute inset-0 opacity-5"
-        style={{
-          backgroundImage: `radial-gradient(circle at 30% 30%, #C9A84C 1px, transparent 1px)`,
-          backgroundSize: "30px 30px",
-        }}
+        className="absolute inset-0 opacity-[0.06] pointer-events-none"
+        style={{ backgroundImage: "radial-gradient(circle at 30% 30%, #C9A84C 1px, transparent 1px)", backgroundSize: "28px 28px" }}
       />
+      <CornerOrnament color="#C9A84C" opacity={0.35} />
 
-      {/* Section header */}
-      <div className="text-center mb-14 relative z-10">
+      {/* Header */}
+      <div className="text-center mb-12 relative z-10">
         <motion.p
-          className="text-gold text-xs tracking-[0.4em] uppercase font-poppins mb-3"
+          className="text-gold text-[0.7rem] tracking-[0.4em] uppercase font-poppins mb-3"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -32,8 +48,8 @@ export default function VenueDetails() {
           ✦ Find Your Way ✦
         </motion.p>
         <motion.h2
-          className="text-4xl md:text-5xl text-maroon mb-2"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+          className="text-4xl md:text-5xl text-maroon"
+          style={{ fontFamily: serif, fontWeight: 600 }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -41,9 +57,10 @@ export default function VenueDetails() {
         >
           Venue Details
         </motion.h2>
-        <div className="gold-divider my-4" />
+        <SectionDivider color="#C9A84C" width={200} className="my-5" />
         <motion.p
-          className="text-maroon/60 text-sm font-poppins"
+          className="text-maroon/60 italic"
+          style={{ fontFamily: serif, fontSize: "1.05rem" }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -53,33 +70,76 @@ export default function VenueDetails() {
         </motion.p>
       </div>
 
+      {/* Timeline strip */}
+      <motion.div
+        className="max-w-2xl mx-auto mb-12 relative z-10 rounded-3xl px-5 py-6 gold-inset"
+        style={{ background: "rgba(255,253,247,0.85)", boxShadow: "0 16px 50px rgba(201,168,76,0.15)" }}
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7 }}
+      >
+        <p className="text-center text-[0.65rem] tracking-[0.35em] uppercase font-poppins text-gold mb-5">Celebration Timeline</p>
+        <ol className="relative">
+          <span className="absolute left-[7px] top-2 bottom-2 w-px" style={{ background: "linear-gradient(180deg, transparent, #C9A84C 15%, #C9A84C 85%, transparent)" }} />
+          {TIMELINE.map((t, i) => (
+            <motion.li
+              key={t.title}
+              className="relative pl-8 py-2.5 flex items-baseline justify-between gap-3"
+              initial={{ opacity: 0, x: -12 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 + i * 0.08, duration: 0.5 }}
+            >
+              <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[15px] h-[15px] rounded-full" style={{ background: "#FFFDF7", boxShadow: "0 0 0 1.5px #C9A84C" }}>
+                <span className="absolute inset-[4px] rounded-full" style={{ background: "#C9A84C" }} />
+              </span>
+              <div className="min-w-0">
+                <p className="text-maroon leading-tight truncate" style={{ fontFamily: serif, fontSize: "1.1rem", fontWeight: 600 }}>{t.title}</p>
+                <p className="text-xs font-poppins text-maroon/55 truncate">{t.venue}</p>
+              </div>
+              <div className="text-right flex-shrink-0">
+                <p className="text-maroon/80 text-sm leading-tight" style={{ fontFamily: serif, fontWeight: 600 }}>{t.date}</p>
+                <p className="text-[0.7rem] font-poppins text-gold-dark tracking-wide">{t.time}</p>
+              </div>
+            </motion.li>
+          ))}
+        </ol>
+      </motion.div>
+
       {/* Venue cards */}
       <div className="max-w-2xl mx-auto space-y-6 relative z-10">
         {venues.map((venue, i) => (
           <motion.div
             key={venue.id}
-            className="rounded-3xl overflow-hidden shadow-luxury border border-gold/20"
-            style={{ background: "rgba(255, 253, 247, 0.95)" }}
-            initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            className="rounded-3xl overflow-hidden"
+            style={{
+              background: "rgba(255,253,247,0.95)",
+              boxShadow: "0 20px 60px rgba(0,0,0,0.10), 0 0 0 1px rgba(201,168,76,0.45), inset 0 0 0 1px rgba(201,168,76,0.2)",
+            }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: i * 0.15 }}
-            whileHover={{ y: -4, boxShadow: "0 20px 60px rgba(201,168,76,0.2)" }}
+            transition={{ duration: 0.7, delay: i * 0.12 }}
+            whileHover={{ y: -4, boxShadow: "0 28px 70px rgba(201,168,76,0.22), 0 0 0 1px rgba(201,168,76,0.6)" }}
           >
             {/* Card header */}
             <div
-              className="py-5 px-6 flex items-center gap-4"
-              style={{ background: `linear-gradient(135deg, ${venue.color}, ${venue.color}CC)` }}
+              className="relative py-5 px-6 flex items-center gap-4"
+              style={{ background: `linear-gradient(135deg, ${venue.color} 0%, ${venue.color}D9 100%)` }}
             >
-              <span className="text-3xl">{venue.emoji}</span>
-              <div>
-                <h3
-                  className="text-xl text-white"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                >
+              <div className="absolute inset-x-0 bottom-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.9), transparent)" }} />
+              <div
+                className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ background: "rgba(255,253,247,0.12)", boxShadow: "inset 0 0 0 1px rgba(232,201,122,0.6)" }}
+              >
+                <Motif name={venue.motif as MotifName} size={34} color="#E8C97A" />
+              </div>
+              <div className="min-w-0">
+                <h3 className="text-2xl text-cream leading-tight" style={{ fontFamily: serif, fontWeight: 600 }}>
                   {venue.name}
                 </h3>
-                <p className="text-white/70 text-sm font-poppins flex items-center gap-1 mt-0.5">
+                <p className="text-cream/75 text-xs font-poppins flex items-center gap-1 mt-0.5">
                   <MapPin className="w-3 h-3" />
                   {venue.address}
                 </p>
@@ -88,39 +148,31 @@ export default function VenueDetails() {
 
             {/* Card body */}
             <div className="py-5 px-6">
-              {/* Events */}
-              <div className="mb-4">
-                <p className="text-xs text-gold font-poppins uppercase tracking-wider mb-2">Events</p>
-                <div className="flex flex-wrap gap-2">
-                  {venue.events.map((event) => (
-                    <span
-                      key={event}
-                      className="text-xs font-poppins px-3 py-1 rounded-full border"
-                      style={{
-                        borderColor: venue.color + "40",
-                        color: venue.color,
-                        background: venue.color + "10",
-                      }}
-                    >
-                      {event}
-                    </span>
-                  ))}
-                </div>
+              <p className="text-[0.65rem] text-gold font-poppins uppercase tracking-[0.3em] mb-2">Events</p>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {venue.events.map((event) => (
+                  <span
+                    key={event}
+                    className="text-xs font-poppins px-3 py-1 rounded-full"
+                    style={{ color: venue.color, background: `${venue.color}10`, boxShadow: `inset 0 0 0 1px ${venue.color}40` }}
+                  >
+                    {event}
+                  </span>
+                ))}
               </div>
 
-              {/* Date */}
-              <p className="text-maroon/60 text-sm font-poppins mb-5">
-                📅 {venue.dates}
+              <p className="text-maroon/70 text-sm flex items-center gap-2 mb-5" style={{ fontFamily: serif, fontSize: "1.05rem" }}>
+                <Calendar className="w-4 h-4 text-gold" />
+                {venue.dates}
               </p>
 
-              {/* Action buttons */}
               <div className="flex gap-3">
                 <a
                   href={venue.mapUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-poppins font-medium transition-all duration-200 hover:opacity-90"
-                  style={{ background: venue.color, color: "white" }}
+                  className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-poppins uppercase tracking-[0.15em] transition-opacity duration-200 hover:opacity-90"
+                  style={{ background: venue.color, color: "#FFFDF7" }}
                 >
                   <MapPin className="w-4 h-4" />
                   Google Maps
@@ -129,8 +181,8 @@ export default function VenueDetails() {
                   href={venue.mapUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-poppins font-medium border transition-all duration-200 hover:opacity-80"
-                  style={{ borderColor: venue.color + "40", color: venue.color }}
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-poppins uppercase tracking-[0.15em] transition-opacity duration-200 hover:opacity-80"
+                  style={{ color: venue.color, boxShadow: `inset 0 0 0 1px ${venue.color}55` }}
                 >
                   <Navigation className="w-4 h-4" />
                   Navigate
@@ -141,16 +193,7 @@ export default function VenueDetails() {
         ))}
       </div>
 
-      {/* Bottom ornament */}
-      <motion.div
-        className="text-center mt-12"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.4 }}
-      >
-        <p className="text-gold text-xl tracking-widest">✦ ❧ ✦</p>
-      </motion.div>
+      <SectionDivider color="#C9A84C" width={160} className="mt-12 relative z-10" />
     </section>
   );
 }

@@ -3,6 +3,9 @@
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { bride, groom } from "@/config/weddingConfig";
+import CornerOrnament from "./CornerOrnament";
+import SectionDivider from "./SectionDivider";
+import Motif from "./Motif";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -34,15 +37,13 @@ export default function FamilyIntro() {
         }}
       />
 
-      {/* Corner decorations */}
-      <div className="absolute top-4 left-4 text-4xl opacity-30 pointer-events-none" style={{ color: "#C9A84C" }}>❧</div>
-      <div className="absolute top-4 right-4 text-4xl opacity-30 pointer-events-none" style={{ color: "#C9A84C", transform: "scaleX(-1)" }}>❧</div>
-      <div className="absolute bottom-4 left-4 text-4xl opacity-30 pointer-events-none" style={{ color: "#C9A84C", transform: "scaleY(-1)" }}>❧</div>
-      <div className="absolute bottom-4 right-4 text-4xl opacity-30 pointer-events-none" style={{ color: "#C9A84C", transform: "scale(-1)" }}>❧</div>
+      {/* Hairline frame + corner flourishes */}
+      <div className="absolute inset-4 md:inset-6 rounded-3xl pointer-events-none" style={{ border: "1px solid rgba(201,168,76,0.25)" }} />
+      <CornerOrnament color="#C9A84C" opacity={0.45} />
 
       <div className="relative z-10 max-w-xl w-full text-center">
 
-        {/* Ganesh Idol */}
+        {/* Invocation */}
         <motion.div
           className="mb-6"
           initial="hidden"
@@ -52,34 +53,27 @@ export default function FamilyIntro() {
           custom={0}
         >
           <div
-            className="text-7xl leading-none mb-2"
-            style={{ filter: "drop-shadow(0 2px 8px rgba(201, 168, 76, 0.4))" }}
+            className="flex justify-center mb-3"
+            style={{ filter: "drop-shadow(0 2px 10px rgba(201, 168, 76, 0.45))" }}
           >
-            🕉️
+            <Motif name="om" size={72} color="#C9A84C" />
           </div>
           <p
             className="text-base font-semibold tracking-widest mb-1"
-            style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B0F1A", letterSpacing: "0.2rem" }}
+            style={{ fontFamily: "var(--font-playfair), Georgia, serif", color: "#6B0F1A", letterSpacing: "0.2rem" }}
           >
             Shri Ganeshaya Namah
           </p>
           <p
             className="text-lg"
-            style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#C9A84C", letterSpacing: "0.1rem" }}
+            style={{ fontFamily: "var(--font-playfair), Georgia, serif", color: "#C9A84C", letterSpacing: "0.1rem" }}
           >
             ॐ गं गणपतये नमः
           </p>
         </motion.div>
 
         {/* Gold divider */}
-        <motion.div
-          className="gold-divider-wide"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeUp}
-          custom={1}
-        />
+        <SectionDivider color="#C9A84C" width={220} className="my-3" />
 
         {/* Groom's Side */}
         <motion.div
@@ -92,20 +86,20 @@ export default function FamilyIntro() {
         >
           <p
             className="text-xs uppercase tracking-widest mb-1"
-            style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#C9A84C", letterSpacing: "0.3rem" }}
+            style={{ fontFamily: "var(--font-playfair), Georgia, serif", color: "#C9A84C", letterSpacing: "0.3rem" }}
           >
             Groom
           </p>
           <h2
             className="mb-4"
-            style={{ fontFamily: "'Great Vibes', cursive", fontSize: "3.2rem", color: "#6B0F1A", fontWeight: 400, lineHeight: 1.1, textShadow: "0 2px 8px rgba(107, 15, 26, 0.15)" }}
+            style={{ fontFamily: "var(--font-great-vibes), cursive", fontSize: "3.2rem", color: "#6B0F1A", fontWeight: 400, lineHeight: 1.1, textShadow: "0 2px 8px rgba(107, 15, 26, 0.15)" }}
           >
             {groom.firstName}
           </h2>
           <div className="flex flex-col gap-2">
             <div
               className="flex flex-wrap items-center justify-center gap-1"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1rem", color: "#5C3D2E" }}
+              style={{ fontFamily: "var(--font-cormorant), var(--font-playfair), Georgia, serif", fontSize: "1.1rem", color: "#5C3D2E" }}
             >
               <span className="italic text-sm" style={{ color: "#8B6355" }}>Son of</span>
               <span className="font-medium" style={{ color: "#2C1810" }}>{groom.father}</span>
@@ -114,7 +108,7 @@ export default function FamilyIntro() {
             </div>
             <div
               className="flex flex-wrap items-center justify-center gap-1"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1rem", color: "#5C3D2E" }}
+              style={{ fontFamily: "var(--font-cormorant), var(--font-playfair), Georgia, serif", fontSize: "1.1rem", color: "#5C3D2E" }}
             >
               <span className="italic text-sm" style={{ color: "#8B6355" }}>Grandson of</span>
               <span className="font-medium" style={{ color: "#2C1810" }}>{groom.grandfather}</span>
@@ -137,7 +131,9 @@ export default function FamilyIntro() {
             className="flex-1 h-px"
             style={{ maxWidth: 120, background: "linear-gradient(90deg, transparent, #C9A84C)" }}
           />
-          <span className="text-2xl" style={{ filter: "drop-shadow(0 1px 4px rgba(201, 168, 76, 0.5))" }}>💍</span>
+          <span style={{ filter: "drop-shadow(0 1px 6px rgba(201, 168, 76, 0.5))", lineHeight: 0 }}>
+            <Motif name="ring" size={34} color="#C9A84C" />
+          </span>
           <span
             className="flex-1 h-px"
             style={{ maxWidth: 120, background: "linear-gradient(90deg, #C9A84C, transparent)" }}
@@ -155,20 +151,20 @@ export default function FamilyIntro() {
         >
           <p
             className="text-xs uppercase tracking-widest mb-1"
-            style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#C9A84C", letterSpacing: "0.3rem" }}
+            style={{ fontFamily: "var(--font-playfair), Georgia, serif", color: "#C9A84C", letterSpacing: "0.3rem" }}
           >
             Bride
           </p>
           <h2
             className="mb-4"
-            style={{ fontFamily: "'Great Vibes', cursive", fontSize: "3.2rem", color: "#6B0F1A", fontWeight: 400, lineHeight: 1.1, textShadow: "0 2px 8px rgba(107, 15, 26, 0.15)" }}
+            style={{ fontFamily: "var(--font-great-vibes), cursive", fontSize: "3.2rem", color: "#6B0F1A", fontWeight: 400, lineHeight: 1.1, textShadow: "0 2px 8px rgba(107, 15, 26, 0.15)" }}
           >
             {bride.firstName}
           </h2>
           <div className="flex flex-col gap-2">
             <div
               className="flex flex-wrap items-center justify-center gap-1"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1rem", color: "#5C3D2E" }}
+              style={{ fontFamily: "var(--font-cormorant), var(--font-playfair), Georgia, serif", fontSize: "1.1rem", color: "#5C3D2E" }}
             >
               <span className="italic text-sm" style={{ color: "#8B6355" }}>Daughter of</span>
               <span className="font-medium" style={{ color: "#2C1810" }}>{bride.father}</span>
@@ -177,7 +173,7 @@ export default function FamilyIntro() {
             </div>
             <div
               className="flex flex-wrap items-center justify-center gap-1"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1rem", color: "#5C3D2E" }}
+              style={{ fontFamily: "var(--font-cormorant), var(--font-playfair), Georgia, serif", fontSize: "1.1rem", color: "#5C3D2E" }}
             >
               <span className="italic text-sm" style={{ color: "#8B6355" }}>Granddaughter of</span>
               <span className="font-medium" style={{ color: "#2C1810" }}>{bride.grandfather}</span>
@@ -188,19 +184,12 @@ export default function FamilyIntro() {
         </motion.div>
 
         {/* Gold divider */}
-        <motion.div
-          className="gold-divider-wide"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeUp}
-          custom={5}
-        />
+        <SectionDivider color="#C9A84C" width={220} className="my-3" />
 
         {/* Blessings */}
         <motion.p
           className="text-sm italic mt-2"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#8B6355" }}
+          style={{ fontFamily: "var(--font-playfair), Georgia, serif", color: "#8B6355" }}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}

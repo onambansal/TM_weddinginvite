@@ -1,14 +1,20 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Heart } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import { bride, groom, weddingDateDisplay, ceremonies } from "@/config/weddingConfig";
+import CornerOrnament from "./CornerOrnament";
+import SectionDivider from "./SectionDivider";
+import Motif from "./Motif";
+
+const serif = "var(--font-cormorant), var(--font-playfair), Georgia, serif";
 
 export default function ThankYouSection() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <section
       id="thankyou"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4 paper-grain"
       style={{ background: "linear-gradient(180deg, #FFF8F0 0%, #F5EDE0 100%)" }}
     >
       {/* Background pattern */}
@@ -20,34 +26,22 @@ export default function ThankYouSection() {
         }}
       />
 
-      {/* Animated diya flames */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(8)].map((_, i) => (
+      {/* Row of gently glowing diyas along the bottom */}
+      <div className="absolute inset-x-0 bottom-[7%] flex justify-around px-6 pointer-events-none">
+        {[...Array(7)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute text-2xl"
-            style={{
-              left: `${10 + i * 12}%`,
-              bottom: "10%",
-            }}
-            animate={{
-              y: [0, -10, 0],
-              opacity: [0.6, 1, 0.6],
-              scale: [1, 1.1, 1],
-            }}
-            transition={{
-              duration: 2 + (i % 3) * 0.5,
-              repeat: Infinity,
-              delay: i * 0.3,
-            }}
+            style={{ filter: "drop-shadow(0 0 8px rgba(201,168,76,0.6))" }}
+            animate={reduceMotion ? undefined : { y: [0, -6, 0], opacity: [0.45, 0.9, 0.45] }}
+            transition={{ duration: 2.4 + (i % 3) * 0.5, repeat: Infinity, delay: i * 0.3, ease: "easeInOut" }}
           >
-            🪔
+            <Motif name="diya" size={i % 2 === 0 ? 30 : 24} color="#C9A84C" />
           </motion.div>
         ))}
       </div>
 
-      {/* Decorative border */}
-      <div className="absolute inset-4 border border-gold/20 rounded-3xl pointer-events-none" />
+      <div className="absolute inset-4 md:inset-6 border border-gold/25 rounded-3xl pointer-events-none" />
+      <CornerOrnament color="#C9A84C" opacity={0.45} />
 
       <div className="relative z-10 text-center max-w-md mx-auto">
         {/* Pre-title */}
@@ -64,7 +58,7 @@ export default function ThankYouSection() {
         {/* Main title */}
         <motion.h2
           className="text-4xl md:text-5xl text-maroon mb-4"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+          style={{ fontFamily: serif, fontWeight: 600 }}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -73,15 +67,12 @@ export default function ThankYouSection() {
           Thank You
         </motion.h2>
 
-        <div
-          className="w-32 h-px mx-auto my-6"
-          style={{ background: "linear-gradient(90deg, transparent, #C9A84C, transparent)" }}
-        />
+        <SectionDivider color="#C9A84C" width={200} className="my-6" />
 
         {/* Thank you message */}
         <motion.p
-          className="text-maroon/70 text-base md:text-lg font-playfair italic leading-relaxed mb-6"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+          className="text-maroon/70 italic leading-relaxed mb-6"
+          style={{ fontFamily: serif, fontSize: "1.2rem" }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -92,36 +83,36 @@ export default function ThankYouSection() {
 
         {/* Couple names */}
         <motion.div
-          className="mb-8"
+          className="mb-8 flex items-center justify-center gap-3"
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4, type: "spring" }}
         >
-          <p
-            className="text-3xl md:text-4xl text-maroon"
-            style={{ fontFamily: "'Great Vibes', cursive" }}
-          >
-            {groom.firstName} ❤️ {bride.firstName}
+          <p className="text-3xl md:text-4xl text-maroon" style={{ fontFamily: "var(--font-great-vibes), cursive" }}>
+            {groom.firstName}
+          </p>
+          <span className="text-gold italic" style={{ fontFamily: serif, fontSize: "1.6rem" }}>&amp;</span>
+          <p className="text-3xl md:text-4xl text-maroon" style={{ fontFamily: "var(--font-great-vibes), cursive" }}>
+            {bride.firstName}
           </p>
         </motion.div>
 
-        <div
-          className="w-32 h-px mx-auto my-6"
-          style={{ background: "linear-gradient(90deg, transparent, #C9A84C, transparent)" }}
-        />
+        <SectionDivider color="#C9A84C" width={160} className="my-6" />
 
         {/* No gifts message */}
         <motion.div
-          className="rounded-2xl border border-gold/30 px-6 py-5 mx-auto max-w-xs"
-          style={{ background: "rgba(201, 168, 76, 0.05)" }}
+          className="rounded-2xl border border-gold/40 px-6 py-5 mx-auto max-w-xs gold-inset"
+          style={{ background: "rgba(255,253,247,0.7)" }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5 }}
         >
-          <p className="text-gold text-lg mb-2">🙏</p>
-          <p className="text-maroon/70 text-sm font-poppins leading-relaxed">
+          <div className="flex justify-center mb-2">
+            <Motif name="lotus" size={36} color="#C9A84C" />
+          </div>
+          <p className="text-maroon/70 leading-relaxed" style={{ fontFamily: serif, fontSize: "1.05rem" }}>
             Only your good wishes and blessings,
             <br />
             <span className="font-semibold text-maroon">no gifts please.</span>
@@ -136,7 +127,7 @@ export default function ThankYouSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.6 }}
         >
-          <p className="text-gold text-2xl tracking-widest mb-3">✦ ❧ ✦</p>
+          <SectionDivider color="#C9A84C" width={140} className="mb-3" animate={false} />
           <p className="text-maroon/40 text-xs font-poppins tracking-widest uppercase">
             {weddingDateDisplay} · {ceremonies.wedding.venue}, {ceremonies.wedding.address}
           </p>

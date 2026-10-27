@@ -1,13 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Poppins:wght@300;400;500;600&family=Great+Vibes&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Font variables (--font-cormorant, --font-playfair, --font-poppins, --font-great-vibes)
+  are injected on <html> by next/font in app/layout.tsx.
+  Inline styles throughout the components reference the family names directly,
+  so we alias them here to the self-hosted faces.
+*/
 :root {
-  --font-playfair: 'Playfair Display', Georgia, serif;
-  --font-poppins: 'Poppins', sans-serif;
-  --font-great-vibes: 'Great Vibes', cursive;
+  --gold: #C9A84C;
+  --gold-light: #E8C97A;
+  --maroon: #6B0F1A;
+  --maroon-dark: #4A0A12;
+  --ivory: #FFFDF7;
+  --cream: #FFF8F0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 @layer base {
@@ -49,13 +65,16 @@
 
 @layer utilities {
   .font-playfair {
-    font-family: var(--font-playfair);
+    font-family: var(--font-playfair), Georgia, serif;
+  }
+  .font-cormorant {
+    font-family: var(--font-cormorant), var(--font-playfair), Georgia, serif;
   }
   .font-poppins {
-    font-family: var(--font-poppins);
+    font-family: var(--font-poppins), sans-serif;
   }
   .font-script {
-    font-family: var(--font-great-vibes);
+    font-family: var(--font-great-vibes), cursive;
   }
 
   .text-gradient-gold {
@@ -63,6 +82,40 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  /* Animated gold-foil shimmer for headings */
+  .text-gold-foil {
+    background: linear-gradient(
+      100deg,
+      #A07830 0%,
+      #C9A84C 20%,
+      #F3E2A0 40%,
+      #C9A84C 60%,
+      #A07830 80%,
+      #C9A84C 100%
+    );
+    background-size: 250% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 6s linear infinite;
+  }
+
+  /* Faint card-stock grain on top of any section */
+  .paper-grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  /* Hairline gold frame inside a card */
+  .gold-inset {
+    box-shadow: inset 0 0 0 1px rgba(201, 168, 76, 0.35);
   }
 
   .border-gold-gradient {

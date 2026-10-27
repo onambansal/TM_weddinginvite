@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Music } from "lucide-react";
 import { weddingConfig } from "@/config/weddingConfig";
+import CornerOrnament from "./CornerOrnament";
+
+const serif = "var(--font-cormorant), var(--font-playfair), Georgia, serif";
 
 // Parse the wedding date for display
 const weddingDateObj = new Date(weddingConfig.weddingDate);
@@ -25,15 +29,15 @@ function DholPlayer() {
       >
         {/* Floating musical notes */}
         <div className="relative w-32 h-10 mb-1">
-          {["🎵", "🎶", "🎵"].map((note, i) => (
+          {[0, 1, 2].map((i) => (
             <motion.span
               key={i}
-              className="absolute text-lg"
+              className="absolute text-gold"
               style={{ left: `${20 + i * 30}%` }}
-              animate={{ y: [0, -28, 0], opacity: [0.4, 1, 0.4] }}
+              animate={{ y: [0, -28, 0], opacity: [0.3, 1, 0.3], rotate: [0, i % 2 ? 12 : -12, 0] }}
               transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.35, ease: "easeInOut" }}
             >
-              {note}
+              <Music className={i === 1 ? "w-5 h-5" : "w-4 h-4"} />
             </motion.span>
           ))}
         </div>
@@ -115,7 +119,7 @@ function DholPlayer() {
 
         <motion.p
           className="text-xs italic tracking-widest"
-          style={{ color: "#C9A84C", fontFamily: "'Playfair Display', Georgia, serif" }}
+          style={{ color: "#C9A84C", fontFamily: "var(--font-playfair), Georgia, serif" }}
           animate={{ opacity: [0.5, 1, 0.5] }}
           transition={{ duration: 1.5, repeat: Infinity }}
         >
@@ -183,7 +187,7 @@ function RevealBox({ value, label, delay = 0, accentColor = "#C9A84C", onReveal 
               key="value"
               className="font-bold leading-none w-full text-center px-1"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-playfair), Georgia, serif",
                 fontSize: value.length > 6 ? "clamp(0.9rem, 4vw, 1.4rem)" : value.length > 4 ? "clamp(1.1rem, 5vw, 1.8rem)" : "clamp(1.8rem, 8vw, 3.5rem)",
                 wordBreak: "break-word",
                 background: `linear-gradient(135deg, ${accentColor}, #E8C97A, ${accentColor})`,
@@ -205,7 +209,7 @@ function RevealBox({ value, label, delay = 0, accentColor = "#C9A84C", onReveal 
             <motion.p
               key="label"
               className="text-xs tracking-widest uppercase"
-              style={{ color: `${accentColor}80`, fontFamily: "'Poppins', sans-serif" }}
+              style={{ color: `${accentColor}80`, fontFamily: "var(--font-poppins), sans-serif" }}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
@@ -281,7 +285,7 @@ function RevealBox({ value, label, delay = 0, accentColor = "#C9A84C", onReveal 
             <p
               className="text-center px-2 leading-tight"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-playfair), Georgia, serif",
                 fontSize: "0.65rem",
                 color: `${accentColor}cc`,
                 letterSpacing: "0.15rem",
@@ -307,7 +311,7 @@ export default function SaveTheDate() {
   return (
     <section
       id="save-the-date"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 paper-grain"
       style={{ background: "linear-gradient(180deg, #FFF8F0 0%, #F5EDE0 100%)" }}
     >
       {/* Background pattern */}
@@ -319,12 +323,14 @@ export default function SaveTheDate() {
           backgroundSize: "40px 40px",
         }}
       />
+      <div className="absolute inset-4 md:inset-6 rounded-3xl pointer-events-none" style={{ border: "1px solid rgba(201,168,76,0.25)" }} />
+      <CornerOrnament color="#C9A84C" opacity={0.4} />
 
       <div className="relative z-10 text-center px-6 max-w-lg mx-auto w-full">
         {/* Pre-title */}
         <motion.p
           className="text-xs tracking-[0.4em] uppercase mb-4"
-          style={{ color: "#C9A84C", fontFamily: "'Poppins', sans-serif" }}
+          style={{ color: "#C9A84C", fontFamily: "var(--font-poppins), sans-serif" }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -336,7 +342,7 @@ export default function SaveTheDate() {
         {/* Main title */}
         <motion.h2
           className="text-4xl md:text-5xl mb-2"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#6B0F1A" }}
+          style={{ fontFamily: serif, color: "#6B0F1A", fontWeight: 600 }}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -358,7 +364,7 @@ export default function SaveTheDate() {
         {/* Instruction hint */}
         <motion.p
           className="text-xs italic mb-8"
-          style={{ color: "#8B6355", fontFamily: "'Playfair Display', Georgia, serif" }}
+          style={{ color: "#8B6355", fontFamily: "var(--font-playfair), Georgia, serif" }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -388,7 +394,7 @@ export default function SaveTheDate() {
         {/* Couple names */}
         <motion.p
           className="mb-2"
-          style={{ fontFamily: "'Great Vibes', cursive", color: "#6B0F1A", fontSize: "1.8rem" }}
+          style={{ fontFamily: "var(--font-great-vibes), cursive", color: "#6B0F1A", fontSize: "1.8rem" }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -400,7 +406,7 @@ export default function SaveTheDate() {
         {/* Bottom text */}
         <motion.p
           className="text-sm italic"
-          style={{ color: "#8B6355", fontFamily: "'Playfair Display', Georgia, serif" }}
+          style={{ color: "#8B6355", fontFamily: "var(--font-playfair), Georgia, serif" }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}

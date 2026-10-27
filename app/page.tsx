@@ -9,10 +9,10 @@ const EnvelopeIntro = dynamic(() => import("@/components/EnvelopeIntro"), { ssr:
 
 import FloatingPetals from "@/components/FloatingPetals";
 import MusicPlayer, { MusicPlayerHandle } from "@/components/MusicPlayer";
+import CoupleHero from "@/components/CoupleHero";
 import FamilyIntro from "@/components/FamilyIntro";
 import CountdownSection from "@/components/CountdownSection";
 import SaveTheDate from "@/components/SaveTheDate";
-import PhotoCarousel from "@/components/PhotoCarousel";
 import EngagementSection from "@/components/EngagementSection";
 import MehendiSangeet from "@/components/MehendiSangeet";
 import HaldiSection from "@/components/HaldiSection";
@@ -56,35 +56,35 @@ export default function Home() {
             {/* Global floating petals */}
             <FloatingPetals />
 
-            {/* Page 1: Family Introduction with Ganesh idol */}
+            {/* 1 · The couple — names, photo, date */}
+            <CoupleHero />
+
+            {/* 2 · Family Introduction with Ganesh invocation */}
             <FamilyIntro />
 
-            {/* Page 2: Save The Date */}
+            {/* 3 · Save The Date */}
             <SaveTheDate />
 
-            {/* Page 3: Countdown timer */}
+            {/* 4 · Countdown timer */}
             <CountdownSection />
 
-            {/* Page 4: Photo Carousel — Our Beautiful Moments */}
-            <PhotoCarousel />
-
-            {/* Page 4+: Sacred Ceremonies in order */}
+            {/* 5 · Sacred Ceremonies in order */}
             <EngagementSection />
             <MehendiSangeet />
             <HaldiSection />
             <GhurChariSection />
             <WeddingCeremony />
 
-            {/* Venue Details with Google Maps */}
+            {/* 6 · Venue Details with Google Maps */}
             <VenueDetails />
 
-            {/* Photo Memories gallery */}
+            {/* 7 · Photo gallery (carousel + grid) */}
             <PhotoMemories />
 
-            {/* RSVP */}
+            {/* 8 · RSVP */}
             <RSVPSection />
 
-            {/* Wedding Vows / Thank You */}
+            {/* 9 · Thank You */}
             <ThankYouSection />
           </motion.main>
         )}
