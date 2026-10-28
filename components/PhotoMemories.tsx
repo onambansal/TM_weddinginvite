@@ -9,6 +9,8 @@ import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 import { gallery } from "@/config/weddingConfig";
 import SectionDivider from "./SectionDivider";
 import CornerOrnament from "./CornerOrnament";
+import Heading from "./Heading";
+import Mandala from "./Mandala";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -28,13 +30,14 @@ export default function PhotoMemories() {
   return (
     <section
       id="memories"
-      className="relative py-24 px-4 overflow-hidden paper-grain"
+      className="relative py-24 px-4 overflow-hidden paper-grain vignette"
       style={{ background: "linear-gradient(180deg, #FFF8F0 0%, #F5EDE0 100%)" }}
     >
       <div
         className="absolute inset-0 opacity-[0.06] pointer-events-none"
         style={{ backgroundImage: "radial-gradient(circle at 30% 30%, #C9A84C 1px, transparent 1px)", backgroundSize: "28px 28px" }}
       />
+      <Mandala size={1100} opacity={0.09} spin={170} />
       <CornerOrnament color="#C9A84C" opacity={0.35} />
 
       <div className="relative z-10 max-w-3xl mx-auto">
@@ -47,9 +50,7 @@ export default function PhotoMemories() {
           transition={{ duration: 0.7 }}
         >
           <p className="text-gold text-[0.7rem] tracking-[0.4em] uppercase font-poppins mb-3">✦ A Glimpse of Our Journey ✦</p>
-          <h2 className="text-4xl md:text-5xl text-maroon" style={{ fontFamily: serif, fontWeight: 600 }}>
-            Our Beautiful Moments
-          </h2>
+          <Heading>Our Beautiful Moments</Heading>
           <SectionDivider color="#C9A84C" width={200} className="my-5" />
           <p className="text-maroon/60 italic" style={{ fontFamily: serif, fontSize: "1.05rem" }}>
             Cherished memories that led us to this beautiful day
@@ -77,12 +78,17 @@ export default function PhotoMemories() {
             className="rounded-2xl overflow-hidden shadow-luxury"
             style={{ border: "1px solid rgba(201,168,76,0.35)" }}
           >
-            {photos.slice(0, 5).map((photo) => (
+            {photos.slice(0, 5).map((photo, i, arr) => (
               <SwiperSlide key={photo.id}>
                 <div className="relative" style={{ aspectRatio: "16/10" }}>
                   <Image src={photo.src} alt={photo.caption} fill sizes="(max-width: 768px) 100vw, 768px" className="object-cover" />
-                  <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 55%, rgba(42,6,8,0.75) 100%)" }} />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
+                  <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 50%, rgba(42,6,8,0.8) 100%)" }} />
+                  <div className="absolute bottom-0 left-0 right-0 px-6 pb-5 pt-3 text-center">
+                    {/* Editorial hairline + index */}
+                    <div className="mx-auto mb-2 h-px w-16" style={{ background: "linear-gradient(90deg, transparent, #C9A84C, transparent)" }} />
+                    <p className="text-[0.6rem] font-poppins tracking-[0.35em] uppercase mb-1 nums-oldstyle" style={{ color: "rgba(232,201,122,0.8)" }}>
+                      {String(i + 1).padStart(2, "0")} / {String(arr.length).padStart(2, "0")}
+                    </p>
                     <p className="text-cream italic" style={{ fontFamily: serif, fontSize: "1.15rem" }}>
                       {photo.caption}
                     </p>

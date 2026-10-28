@@ -2,6 +2,7 @@
 
 import { ceremonies } from "@/config/weddingConfig";
 import CeremonyCard from "./CeremonyCard";
+import HaldiBloom from "./HaldiBloom";
 
 /**
  * Haldi — the dress code is PINK, so the whole screen is pink,
@@ -24,16 +25,22 @@ export default function HaldiSection() {
       particleColors={["#C9A84C", "#F9D5E0", "#E8A0B0"]}
       ornamentColor="#8E4A58"
       ornamentOpacity={0.4}
+      mandalaColor="#FFFDF7"
+      mandalaOpacity={0.22}
       backdrop={
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: `
-              radial-gradient(circle at 15% 20%, rgba(255,255,255,0.35) 0%, transparent 45%),
-              radial-gradient(circle at 85% 80%, rgba(201,168,76,0.18) 0%, transparent 45%)
-            `,
-          }}
-        />
+        <>
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage: `
+                radial-gradient(circle at 15% 20%, rgba(255,255,255,0.35) 0%, transparent 45%),
+                radial-gradient(circle at 85% 80%, rgba(201,168,76,0.18) 0%, transparent 45%)
+              `,
+            }}
+          />
+          {/* Turmeric watercolour bloom spreading behind the card */}
+          <HaldiBloom colors={["#F6D0D9", "#E8A0B0", "#D98A9E"]} />
+        </>
       }
     />
   );

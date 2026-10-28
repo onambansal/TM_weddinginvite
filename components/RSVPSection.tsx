@@ -6,6 +6,12 @@ import { rsvp, bride, groom } from "@/config/weddingConfig";
 import CornerOrnament from "./CornerOrnament";
 import SectionDivider from "./SectionDivider";
 import Motif from "./Motif";
+import Mandala from "./Mandala";
+import Heading from "./Heading";
+import Magnetic from "./Magnetic";
+import LightBeam from "./LightBeam";
+import ShareKeepsake from "./ShareKeepsake";
+import { tap, HAPTIC } from "@/lib/haptics";
 
 const serif = "var(--font-cormorant), var(--font-playfair), Georgia, serif";
 
@@ -17,11 +23,13 @@ export default function RSVPSection() {
   return (
     <section
       id="rsvp"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4 paper-grain"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4 paper-grain vignette-dark"
       style={{
         background: "linear-gradient(160deg, #2A0608 0%, #4A0A12 35%, #6B0F1A 65%, #2A0608 100%)",
       }}
     >
+      <Mandala size={1000} opacity={0.07} spin={140} />
+      <LightBeam intensity={0.2} />
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ backgroundImage: "radial-gradient(circle at 50% 40%, rgba(201,168,76,0.22) 0%, transparent 50%)" }}
@@ -47,7 +55,7 @@ export default function RSVPSection() {
         </div>
       )}
 
-      <div className="absolute inset-4 md:inset-6 border border-gold/25 rounded-3xl pointer-events-none" />
+      <div className="absolute inset-4 md:inset-6 rounded-3xl pointer-events-none hairline-glow-soft" />
       <CornerOrnament color="#C9A84C" opacity={0.5} />
 
       <div className="relative z-10 text-center max-w-md mx-auto">
@@ -63,16 +71,7 @@ export default function RSVPSection() {
         </motion.p>
 
         {/* Main title */}
-        <motion.h2
-          className="text-4xl md:text-5xl text-gold-foil mb-3"
-          style={{ fontFamily: serif, fontWeight: 600 }}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-        >
-          We Await Your Blessings
-        </motion.h2>
+        <Heading foil className="mb-3" delay={0.1}>We Await Your Blessings</Heading>
 
         <SectionDivider color="#C9A84C" width={200} className="my-6" />
 
@@ -99,23 +98,26 @@ export default function RSVPSection() {
           Kindly confirm your attendance so we may welcome you with open hearts.
         </motion.p>
 
-        {/* RSVP button — gold, on-palette */}
+        {/* RSVP button — gold, on-palette, magnetic */}
+        <Magnetic strength={7} radius={70}>
         <motion.a
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="group relative inline-flex items-center gap-3 px-9 py-4 rounded-full font-poppins text-sm tracking-[0.2em] uppercase overflow-hidden"
+          className="group relative inline-flex items-center gap-3 px-9 py-4 rounded-full font-poppins text-sm tracking-[0.2em] uppercase overflow-hidden bg-gold-foil foil-sheen"
           style={{
             color: "#2A0608",
-            background: "linear-gradient(135deg, #C9A84C 0%, #F3E2A0 50%, #C9A84C 100%)",
-            boxShadow: "0 10px 40px rgba(201,168,76,0.35), inset 0 0 0 1px rgba(255,255,255,0.35)",
+            // glow brightens as the pointer approaches (--magnet 0‒1 from <Magnetic/>)
+            boxShadow:
+              "0 10px 40px rgba(201,168,76,calc(0.35 + var(--magnet, 0) * 0.3)), 0 0 calc(14px + var(--magnet, 0) * 18px) 2px rgba(201,168,76,calc(0.3 + var(--magnet, 0) * 0.4)), inset 0 0 0 1px rgba(255,255,255,0.35)",
           }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
-          whileHover={{ scale: 1.04, boxShadow: "0 14px 50px rgba(201,168,76,0.5)" }}
+          whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.97 }}
+          onClick={() => tap(HAPTIC.confirm)}
         >
           {/* shimmer sweep */}
           <span
@@ -129,6 +131,7 @@ export default function RSVPSection() {
           <MessageCircle className="w-4 h-4 relative" />
           <span className="relative font-semibold">Confirm Attendance</span>
         </motion.a>
+        </Magnetic>
 
         <motion.p
           className="text-gold/50 text-xs font-poppins mt-5 italic"
@@ -139,6 +142,11 @@ export default function RSVPSection() {
         >
           Opens a WhatsApp message to the family
         </motion.p>
+
+        {/* Shareable keepsake — story-size image guests can post or forward */}
+        <div className="mt-6">
+          <ShareKeepsake />
+        </div>
 
         <SectionDivider color="#C9A84C" width={160} className="mt-8" />
 

@@ -4,6 +4,7 @@ import { Calendar, Clock, MapPin, CalendarPlus, Navigation } from "lucide-react"
 import type { Ceremony } from "@/config/weddingConfig";
 import { buildGoogleCalendarUrl } from "@/lib/calendar";
 import DressCode from "./DressCode";
+import FormattedDate from "./FormattedDate";
 
 interface CeremonyDetailsProps {
   ceremony: Ceremony;
@@ -52,7 +53,7 @@ export default function CeremonyDetails({ ceremony, accent = "#C9A84C", dark = f
     <div className="space-y-4">
       <Row icon={<Calendar className="w-4 h-4" />} title="Date">
         <p className="text-base leading-tight" style={{ ...serif, color: value, fontWeight: 600 }}>
-          {ceremony.date}
+          <FormattedDate value={ceremony.date} />
         </p>
         <p className="text-xs font-poppins" style={{ color: sub }}>
           {ceremony.day}
@@ -60,7 +61,7 @@ export default function CeremonyDetails({ ceremony, accent = "#C9A84C", dark = f
       </Row>
 
       <Row icon={<Clock className="w-4 h-4" />} title="Time">
-        <p className="text-base leading-tight" style={{ ...serif, color: value, fontWeight: 600 }}>
+        <p className="text-base leading-tight nums-oldstyle" style={{ ...serif, color: value, fontWeight: 600 }}>
           {ceremony.time}
         </p>
       </Row>

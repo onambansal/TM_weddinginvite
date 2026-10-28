@@ -1,6 +1,8 @@
 "use client";
 
+import { useId } from "react";
 import { motion } from "framer-motion";
+import { drawPath, enter } from "@/lib/motion";
 
 interface SectionDividerProps {
   color?: string;
@@ -13,7 +15,8 @@ interface SectionDividerProps {
 
 /**
  * Thin gold ornamental rule with a central lotus/diamond motif.
- * Use inside sections between heading & body, or between blocks.
+ * When animated, the rules draw outward from the centre and the
+ * diamond blooms in — like a pen finishing the flourish.
  */
 export default function SectionDivider({
   color = "#C9A84C",
@@ -21,7 +24,27 @@ export default function SectionDivider({
   className = "",
   animate = true,
 }: SectionDividerProps) {
-  const content = (
+  const uid = useId().replace(/:/g, "");
+  const leftId = `sd-left-${uid}`;
+  const rightId = `sd-right-${uid}`;
+
+  const Path = animate ? motion.path : "path";
+  const Line = animate ? motion.line : "line";
+  const Circle = animate ? motion.circle : "circle";
+  /** Stroke draw-in, driven by the parent's hidden/visible variant */
+  const anim = (i: number) => (animate ? { variants: drawPath, custom: i } : {});
+  /** Filled shapes simply fade in after the strokes have drawn */
+  const pop = (delay: number) =>
+    animate
+      ? {
+          variants: {
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: enter(delay, 0.5) },
+          },
+        }
+      : {};
+
+  const svg = (
     <svg
       width={width}
       height="18"
@@ -29,43 +52,43 @@ export default function SectionDivider({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
-      style={{ display: "block" }}
+      style={{ display: "block", overflow: "visible" }}
     >
       <defs>
-        <linearGradient id="sd-left" x1="0" y1="0" x2="1" y2="0">
+        <linearGradient id={leftId} x1="0" y1="0" x2="1" y2="0">
           <stop offset="0" stopColor={color} stopOpacity="0" />
           <stop offset="1" stopColor={color} stopOpacity="1" />
         </linearGradient>
-        <linearGradient id="sd-right" x1="0" y1="0" x2="1" y2="0">
+        <linearGradient id={rightId} x1="0" y1="0" x2="1" y2="0">
           <stop offset="0" stopColor={color} stopOpacity="1" />
           <stop offset="1" stopColor={color} stopOpacity="0" />
         </linearGradient>
       </defs>
-      <line x1="0" y1="9" x2="68" y2="9" stroke="url(#sd-left)" strokeWidth="1" />
-      <line x1="112" y1="9" x2="180" y2="9" stroke="url(#sd-right)" strokeWidth="1" />
+      {/* Rules draw outward from centre (x drawn from 68→0 and 112→180) */}
+      <Line x1="68" y1="9" x2="0" y2="9" stroke={`url(#${leftId})`} strokeWidth="1" {...anim(1)} />
+      <Line x1="112" y1="9" x2="180" y2="9" stroke={`url(#${rightId})`} strokeWidth="1" {...anim(1)} />
       {/* Diamond */}
-      <path d="M90 2 L97 9 L90 16 L83 9 Z" stroke={color} strokeWidth="1" fill="none" />
-      <path d="M90 5.5 L93.5 9 L90 12.5 L86.5 9 Z" fill={color} />
+      <Path d="M90 2 L97 9 L90 16 L83 9 Z" stroke={color} strokeWidth="1" fill="none" {...anim(0)} />
+      <motion.path d="M90 5.5 L93.5 9 L90 12.5 L86.5 9 Z" fill={color} {...pop(0.5)} />
       {/* Side petals */}
-      <path d="M72 9 C75 5, 79 5, 81 9 C79 13, 75 13, 72 9 Z" stroke={color} strokeWidth="0.9" fill="none" />
-      <path d="M99 9 C101 5, 105 5, 108 9 C105 13, 101 13, 99 9 Z" stroke={color} strokeWidth="0.9" fill="none" />
-      <circle cx="68" cy="9" r="1.2" fill={color} />
-      <circle cx="112" cy="9" r="1.2" fill={color} />
+      <Path d="M72 9 C75 5, 79 5, 81 9 C79 13, 75 13, 72 9 Z" stroke={color} strokeWidth="0.9" fill="none" {...anim(1)} />
+      <Path d="M99 9 C101 5, 105 5, 108 9 C105 13, 101 13, 99 9 Z" stroke={color} strokeWidth="0.9" fill="none" {...anim(1)} />
+      <Circle cx="68" cy="9" r="1.2" fill={color} {...pop(0.7)} />
+      <Circle cx="112" cy="9" r="1.2" fill={color} {...pop(0.7)} />
     </svg>
   );
 
-  if (!animate) return <div className={`mx-auto ${className}`} style={{ width }}>{content}</div>;
+  if (!animate) return <div className={`mx-auto ${className}`} style={{ width }}>{svg}</div>;
 
   return (
     <motion.div
       className={`mx-auto ${className}`}
       style={{ width }}
-      initial={{ opacity: 0, scaleX: 0.6 }}
-      whileInView={{ opacity: 1, scaleX: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.7, ease: "easeOut" }}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.6 }}
     >
-      {content}
+      {svg}
     </motion.div>
   );
 }

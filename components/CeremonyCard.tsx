@@ -2,9 +2,14 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import type { Ceremony } from "@/config/weddingConfig";
+import { enter, VIEWPORT_ONCE } from "@/lib/motion";
 import CeremonyDetails from "./CeremonyDetails";
 import CornerOrnament from "./CornerOrnament";
 import SectionDivider from "./SectionDivider";
+import Mandala from "./Mandala";
+import Sparkles from "./Sparkles";
+import Parallax from "./Parallax";
+import LightBeam from "./LightBeam";
 import Motif, { type MotifName } from "./Motif";
 
 export interface CeremonyCardProps {
@@ -19,7 +24,7 @@ export interface CeremonyCardProps {
   motif: MotifName;
   /** Full-section background (CSS background value) */
   sectionBackground: string;
-  /** Card header strip background (CSS background value) */
+  /** Card header strip background (CSS background value). Pass "foil" for the live gyro-driven gold. */
   headerBackground: string;
   headerTitleColor?: string;
   headerPretitleColor?: string;
@@ -34,8 +39,15 @@ export interface CeremonyCardProps {
   ornamentOpacity?: number;
   /** Optional extra backdrop layer (e.g. pattern overlay) */
   backdrop?: React.ReactNode;
+  /** Mandala line colour / opacity for this section's background (defaults suit gold on dark or ivory) */
+  mandalaColor?: string;
+  mandalaOpacity?: number;
   /** Optional slot rendered between motif and details (e.g. couple names) */
   children?: React.ReactNode;
+  /** Optional layer drawn INSIDE the card frame, above the body (e.g. henna border) */
+  cardOverlay?: React.ReactNode;
+  /** Replace the default ambient dot particles with a custom layer (e.g. lanterns) */
+  particles?: React.ReactNode;
 }
 
 const serif = "var(--font-cormorant), var(--font-playfair), Georgia, serif";
@@ -53,7 +65,11 @@ export default function CeremonyCard(props: CeremonyCardProps) {
     ornamentColor = "#C9A84C",
     ornamentOpacity = 0.4,
     backdrop,
+    mandalaColor = "#C9A84C",
+    mandalaOpacity = dark ? 0.07 : 0.1,
     children,
+    cardOverlay,
+    particles,
   } = props;
 
   const reduceMotion = useReducedMotion();
@@ -68,14 +84,22 @@ export default function CeremonyCard(props: CeremonyCardProps) {
   return (
     <section
       id={id}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4 paper-grain"
+      className={`relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4 paper-grain ${dark ? "vignette-dark" : "vignette"}`}
       style={{ background: sectionBackground }}
     >
       {backdrop}
 
-      {/* Ambient particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: count }).map((_, i) => (
+      {/* Scroll-driven light shaft (softer on ivory) */}
+      <LightBeam intensity={dark ? 0.2 : 0.12} />
+
+      {/* Depth layer 1 — mandala, furthest back, lags the most */}
+      <Parallax depth={0.35} range={160} className="absolute inset-0 pointer-events-none">
+        <Mandala size={1000} color={mandalaColor} opacity={mandalaOpacity} spin={140} />
+      </Parallax>
+
+      {/* Ambient particles (mid depth) — or a custom layer such as lanterns */}
+      <Parallax depth={0.6} range={120} className="absolute inset-0 overflow-hidden pointer-events-none">
+        {particles ?? Array.from({ length: count }).map((_, i) => (
           <motion.div
             key={i}
             className="absolute rounded-full"
@@ -90,39 +114,57 @@ export default function CeremonyCard(props: CeremonyCardProps) {
             transition={{ duration: 2.5 + (i % 4), repeat: Infinity, delay: i * 0.22, ease: "easeInOut" }}
           />
         ))}
-      </div>
+      </Parallax>
 
-      {/* Hairline frame + corner flourishes */}
-      <div
-        className="absolute inset-4 md:inset-6 rounded-3xl pointer-events-none"
-        style={{ border: `1px solid ${ornamentColor}`, opacity: ornamentOpacity * 0.55 }}
-      />
-      <CornerOrnament color={ornamentColor} opacity={ornamentOpacity} />
+      {/* Hairline frame + corner flourishes — glowing, mid depth */}
+      <Parallax depth={0.5} range={100} className="absolute inset-0 pointer-events-none">
+        <div
+          className="absolute inset-4 md:inset-6 rounded-3xl"
+          style={{
+            opacity: ornamentOpacity * 0.7,
+            boxShadow: `0 0 0 1px ${ornamentColor}, 0 0 6px 1px ${ornamentColor}66, 0 0 18px 2px ${ornamentColor}2E`,
+          }}
+        />
+        <CornerOrnament color={ornamentColor} opacity={ornamentOpacity} />
+      </Parallax>
 
-      {/* Card */}
+      {/* Card — foreground, moves at full speed */}
       <motion.div
         className="relative z-10 max-w-sm w-full mx-auto"
         initial={{ opacity: 0, y: 40, scale: 0.97 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={{ once: true, amount: 0.25 }}
-        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        viewport={VIEWPORT_ONCE}
+        transition={enter()}
       >
-        {/* Soft outer gold glow */}
-        <div
-          className="absolute -inset-[3px] rounded-[1.6rem] opacity-50 blur-md"
-          style={{ background: "linear-gradient(135deg, #C9A84C, #E8C97A, #C9A84C)" }}
-        />
+        {/* Breathing wrapper — 1.000→1.008 over 6s, glow pulses in step */}
+        <motion.div
+          className="relative"
+          animate={reduceMotion ? undefined : { scale: [1, 1.008, 1] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        >
+          {/* Soft outer gold glow (breathes) */}
+          <motion.div
+            className="absolute -inset-[3px] rounded-[1.6rem] blur-md"
+            style={{ background: "linear-gradient(135deg, #C9A84C, #E8C97A, #C9A84C)" }}
+            animate={reduceMotion ? undefined : { opacity: [0.42, 0.62, 0.42] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          />
+          {/* Twinkling stars catching the card's gold edge */}
+          <Sparkles count={12} distribution="edges" seed={id.length * 17} minSize={6} maxSize={13} className="-inset-3" />
 
         <div
           className="relative rounded-3xl overflow-hidden"
           style={{
             background: bodyBg,
             boxShadow:
-              "0 24px 70px rgba(0,0,0,0.28), 0 0 0 1px rgba(201,168,76,0.65), inset 0 0 0 1px rgba(201,168,76,0.25)",
+              "0 24px 70px rgba(0,0,0,0.28), 0 0 0 1px rgba(201,168,76,0.75), 0 0 8px 1px rgba(201,168,76,0.28), inset 0 0 0 1px rgba(201,168,76,0.25)",
           }}
         >
-          {/* Header strip */}
-          <div className="relative py-6 px-6 text-center" style={{ background: headerBackground }}>
+          {/* Header strip — live foil sheen follows the device tilt */}
+          <div
+            className={`relative py-6 px-6 text-center foil-sheen ${headerBackground === "foil" ? "bg-gold-foil" : ""}`}
+            style={headerBackground === "foil" ? undefined : { background: headerBackground }}
+          >
             <div
               className="absolute inset-x-0 bottom-0 h-px"
               style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.9), transparent)" }}
@@ -139,7 +181,7 @@ export default function CeremonyCard(props: CeremonyCardProps) {
             >
               {ceremony.title}
             </h2>
-            <p className="text-base mt-1 italic" style={{ fontFamily: serif, color: headerPretitleColor }}>
+            <p className="text-lg mt-1 font-devanagari" lang="hi" style={{ color: headerPretitleColor, letterSpacing: "0.02em" }}>
               {ceremony.titleHindi}
             </p>
           </div>
@@ -176,7 +218,11 @@ export default function CeremonyCard(props: CeremonyCardProps) {
               {note}
             </p>
           </div>
+
+          {/* Optional in-card overlay (e.g. henna border that draws itself) */}
+          {cardOverlay}
         </div>
+        </motion.div>
       </motion.div>
     </section>
   );

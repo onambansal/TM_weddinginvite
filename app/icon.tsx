@@ -4,9 +4,10 @@ import { weddingConfig } from "@/config/weddingConfig";
 export const size = { width: 64, height: 64 };
 export const contentType = "image/png";
 
-/** Favicon — couple initials in gold on maroon */
+/** Favicon — couple monogram (groom first: T·M) in engraved gold on maroon */
 export default function Icon() {
-  const initials = `${weddingConfig.bride.firstName[0]}${weddingConfig.groom.firstName[0]}`;
+  const g = weddingConfig.groom.firstName[0];
+  const b = weddingConfig.bride.firstName[0];
   return new ImageResponse(
     (
       <div
@@ -20,13 +21,14 @@ export default function Icon() {
           borderRadius: 16,
           border: "2px solid #C9A84C",
           color: "#E8C97A",
-          fontSize: 30,
-          fontStyle: "italic",
-          fontFamily: "Georgia, serif",
-          letterSpacing: -1,
+          fontSize: 28,
+          fontFamily: "Georgia, 'Times New Roman', serif",
+          gap: 3,
         }}
       >
-        {initials}
+        <span style={{ display: "flex" }}>{g}</span>
+        <span style={{ display: "flex", width: 5, height: 5, background: "#C9A84C", transform: "rotate(45deg)" }} />
+        <span style={{ display: "flex" }}>{b}</span>
       </div>
     ),
     { ...size },

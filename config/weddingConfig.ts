@@ -127,7 +127,7 @@ export const weddingConfig = {
       events: ["Engagement"],
       dates: "29 November 2026",
       motif: "ring",
-      color: "#B8860B",
+      color: "#6B0F1A",
       mapUrl: "https://maps.google.com/?q=Rutba+CP-08+Sector+18+Vasundhara+Ghaziabad",
     },
     {
@@ -137,7 +137,7 @@ export const weddingConfig = {
       events: ["Mehendi & Sangeet", "Haldi Ceremony", "Ghur Chari"],
       dates: "3 – 5 Dec 2026",
       motif: "mehendi",
-      color: "#2D6A4F",
+      color: "#6B0F1A",
       mapUrl: "https://maps.google.com/?q=Vaishali+Inn+Vaishali+Ghaziabad",
     },
     {

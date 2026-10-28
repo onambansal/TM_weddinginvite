@@ -39,11 +39,18 @@ const greatVibes = localFont({
   variable: "--font-great-vibes",
   display: "swap",
 });
+/** Devanagari face for the Hindi ceremony titles (हल्दी, घुड़चढ़ी …) */
+const devanagari = localFont({
+  src: [{ path: "./fonts/tiro-devanagari-hindi.woff2", weight: "400", style: "normal" }],
+  variable: "--font-devanagari",
+  display: "swap",
+  preload: false,
+});
 
 const { bride, groom, weddingDateDisplay } = weddingConfig;
-const title = `${bride.firstName} & ${groom.firstName} — Wedding Invitation | ${weddingDateDisplay}`;
-const shortTitle = `${bride.firstName} & ${groom.firstName} — Wedding Invitation`;
-const description = `You are cordially invited to the wedding of ${bride.fullName} and ${groom.fullName} on ${weddingDateDisplay}. Two hearts, one beautiful journey.`;
+const title = `${groom.firstName} & ${bride.firstName} — Wedding Invitation | ${weddingDateDisplay}`;
+const shortTitle = `${groom.firstName} & ${bride.firstName} — Wedding Invitation`;
+const description = `You are cordially invited to the wedding of ${groom.fullName} and ${bride.fullName} on ${weddingDateDisplay}. Two hearts, one beautiful journey.`;
 
 /**
  * Absolute base used to resolve the OG/Twitter image URLs in share previews.
@@ -59,7 +66,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title,
   description,
-  keywords: ["wedding", "invitation", bride.fullName, groom.fullName, weddingDateDisplay],
+  keywords: ["wedding", "invitation", groom.fullName, bride.fullName, weddingDateDisplay],
   openGraph: {
     title: shortTitle,
     description: `Join us to celebrate our wedding on ${weddingDateDisplay}`,
@@ -85,7 +92,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${playfair.variable} ${poppins.variable} ${greatVibes.variable}`}>
+    <html lang="en" className={`${cormorant.variable} ${playfair.variable} ${poppins.variable} ${greatVibes.variable} ${devanagari.variable}`}>
       <body className="bg-cream font-poppins antialiased">
         {children}
         <Analytics />

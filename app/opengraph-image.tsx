@@ -53,9 +53,9 @@ export default function OpenGraphImage() {
         </div>
 
         <div style={{ display: "flex", alignItems: "baseline", gap: 36, marginTop: 28 }}>
-          <div style={{ fontSize: 112, fontStyle: "italic", color: "#E8C97A", display: "flex" }}>{bride.firstName}</div>
-          <div style={{ fontSize: 64, fontStyle: "italic", color: "rgba(201,168,76,0.8)", display: "flex" }}>&amp;</div>
           <div style={{ fontSize: 112, fontStyle: "italic", color: "#E8C97A", display: "flex" }}>{groom.firstName}</div>
+          <div style={{ fontSize: 64, fontStyle: "italic", color: "rgba(201,168,76,0.8)", display: "flex" }}>&amp;</div>
+          <div style={{ fontSize: 112, fontStyle: "italic", color: "#E8C97A", display: "flex" }}>{bride.firstName}</div>
         </div>
 
         {/* Divider */}

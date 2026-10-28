@@ -2,6 +2,7 @@
 
 import { ceremonies } from "@/config/weddingConfig";
 import CeremonyCard from "./CeremonyCard";
+import HennaBorder from "./HennaBorder";
 
 /**
  * One continuous multicolour gradient — the way a single multicolour dupatta or
@@ -33,6 +34,9 @@ export default function MehendiSangeet() {
       particleCount={18}
       ornamentColor="#FFFDF7"
       ornamentOpacity={0.35}
+      mandalaColor="#FFFDF7"
+      mandalaOpacity={0.12}
+      cardOverlay={<HennaBorder color="#B8893A" />}
       backdrop={
         <>
           {/* Deepen the wash so the ivory card and gold frame stay the focus */}

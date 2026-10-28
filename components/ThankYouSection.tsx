@@ -1,22 +1,85 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useReducedMotion, useInView } from "framer-motion";
 import { bride, groom, weddingDateDisplay, ceremonies } from "@/config/weddingConfig";
 import CornerOrnament from "./CornerOrnament";
 import SectionDivider from "./SectionDivider";
 import Motif from "./Motif";
+import Heading from "./Heading";
+import Ampersand from "./Ampersand";
+import FormattedDate from "./FormattedDate";
+import Mandala from "./Mandala";
+import LitDiya from "./LitDiya";
+import GoldFirework from "./GoldFirework";
+import LightBeam from "./LightBeam";
 
 const serif = "var(--font-cormorant), var(--font-playfair), Georgia, serif";
 
+/** Deterministic per-diya flicker phase so SSR == CSR */
+const FLICKER = [0.31, 0.27, 0.35, 0.29, 0.33, 0.26, 0.3];
+const DIYA_COUNT = FLICKER.length;
+const LIGHT_INTERVAL_MS = 420;
+
 export default function ThankYouSection() {
   const reduceMotion = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const inView = useInView(sectionRef, { amount: 0.55, once: true });
+
+  // ── Lamp-lighting: diyas light left → right once the section is mostly in view
+  const [litCount, setLitCount] = useState(0);
+  useEffect(() => {
+    if (!inView) return;
+    if (reduceMotion) { setLitCount(DIYA_COUNT); return; }
+    let i = 0;
+    const id = setInterval(() => {
+      i += 1;
+      setLitCount(i);
+      if (i >= DIYA_COUNT) clearInterval(id);
+    }, LIGHT_INTERVAL_MS);
+    return () => clearInterval(id);
+  }, [inView, reduceMotion]);
+  const allLit = litCount >= DIYA_COUNT;
+
+  // ── End-of-scroll firework: once per visit, when the guest reaches the very bottom
+  const [firework, setFirework] = useState(false);
+  const fired = useRef(false);
+  useEffect(() => {
+    const onScroll = () => {
+      if (fired.current) return;
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 24;
+      if (atBottom) {
+        fired.current = true;
+        setFirework(true);
+        setTimeout(() => setFirework(false), 3200);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <section
+      ref={sectionRef}
       id="thankyou"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4 paper-grain"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4 paper-grain vignette"
       style={{ background: "linear-gradient(180deg, #FFF8F0 0%, #F5EDE0 100%)" }}
     >
+      {/* Screen warms by ~5% as the lamps light */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "radial-gradient(ellipse 90% 70% at 50% 85%, rgba(243,201,120,0.35), rgba(232,160,110,0.12) 45%, transparent 75%)", mixBlendMode: "multiply" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: Math.min(1, litCount / DIYA_COUNT) }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      />
+
+      {/* Light shaft sweeping with scroll */}
+      <LightBeam intensity={0.14} />
+
+      {/* Gold firework behind the names when the guest reaches the end */}
+      <GoldFirework active={firework} x={50} y={36} count={64} />
       {/* Background pattern */}
       <div
         className="absolute inset-0 opacity-5"
@@ -26,21 +89,24 @@ export default function ThankYouSection() {
         }}
       />
 
-      {/* Row of gently glowing diyas along the bottom */}
-      <div className="absolute inset-x-0 bottom-[7%] flex justify-around px-6 pointer-events-none">
-        {[...Array(7)].map((_, i) => (
-          <motion.div
-            key={i}
-            style={{ filter: "drop-shadow(0 0 8px rgba(201,168,76,0.6))" }}
-            animate={reduceMotion ? undefined : { y: [0, -6, 0], opacity: [0.45, 0.9, 0.45] }}
-            transition={{ duration: 2.4 + (i % 3) * 0.5, repeat: Infinity, delay: i * 0.3, ease: "easeInOut" }}
-          >
-            <Motif name="diya" size={i % 2 === 0 ? 30 : 24} color="#C9A84C" />
-          </motion.div>
+      <Mandala size={1000} opacity={0.1} spin={150} />
+
+      {/* Row of diyas along the bottom — unlit until the section arrives, then lit left → right */}
+      <div className="absolute inset-x-0 bottom-[7%] flex justify-around items-end px-6 pointer-events-none">
+        {FLICKER.map((f, i) => (
+          <LitDiya key={i} lit={i < litCount} size={i % 2 === 0 ? 32 : 26} flicker={f} />
         ))}
       </div>
+      {/* Soft "all lit" bloom across the floor once the last lamp catches */}
+      <motion.div
+        className="absolute inset-x-0 bottom-0 pointer-events-none"
+        style={{ height: "32%", background: "linear-gradient(180deg, transparent, rgba(243,201,120,0.22))" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: allLit ? 1 : 0 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+      />
 
-      <div className="absolute inset-4 md:inset-6 border border-gold/25 rounded-3xl pointer-events-none" />
+      <div className="absolute inset-4 md:inset-6 rounded-3xl pointer-events-none hairline-glow-soft" />
       <CornerOrnament color="#C9A84C" opacity={0.45} />
 
       <div className="relative z-10 text-center max-w-md mx-auto">
@@ -56,16 +122,7 @@ export default function ThankYouSection() {
         </motion.p>
 
         {/* Main title */}
-        <motion.h2
-          className="text-4xl md:text-5xl text-maroon mb-4"
-          style={{ fontFamily: serif, fontWeight: 600 }}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-        >
-          Thank You
-        </motion.h2>
+        <Heading className="mb-4" delay={0.1}>Thank You</Heading>
 
         <SectionDivider color="#C9A84C" width={200} className="my-6" />
 
@@ -92,7 +149,7 @@ export default function ThankYouSection() {
           <p className="text-3xl md:text-4xl text-maroon" style={{ fontFamily: "var(--font-great-vibes), cursive" }}>
             {groom.firstName}
           </p>
-          <span className="text-gold italic" style={{ fontFamily: serif, fontSize: "1.6rem" }}>&amp;</span>
+          <Ampersand size="1.7rem" />
           <p className="text-3xl md:text-4xl text-maroon" style={{ fontFamily: "var(--font-great-vibes), cursive" }}>
             {bride.firstName}
           </p>
@@ -129,7 +186,7 @@ export default function ThankYouSection() {
         >
           <SectionDivider color="#C9A84C" width={140} className="mb-3" animate={false} />
           <p className="text-maroon/40 text-xs font-poppins tracking-widest uppercase">
-            {weddingDateDisplay} · {ceremonies.wedding.venue}, {ceremonies.wedding.address}
+            <FormattedDate value={weddingDateDisplay} /> · {ceremonies.wedding.venue}, {ceremonies.wedding.address}
           </p>
         </motion.div>
       </div>

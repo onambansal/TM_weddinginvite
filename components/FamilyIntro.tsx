@@ -6,6 +6,8 @@ import { bride, groom } from "@/config/weddingConfig";
 import CornerOrnament from "./CornerOrnament";
 import SectionDivider from "./SectionDivider";
 import Motif from "./Motif";
+import Ampersand from "./Ampersand";
+import Mandala from "./Mandala";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -20,7 +22,7 @@ export default function FamilyIntro() {
   return (
     <section
       id="family"
-      className="relative min-h-screen flex items-center justify-center py-16 px-6 overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center py-16 px-6 overflow-hidden paper-grain vignette"
       style={{
         background: "linear-gradient(160deg, #FFFDF7 0%, #FFF0E0 50%, #FFF8F0 100%)",
       }}
@@ -37,8 +39,10 @@ export default function FamilyIntro() {
         }}
       />
 
+      <Mandala size={1000} opacity={0.1} spin={150} />
+
       {/* Hairline frame + corner flourishes */}
-      <div className="absolute inset-4 md:inset-6 rounded-3xl pointer-events-none" style={{ border: "1px solid rgba(201,168,76,0.25)" }} />
+      <div className="absolute inset-4 md:inset-6 rounded-3xl pointer-events-none hairline-glow-soft" />
       <CornerOrnament color="#C9A84C" opacity={0.45} />
 
       <div className="relative z-10 max-w-xl w-full text-center">
@@ -64,10 +68,7 @@ export default function FamilyIntro() {
           >
             Shri Ganeshaya Namah
           </p>
-          <p
-            className="text-lg"
-            style={{ fontFamily: "var(--font-playfair), Georgia, serif", color: "#C9A84C", letterSpacing: "0.1rem" }}
-          >
+          <p className="text-xl font-devanagari" lang="hi" style={{ color: "#C9A84C", letterSpacing: "0.06rem" }}>
             ॐ गं गणपतये नमः
           </p>
         </motion.div>
@@ -103,7 +104,7 @@ export default function FamilyIntro() {
             >
               <span className="italic text-sm" style={{ color: "#8B6355" }}>Son of</span>
               <span className="font-medium" style={{ color: "#2C1810" }}>{groom.father}</span>
-              <span className="italic" style={{ color: "#C9A84C" }}>&amp;</span>
+              <Ampersand size="1.35em" />
               <span className="font-medium" style={{ color: "#2C1810" }}>{groom.mother}</span>
             </div>
             <div
@@ -112,7 +113,7 @@ export default function FamilyIntro() {
             >
               <span className="italic text-sm" style={{ color: "#8B6355" }}>Grandson of</span>
               <span className="font-medium" style={{ color: "#2C1810" }}>{groom.grandfather}</span>
-              <span className="italic" style={{ color: "#C9A84C" }}>&amp;</span>
+              <Ampersand size="1.35em" />
               <span className="font-medium" style={{ color: "#2C1810" }}>{groom.grandmother}</span>
             </div>
           </div>
@@ -168,7 +169,7 @@ export default function FamilyIntro() {
             >
               <span className="italic text-sm" style={{ color: "#8B6355" }}>Daughter of</span>
               <span className="font-medium" style={{ color: "#2C1810" }}>{bride.father}</span>
-              <span className="italic" style={{ color: "#C9A84C" }}>&amp;</span>
+              <Ampersand size="1.35em" />
               <span className="font-medium" style={{ color: "#2C1810" }}>{bride.mother}</span>
             </div>
             <div
@@ -177,7 +178,7 @@ export default function FamilyIntro() {
             >
               <span className="italic text-sm" style={{ color: "#8B6355" }}>Granddaughter of</span>
               <span className="font-medium" style={{ color: "#2C1810" }}>{bride.grandfather}</span>
-              <span className="italic" style={{ color: "#C9A84C" }}>&amp;</span>
+              <Ampersand size="1.35em" />
               <span className="font-medium" style={{ color: "#2C1810" }}>{bride.grandmother}</span>
             </div>
           </div>

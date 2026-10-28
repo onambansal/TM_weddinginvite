@@ -28,7 +28,13 @@ Each ceremony card also gets a **Directions** link (from `mapUrl`) and an
 - Fonts are self-hosted in `app/fonts` via `next/font/local`
   (Cormorant Garamond for headings, Playfair, Poppins, Great Vibes).
 - Shared building blocks: `CeremonyCard`, `CeremonyDetails`, `DressCode`,
-  `CornerOrnament`, `SectionDivider`, `Motif` (line-art SVG icons — no emoji).
+  `CornerOrnament`, `SectionDivider`, `SectionEdge`, `Mandala`, `Heading`,
+  `Ampersand`, `FormattedDate`, `WaxSeal`, `TiltCard`, `RevealCard`,
+  `Motif` (line-art SVG icons — no emoji).
+- Motion grammar lives in `lib/motion.ts` (`EASE_LUX`, `DURATION`, `enter()`,
+  `fadeUp`, `wordContainer/wordItem`, `drawPath`). Use these instead of ad-hoc
+  easings so every section moves the same way.
+- Hindi titles use the self-hosted Tiro Devanagari face (`.font-devanagari`).
 - OG share image & favicon are generated at build time
   (`app/opengraph-image.tsx`, `app/icon.tsx`). Set `NEXT_PUBLIC_SITE_URL`
   in production so WhatsApp previews resolve the absolute image URL.

@@ -78,56 +78,43 @@ const MusicPlayer = forwardRef<MusicPlayerHandle>((_, ref) => {
           )}
         </AnimatePresence>
 
-        {/* Music button */}
+        {/* Music button — gold-ringed disc; the groove ring spins while playing */}
         <motion.button
           onClick={toggleMusic}
-          className="w-14 h-14 rounded-full bg-maroon text-gold flex items-center justify-center border-2 border-gold/40"
-          style={{ boxShadow: "0 4px 20px rgba(107,15,26,0.5)" }}
-          whileHover={{ scale: 1.1 }}
+          className="relative w-14 h-14 rounded-full flex items-center justify-center"
+          style={{
+            background: "radial-gradient(circle at 40% 35%, #7A1424, #4A0A12 70%)",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.4), 0 0 0 1.5px #C9A84C, inset 0 0 0 1px rgba(255,255,255,0.12)",
+          }}
+          whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.95 }}
           animate={
             isPlaying
-              ? {
-                  boxShadow: [
-                    "0 0 10px rgba(201,168,76,0.4)",
-                    "0 0 25px rgba(201,168,76,0.8)",
-                    "0 0 10px rgba(201,168,76,0.4)",
-                  ],
-                }
-              : {}
+              ? { boxShadow: ["0 8px 24px rgba(0,0,0,0.4), 0 0 0 1.5px #C9A84C, 0 0 12px rgba(201,168,76,0.35)", "0 8px 24px rgba(0,0,0,0.4), 0 0 0 1.5px #C9A84C, 0 0 26px rgba(201,168,76,0.7)", "0 8px 24px rgba(0,0,0,0.4), 0 0 0 1.5px #C9A84C, 0 0 12px rgba(201,168,76,0.35)"] }
+              : undefined
           }
-          transition={isPlaying ? { duration: 2, repeat: Infinity } : {}}
+          transition={isPlaying ? { duration: 2.4, repeat: Infinity, ease: "easeInOut" } : undefined}
           aria-label={isPlaying ? "Pause music" : "Play music"}
+          aria-pressed={isPlaying}
         >
-          {isPlaying ? (
-            <Volume2 className="w-6 h-6" />
-          ) : (
-            <VolumeX className="w-6 h-6" />
-          )}
-        </motion.button>
-
-        {/* Animated equalizer bars when playing */}
-        {isPlaying && (
-          <motion.div
-            className="flex gap-1 items-end h-5"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+          {/* Vinyl grooves — rotate when playing, stop when paused */}
+          <motion.svg
+            className="absolute inset-0"
+            viewBox="0 0 56 56"
+            aria-hidden="true"
+            animate={isPlaying ? { rotate: 360 } : { rotate: 0 }}
+            transition={isPlaying ? { duration: 6, repeat: Infinity, ease: "linear" } : { duration: 0.6 }}
           >
-            {[1, 2, 3, 4].map((i) => (
-              <motion.div
-                key={i}
-                className="w-1 bg-gold rounded-full"
-                animate={{ height: ["4px", "16px", "4px"] }}
-                transition={{
-                  duration: 0.8,
-                  repeat: Infinity,
-                  delay: i * 0.15,
-                  ease: "easeInOut",
-                }}
-              />
+            {[22, 19, 16, 13].map((r, i) => (
+              <circle key={r} cx="28" cy="28" r={r} fill="none" stroke="#C9A84C" strokeWidth="0.6" opacity={0.35 - i * 0.05} strokeDasharray={i % 2 ? "3 2" : undefined} />
             ))}
-          </motion.div>
-        )}
+            {/* Highlight sliver that makes the rotation readable */}
+            <path d="M28 6 A22 22 0 0 1 48 20" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" strokeLinecap="round" />
+          </motion.svg>
+          <span className="relative text-gold">
+            {isPlaying ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+          </span>
+        </motion.button>
       </div>
     </>
   );

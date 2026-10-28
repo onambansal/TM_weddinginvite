@@ -2,6 +2,8 @@
 
 import { ceremonies, bride, groom } from "@/config/weddingConfig";
 import CeremonyCard from "./CeremonyCard";
+import Ampersand from "./Ampersand";
+import SkyLanterns from "./SkyLanterns";
 
 /** The climax — full maroon & gold. */
 export default function WeddingCeremony() {
@@ -14,13 +16,12 @@ export default function WeddingCeremony() {
       description="Seven sacred vows around the holy fire — as two souls become one."
       note="Join us as we begin our forever"
       sectionBackground="linear-gradient(160deg, #1A0507 0%, #4A0A12 35%, #6B0F1A 65%, #1A0507 100%)"
-      headerBackground="linear-gradient(135deg, #C9A84C 0%, #E8C97A 50%, #C9A84C 100%)"
+      headerBackground="foil"
       headerTitleColor="#4A0A12"
       headerPretitleColor="rgba(74,10,18,0.8)"
       accent="#C9A84C"
       dark
-      particleColors={["#C9A84C", "#E8C97A", "#FFFDF7"]}
-      particleCount={28}
+      particles={<SkyLanterns count={7} />}
       ornamentColor="#C9A84C"
       ornamentOpacity={0.5}
       backdrop={
@@ -39,12 +40,7 @@ export default function WeddingCeremony() {
         <p className="text-gold" style={{ fontFamily: "var(--font-great-vibes), cursive", fontSize: "2.1rem", lineHeight: 1.1 }}>
           {groom.firstName}
         </p>
-        <span
-          className="text-gold/60 italic"
-          style={{ fontFamily: "var(--font-cormorant), var(--font-playfair), Georgia, serif", fontSize: "1.5rem" }}
-        >
-          &amp;
-        </span>
+        <Ampersand size="1.6rem" color="rgba(201,168,76,0.75)" />
         <p className="text-gold" style={{ fontFamily: "var(--font-great-vibes), cursive", fontSize: "2.1rem", lineHeight: 1.1 }}>
           {bride.firstName}
         </p>

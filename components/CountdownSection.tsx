@@ -5,6 +5,13 @@ import { motion } from "framer-motion";
 import { weddingDate, weddingDateDisplay, weddingDay } from "@/config/weddingConfig";
 import CornerOrnament from "./CornerOrnament";
 import SectionDivider from "./SectionDivider";
+import Heading from "./Heading";
+import FormattedDate from "./FormattedDate";
+import Mandala from "./Mandala";
+import FlipDigit from "./FlipDigit";
+import GoldFirework from "./GoldFirework";
+import Sparkles from "./Sparkles";
+import { useWeddingDay } from "@/lib/useWeddingDay";
 
 const serif = "var(--font-cormorant), var(--font-playfair), Georgia, serif";
 
@@ -48,12 +55,27 @@ export default function CountdownSection() {
     { value: timeLeft.seconds, label: "Seconds" },
   ];
 
-  const isCompleted = mounted && timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0;
+  // ── Day-of mode: on the wedding date the countdown becomes a celebration
+  const { phase } = useWeddingDay();
+  const isToday = mounted && phase === "today";
+  const isAfter = mounted && phase === "after";
+  const isCompleted = isToday || isAfter;
+
+  // Gentle looping firework on the day itself (one shell every ~6s)
+  const [burst, setBurst] = useState(false);
+  useEffect(() => {
+    if (!isToday) return;
+    let on = true;
+    const fire = () => { if (!on) return; setBurst(true); setTimeout(() => setBurst(false), 3000); };
+    fire();
+    const id = setInterval(fire, 6500);
+    return () => { on = false; clearInterval(id); };
+  }, [isToday]);
 
   return (
     <section
       id="countdown"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4 paper-grain"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4 paper-grain vignette"
       style={{ background: "linear-gradient(180deg, #FFF8F0 0%, #F5EDE0 100%)" }}
     >
       {/* Background pattern */}
@@ -66,7 +88,8 @@ export default function CountdownSection() {
         }}
       />
 
-      <div className="absolute inset-4 md:inset-6 rounded-3xl pointer-events-none" style={{ border: "1px solid rgba(201,168,76,0.25)" }} />
+      <Mandala size={1000} opacity={0.1} spin={150} />
+      <div className="absolute inset-4 md:inset-6 rounded-3xl pointer-events-none hairline-glow-soft" />
       <CornerOrnament color="#C9A84C" opacity={0.4} />
 
       <div className="relative z-10 text-center px-6 max-w-2xl mx-auto w-full">
@@ -82,16 +105,7 @@ export default function CountdownSection() {
         </motion.p>
 
         {/* Main title */}
-        <motion.h2
-          className="text-4xl md:text-5xl text-maroon mb-2"
-          style={{ fontFamily: serif, fontWeight: 600 }}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-        >
-          Is Almost Here
-        </motion.h2>
+        <Heading className="mb-2" delay={0.1}>Is Almost Here</Heading>
 
         <SectionDivider color="#C9A84C" width={200} className="my-5" />
 
@@ -105,15 +119,29 @@ export default function CountdownSection() {
           Join us as we begin our forever together
         </motion.p>
 
-        {/* Countdown timer */}
+        {/* Countdown timer — or the day-of celebration */}
         {isCompleted ? (
           <motion.div
-            className="text-3xl font-playfair text-maroon"
-            style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-            initial={{ opacity: 0, scale: 0.8 }}
+            className="relative mx-auto max-w-sm rounded-3xl px-8 py-10 overflow-visible"
+            style={{
+              background: "linear-gradient(160deg, #2A0608, #4A0A12 60%, #6B0F1A)",
+              boxShadow: "0 24px 70px rgba(74,10,18,0.35), 0 0 0 1px rgba(201,168,76,0.7), 0 0 18px 2px rgba(201,168,76,0.3), inset 0 0 0 1px rgba(201,168,76,0.25)",
+            }}
+            initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           >
-            ✦ The Big Day is Here ✦
+            {isToday && <GoldFirework active={burst} x={50} y={30} count={48} />}
+            <Sparkles count={14} distribution="edges" seed={41} minSize={6} maxSize={14} className="-inset-3" />
+            <p className="text-[0.65rem] tracking-[0.4em] uppercase font-poppins mb-3" style={{ color: "rgba(232,201,122,0.8)" }}>
+              {isToday ? "✦ It's Today ✦" : "✦ Just Married ✦"}
+            </p>
+            <p className="text-gold-foil leading-tight" style={{ fontFamily: serif, fontSize: "clamp(1.9rem, 7vw, 2.6rem)", fontWeight: 600 }}>
+              {isToday ? "The Big Day is Here" : "Happily Ever After"}
+            </p>
+            <p className="mt-3 italic" style={{ fontFamily: serif, fontSize: "1.05rem", color: "rgba(255,248,240,0.75)" }}>
+              {isToday ? "See you at the mandap" : "Thank you for celebrating with us"}
+            </p>
           </motion.div>
         ) : (
           <div className="grid grid-cols-4 gap-3 md:gap-6 max-w-lg mx-auto">
@@ -126,33 +154,7 @@ export default function CountdownSection() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
               >
-                <div
-                  className="w-full rounded-2xl py-4 px-2 mb-2 relative overflow-hidden"
-                  style={{
-                    background: "linear-gradient(160deg, #2A0608, #4A0A12 60%, #6B0F1A)",
-                    boxShadow: "0 12px 30px rgba(74,10,18,0.35), 0 0 0 1px rgba(201,168,76,0.6), inset 0 0 0 1px rgba(201,168,76,0.25)",
-                  }}
-                >
-                  <div className="absolute inset-x-0 top-1/2 h-px" style={{ background: "rgba(201,168,76,0.18)" }} />
-                  <motion.span
-                    key={mounted ? value : "placeholder"}
-                    className="block text-3xl md:text-4xl relative"
-                    style={{
-                      fontFamily: serif,
-                      fontWeight: 600,
-                      background: "linear-gradient(135deg, #C9A84C, #F3E2A0, #C9A84C)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
-                      fontVariantNumeric: "tabular-nums",
-                    }}
-                    initial={label === "Seconds" ? { y: -8, opacity: 0.4 } : false}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.35, ease: "easeOut" }}
-                  >
-                    {mounted ? String(value).padStart(2, "0") : "00"}
-                  </motion.span>
-                </div>
+                <FlipDigit value={mounted ? String(value).padStart(2, "0") : "00"} className="mb-2" />
                 <span className="text-[0.65rem] text-maroon/60 font-poppins uppercase tracking-[0.3em]">
                   {label}
                 </span>
@@ -175,7 +177,7 @@ export default function CountdownSection() {
             className="text-2xl text-maroon"
             style={{ fontFamily: serif, fontWeight: 600 }}
           >
-            {weddingDateDisplay}
+            <FormattedDate value={weddingDateDisplay} />
           </p>
           <p className="text-maroon/50 text-sm font-poppins mt-1">{weddingDay}</p>
         </motion.div>

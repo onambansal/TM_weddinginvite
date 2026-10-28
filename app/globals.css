@@ -76,6 +76,9 @@
   .font-script {
     font-family: var(--font-great-vibes), cursive;
   }
+  .font-devanagari {
+    font-family: var(--font-devanagari), "Noto Sans Devanagari", "Mangal", serif;
+  }
 
   .text-gradient-gold {
     background: linear-gradient(135deg, #C9A84C, #E8C97A, #C9A84C);
@@ -84,22 +87,81 @@
     background-clip: text;
   }
 
-  /* Animated gold-foil shimmer for headings */
+  /*
+    ── Live gold foil ─────────────────────────────────────────
+    --foil-x / --foil-y are set on <html> by <FoilProvider /> from the
+    phone's gyroscope (or the cursor on desktop). The highlight band in
+    every foil gradient is positioned from them, so tilting the device
+    makes headings, frames and the seal catch the light like real foil.
+  */
+  :root {
+    --foil-x: 50;
+    --foil-y: 40;
+  }
+
+  /* Foil-stamped text — highlight slides with the device */
   .text-gold-foil {
-    background: linear-gradient(
-      100deg,
-      #A07830 0%,
-      #C9A84C 20%,
-      #F3E2A0 40%,
-      #C9A84C 60%,
-      #A07830 80%,
-      #C9A84C 100%
+    background-image: linear-gradient(
+      calc(100deg + (var(--foil-x) - 50) * 0.6deg),
+      #7A5A1E 0%,
+      #A07830 calc(var(--foil-x) * 1% - 45%),
+      #C9A84C calc(var(--foil-x) * 1% - 22%),
+      #FFF3C4 calc(var(--foil-x) * 1%),
+      #C9A84C calc(var(--foil-x) * 1% + 22%),
+      #A07830 calc(var(--foil-x) * 1% + 45%),
+      #7A5A1E 100%
     );
-    background-size: 250% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: shimmer 6s linear infinite;
+    /* a hair of brightness on the top edge, like embossed foil */
+    filter: drop-shadow(0 -0.5px 0 rgba(255, 243, 196, 0.35));
+  }
+
+  /* Foil surface for frames / buttons / header strips */
+  .bg-gold-foil {
+    background-image: linear-gradient(
+      calc(135deg + (var(--foil-x) - 50) * 0.5deg),
+      #A07830 0%,
+      #C9A84C calc(var(--foil-x) * 1% - 30%),
+      #F3E2A0 calc(var(--foil-x) * 1%),
+      #C9A84C calc(var(--foil-x) * 1% + 30%),
+      #A07830 100%
+    );
+  }
+
+  /* Specular highlight overlay — drop into any relative gold surface */
+  .foil-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background: radial-gradient(
+      ellipse 60% 45% at calc(var(--foil-x) * 1%) calc(var(--foil-y) * 1%),
+      rgba(255, 255, 255, 0.32) 0%,
+      rgba(255, 255, 255, 0.08) 35%,
+      rgba(255, 255, 255, 0) 70%
+    );
+    mix-blend-mode: screen;
+  }
+
+  /*
+    ── Glowing hairlines ──────────────────────────────────────
+    A blurred twin under a 1px gold line makes it look lit from within.
+    Apply alongside the existing border / box-shadow ring.
+  */
+  .hairline-glow {
+    box-shadow:
+      0 0 0 1px rgba(201, 168, 76, 0.55),
+      0 0 6px 1px rgba(201, 168, 76, 0.35),
+      0 0 18px 2px rgba(201, 168, 76, 0.18);
+  }
+  .hairline-glow-soft {
+    box-shadow:
+      0 0 0 1px rgba(201, 168, 76, 0.35),
+      0 0 5px 1px rgba(201, 168, 76, 0.22),
+      0 0 14px 2px rgba(201, 168, 76, 0.10);
   }
 
   /* Faint card-stock grain on top of any section */
@@ -116,6 +178,34 @@
   /* Hairline gold frame inside a card */
   .gold-inset {
     box-shadow: inset 0 0 0 1px rgba(201, 168, 76, 0.35);
+  }
+
+  /* Soft vignette for ivory sections — edges ~5% darker, like printed card stock */
+  .vignette::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(74, 10, 18, 0.07) 100%);
+  }
+  /* Deeper vignette for dark sections — pulls focus to the centre */
+  .vignette-dark::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.35) 100%);
+  }
+
+  /* Old-style numerals + true superscript ordinals for dates/times */
+  .nums-oldstyle {
+    font-variant-numeric: oldstyle-nums;
+  }
+  .ordinal {
+    font-variant-position: super;
+    font-size: 0.62em;
+    vertical-align: 0.42em;
+    margin-left: 0.04em;
   }
 
   .border-gold-gradient {

@@ -1,302 +1,127 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Music } from "lucide-react";
 import { weddingConfig } from "@/config/weddingConfig";
+import { enter } from "@/lib/motion";
 import CornerOrnament from "./CornerOrnament";
+import SectionDivider from "./SectionDivider";
+import Heading from "./Heading";
+import Ampersand from "./Ampersand";
+import RevealCard from "./RevealCard";
+import Mandala from "./Mandala";
+import GoldDust from "./GoldDust";
 
 const serif = "var(--font-cormorant), var(--font-playfair), Georgia, serif";
 
-// Parse the wedding date for display
+// Parse the wedding date for the three reveal cards
 const weddingDateObj = new Date(weddingConfig.weddingDate);
 const weddingDay = weddingDateObj.getDate().toString();
 const weddingMonth = weddingDateObj.toLocaleString("en-US", { month: "long" });
 const weddingYear = weddingDateObj.getFullYear().toString();
 
-// Particle positions for the burst effect (angle in degrees)
-const PARTICLE_ANGLES = [0, 45, 90, 135, 180, 225, 270, 315];
-
-// ── Dhol Player SVG Component ─────────────────────────────────
+// ── Dhol Player — gold line-art, matches the Motif set ────────
 function DholPlayer() {
-  return (
-    <AnimatePresence>
-      <motion.div
-        className="flex flex-col items-center gap-2 mt-6"
-        initial={{ opacity: 0, y: 60 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.2 }}
-      >
-        {/* Floating musical notes */}
-        <div className="relative w-32 h-10 mb-1">
-          {[0, 1, 2].map((i) => (
-            <motion.span
-              key={i}
-              className="absolute text-gold"
-              style={{ left: `${20 + i * 30}%` }}
-              animate={{ y: [0, -28, 0], opacity: [0.3, 1, 0.3], rotate: [0, i % 2 ? 12 : -12, 0] }}
-              transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.35, ease: "easeInOut" }}
-            >
-              <Music className={i === 1 ? "w-5 h-5" : "w-4 h-4"} />
-            </motion.span>
-          ))}
-        </div>
-
-        {/* The dhol player SVG */}
-        <motion.svg
-          width="120"
-          height="160"
-          viewBox="0 0 120 160"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          animate={{ y: [0, -4, 0] }}
-          transition={{ duration: 0.5, repeat: Infinity, ease: "easeInOut" }}
-        >
-          {/* Head */}
-          <circle cx="60" cy="18" r="14" fill="#F5C5A3" stroke="#C9A84C" strokeWidth="1.5" />
-          {/* Turban */}
-          <ellipse cx="60" cy="8" rx="16" ry="7" fill="#C9A84C" />
-          <rect x="44" y="5" width="32" height="5" rx="2" fill="#E8C97A" />
-          {/* Turban knot */}
-          <circle cx="60" cy="4" r="4" fill="#6B0F1A" />
-
-          {/* Body */}
-          <rect x="48" y="32" width="24" height="36" rx="6" fill="#6B0F1A" />
-          {/* Kurta detail */}
-          <line x1="60" y1="34" x2="60" y2="66" stroke="#C9A84C" strokeWidth="1" strokeDasharray="2 2" />
-
-          {/* Dhol (drum) — centered in front of body */}
-          <ellipse cx="60" cy="72" rx="20" ry="10" fill="#8B4513" stroke="#C9A84C" strokeWidth="1.5" />
-          <rect x="40" y="68" width="40" height="20" rx="4" fill="#A0522D" stroke="#C9A84C" strokeWidth="1.5" />
-          <ellipse cx="60" cy="88" rx="20" ry="10" fill="#8B4513" stroke="#C9A84C" strokeWidth="1.5" />
-          {/* Dhol rope pattern */}
-          {[0, 1, 2, 3].map((i) => (
-            <line
-              key={i}
-              x1={44 + i * 8}
-              y1="68"
-              x2={46 + i * 8}
-              y2="88"
-              stroke="#C9A84C"
-              strokeWidth="1"
-              opacity="0.6"
-            />
-          ))}
-
-          {/* LEFT ARM — beats down */}
-          <motion.g
-            style={{ transformOrigin: "48px 38px" }}
-            animate={{ rotate: [0, 40, 0] }}
-            transition={{ duration: 0.5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <line x1="48" y1="38" x2="28" y2="62" stroke="#F5C5A3" strokeWidth="5" strokeLinecap="round" />
-            {/* Drumstick */}
-            <line x1="28" y1="62" x2="18" y2="78" stroke="#8B4513" strokeWidth="3" strokeLinecap="round" />
-          </motion.g>
-
-          {/* RIGHT ARM — beats down (offset phase) */}
-          <motion.g
-            style={{ transformOrigin: "72px 38px" }}
-            animate={{ rotate: [0, -40, 0] }}
-            transition={{ duration: 0.5, repeat: Infinity, ease: "easeInOut", delay: 0.25 }}
-          >
-            <line x1="72" y1="38" x2="92" y2="62" stroke="#F5C5A3" strokeWidth="5" strokeLinecap="round" />
-            {/* Drumstick */}
-            <line x1="92" y1="62" x2="102" y2="78" stroke="#8B4513" strokeWidth="3" strokeLinecap="round" />
-          </motion.g>
-
-          {/* Legs */}
-          <line x1="54" y1="68" x2="50" y2="110" stroke="#F5C5A3" strokeWidth="5" strokeLinecap="round" />
-          <line x1="66" y1="68" x2="70" y2="110" stroke="#F5C5A3" strokeWidth="5" strokeLinecap="round" />
-          {/* Feet */}
-          <ellipse cx="49" cy="112" rx="7" ry="4" fill="#6B0F1A" />
-          <ellipse cx="71" cy="112" rx="7" ry="4" fill="#6B0F1A" />
-
-          {/* Dhol strap */}
-          <path d="M 42 68 Q 30 55 48 38" stroke="#C9A84C" strokeWidth="2" fill="none" strokeDasharray="3 2" />
-          <path d="M 78 68 Q 90 55 72 38" stroke="#C9A84C" strokeWidth="2" fill="none" strokeDasharray="3 2" />
-        </motion.svg>
-
-        <motion.p
-          className="text-xs italic tracking-widest"
-          style={{ color: "#C9A84C", fontFamily: "var(--font-playfair), Georgia, serif" }}
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-        >
-          ✦ Dhol Bajao! ✦
-        </motion.p>
-      </motion.div>
-    </AnimatePresence>
-  );
-}
-
-// ── Reveal Box ────────────────────────────────────────────────
-interface RevealBoxProps {
-  value: string;
-  label: string;
-  delay?: number;
-  accentColor?: string;
-  onReveal?: () => void;
-}
-
-function RevealBox({ value, label, delay = 0, accentColor = "#C9A84C", onReveal }: RevealBoxProps) {
-  const [revealed, setRevealed] = useState(false);
-
-  const handleReveal = () => {
-    if (!revealed) {
-      setRevealed(true);
-      onReveal?.();
-    }
-  };
+  const reduceMotion = useReducedMotion();
+  const gold = "#C9A84C";
+  const s = { stroke: gold, strokeWidth: 1.6, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, fill: "none" };
+  const beat = { duration: 0.5, repeat: Infinity, ease: "easeInOut" as const };
 
   return (
     <motion.div
-      className="relative flex-1 min-w-0 cursor-pointer select-none"
-      style={{ aspectRatio: "3/4", maxWidth: "30vw" }}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay }}
-      onClick={handleReveal}
-      whileTap={!revealed ? { scale: 0.96 } : {}}
-      animate={revealed ? { scale: [1, 1.06, 1] } : { scale: 1 }}
+      className="flex flex-col items-center gap-2 mt-6"
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
+      transition={enter(0.2, 0.8)}
     >
-      {/* Card base */}
-      <motion.div
-        className="absolute inset-0 rounded-2xl flex flex-col items-center justify-center gap-2 overflow-hidden"
-        style={{
-          background: "linear-gradient(160deg, #1a0505, #2C0A0A)",
-          border: `1.5px solid ${accentColor}55`,
-        }}
-        animate={
-          revealed
-            ? {
-                boxShadow: [
-                  `0 8px 32px rgba(0,0,0,0.5), 0 0 0 2px ${accentColor}`,
-                  `0 8px 48px rgba(201,168,76,0.6), 0 0 20px 4px ${accentColor}`,
-                  `0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px ${accentColor}44`,
-                ],
-              }
-            : { boxShadow: `0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px ${accentColor}22` }
-        }
-        transition={{ duration: 0.7, ease: "easeOut" }}
-      >
-        <AnimatePresence>
-          {revealed && (
-            <motion.p
-              key="value"
-              className="font-bold leading-none w-full text-center px-1"
-              style={{
-                fontFamily: "var(--font-playfair), Georgia, serif",
-                fontSize: value.length > 6 ? "clamp(0.9rem, 4vw, 1.4rem)" : value.length > 4 ? "clamp(1.1rem, 5vw, 1.8rem)" : "clamp(1.8rem, 8vw, 3.5rem)",
-                wordBreak: "break-word",
-                background: `linear-gradient(135deg, ${accentColor}, #E8C97A, ${accentColor})`,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-              initial={{ opacity: 0, y: 30, scale: 0.6 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ type: "spring", stiffness: 400, damping: 18, delay: 0.1 }}
-            >
-              {value}
-            </motion.p>
-          )}
-        </AnimatePresence>
-
-        <AnimatePresence>
-          {revealed && (
-            <motion.p
-              key="label"
-              className="text-xs tracking-widest uppercase"
-              style={{ color: `${accentColor}80`, fontFamily: "var(--font-poppins), sans-serif" }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.4 }}
-            >
-              {label}
-            </motion.p>
-          )}
-        </AnimatePresence>
-      </motion.div>
-
-      {/* Gold particle burst */}
-      <AnimatePresence>
-        {revealed && (
-          <>
-            {PARTICLE_ANGLES.map((angle, i) => {
-              const rad = (angle * Math.PI) / 180;
-              const distance = 55 + (i % 3) * 15;
-              const tx = Math.cos(rad) * distance;
-              const ty = Math.sin(rad) * distance;
-              return (
-                <motion.div
-                  key={`particle-${i}`}
-                  className="absolute rounded-full pointer-events-none"
-                  style={{
-                    width: 4 + (i % 3) * 2,
-                    height: 4 + (i % 3) * 2,
-                    background: i % 2 === 0 ? accentColor : "#E8C97A",
-                    top: "50%",
-                    left: "50%",
-                    marginTop: -3,
-                    marginLeft: -3,
-                    zIndex: 20,
-                  }}
-                  initial={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-                  animate={{ opacity: 0, x: tx, y: ty, scale: 0 }}
-                  transition={{ duration: 0.65, ease: "easeOut", delay: 0.05 }}
-                />
-              );
-            })}
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Veil overlay */}
-      <AnimatePresence>
-        {!revealed && (
-          <motion.div
-            className="absolute inset-0 rounded-2xl flex flex-col items-center justify-center gap-3"
-            style={{
-              background: `linear-gradient(160deg, #6B0F1A, #3A0808)`,
-              border: `1.5px solid ${accentColor}55`,
-            }}
-            initial={{ opacity: 1, scale: 1, rotate: 0 }}
-            exit={{ opacity: 0, scale: 1.08, rotate: 3 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+      {/* Floating notes */}
+      <div className="relative w-32 h-10 mb-1">
+        {[0, 1, 2].map((i) => (
+          <motion.span
+            key={i}
+            className="absolute text-gold"
+            style={{ left: `${20 + i * 30}%` }}
+            animate={reduceMotion ? undefined : { y: [0, -26, 0], opacity: [0.2, 1, 0.2], rotate: [0, i % 2 ? 12 : -12, 0] }}
+            transition={{ duration: 1.3, repeat: Infinity, delay: i * 0.35, ease: "easeInOut" }}
           >
-            <div
-              className="absolute inset-0 rounded-2xl opacity-10"
-              style={{
-                backgroundImage: `radial-gradient(circle at 30% 30%, ${accentColor} 1px, transparent 1px),
-                  radial-gradient(circle at 70% 70%, ${accentColor} 1px, transparent 1px)`,
-                backgroundSize: "20px 20px",
-              }}
-            />
-            <motion.div
-              animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }}
-              exit={{ rotate: 180, scale: 0, opacity: 0 }}
-              transition={{ duration: 2, repeat: Infinity }}
-              style={{ fontSize: "1.8rem", color: accentColor }}
-            >
-              ✦
-            </motion.div>
-            <p
-              className="text-center px-2 leading-tight"
-              style={{
-                fontFamily: "var(--font-playfair), Georgia, serif",
-                fontSize: "0.65rem",
-                color: `${accentColor}cc`,
-                letterSpacing: "0.15rem",
-                fontStyle: "italic",
-              }}
-            >
-              Tap to reveal
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <Music className={i === 1 ? "w-5 h-5" : "w-4 h-4"} />
+          </motion.span>
+        ))}
+      </div>
+
+      <motion.svg
+        width="124"
+        height="150"
+        viewBox="0 0 124 150"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ filter: "drop-shadow(0 4px 14px rgba(201,168,76,0.35))" }}
+        animate={reduceMotion ? undefined : { y: [0, -3, 0] }}
+        transition={beat}
+        aria-hidden="true"
+      >
+        {/* Turban */}
+        <path {...s} d="M44 26c2-12 34-12 36 0" />
+        <path {...s} d="M46 22c4-6 28-6 32 0" strokeWidth="1.1" />
+        <path {...s} d="M62 10c-4 2-6 6-4 10" strokeWidth="1.1" />
+        <circle cx="62" cy="9" r="2" fill={gold} />
+        {/* Head */}
+        <circle {...s} cx="62" cy="34" r="10" />
+        {/* Body (kurta) */}
+        <path {...s} d="M46 48c0-4 32-4 32 0l4 36H42l4-36z" />
+        <path {...s} d="M62 50v30" strokeWidth="1" strokeDasharray="2 3" />
+        {/* Dhol strap */}
+        <path {...s} d="M48 54c-10 8-14 20-10 32M76 54c10 8 14 20 10 32" strokeWidth="1.1" strokeDasharray="3 2" />
+        {/* Dhol */}
+        <ellipse {...s} cx="62" cy="92" rx="26" ry="9" />
+        <path {...s} d="M36 92v22M88 92v22" />
+        <ellipse {...s} cx="62" cy="114" rx="26" ry="9" />
+        {[0, 1, 2, 3, 4].map((i) => (
+          <line key={i} x1={42 + i * 10} y1="92" x2={44 + i * 10} y2="114" stroke={gold} strokeWidth="1" opacity="0.6" />
+        ))}
+        {/* Left arm — beats down */}
+        <motion.g style={{ transformOrigin: "46px 56px" }} animate={reduceMotion ? undefined : { rotate: [0, 32, 0] }} transition={beat}>
+          <path {...s} d="M46 56L30 76" />
+          <path {...s} d="M30 76l-6 12" strokeWidth="1.4" />
+          <circle cx="24" cy="88" r="2" fill={gold} />
+        </motion.g>
+        {/* Right arm — alternates */}
+        <motion.g style={{ transformOrigin: "78px 56px" }} animate={reduceMotion ? undefined : { rotate: [0, -32, 0] }} transition={{ ...beat, delay: 0.25 }}>
+          <path {...s} d="M78 56l16 20" />
+          <path {...s} d="M94 76l6 12" strokeWidth="1.4" />
+          <circle cx="100" cy="88" r="2" fill={gold} />
+        </motion.g>
+        {/* Legs */}
+        <path {...s} d="M52 84l-4 44M72 84l4 44" />
+        <path {...s} d="M40 130h14M70 130h14" strokeWidth="1.8" />
+        {/* Beat ripples */}
+        {[0, 1].map((i) => (
+          <motion.ellipse
+            key={i}
+            cx="62"
+            cy="103"
+            rx="30"
+            ry="12"
+            stroke={gold}
+            strokeWidth="0.8"
+            fill="none"
+            initial={{ opacity: 0, scale: 1 }}
+            animate={reduceMotion ? undefined : { opacity: [0.5, 0], scale: [1, 1.35] }}
+            transition={{ duration: 1, repeat: Infinity, delay: i * 0.5, ease: "easeOut" }}
+            style={{ transformOrigin: "62px 103px" }}
+          />
+        ))}
+      </motion.svg>
+
+      <motion.p
+        className="text-xs italic tracking-[0.2em]"
+        style={{ color: "#C9A84C", fontFamily: serif, fontSize: "0.95rem" }}
+        animate={reduceMotion ? undefined : { opacity: [0.5, 1, 0.5] }}
+        transition={{ duration: 1.5, repeat: Infinity }}
+      >
+        ✦ Dhol Bajao! ✦
+      </motion.p>
     </motion.div>
   );
 }
@@ -304,16 +129,25 @@ function RevealBox({ value, label, delay = 0, accentColor = "#C9A84C", onReveal 
 // ── Main Section ──────────────────────────────────────────────
 export default function SaveTheDate() {
   const [revealCount, setRevealCount] = useState(0);
+  const [shower, setShower] = useState(false);
   const allRevealed = revealCount >= 3;
-
   const handleReveal = () => setRevealCount((c) => c + 1);
+
+  // Full-screen gold-dust shower the moment the last card is turned
+  useEffect(() => {
+    if (!allRevealed) return;
+    setShower(true);
+    const t = setTimeout(() => setShower(false), 4200);
+    return () => clearTimeout(t);
+  }, [allRevealed]);
 
   return (
     <section
       id="save-the-date"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 paper-grain"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 paper-grain vignette"
       style={{ background: "linear-gradient(180deg, #FFF8F0 0%, #F5EDE0 100%)" }}
     >
+      <GoldDust active={shower} mode="shower" count={60} duration={3.6} fixed seed={13} onLight />
       {/* Background pattern */}
       <div
         className="absolute inset-0 opacity-5"
@@ -323,94 +157,67 @@ export default function SaveTheDate() {
           backgroundSize: "40px 40px",
         }}
       />
-      <div className="absolute inset-4 md:inset-6 rounded-3xl pointer-events-none" style={{ border: "1px solid rgba(201,168,76,0.25)" }} />
+      <Mandala size={1000} opacity={0.1} spin={150} />
+      <div className="absolute inset-4 md:inset-6 rounded-3xl pointer-events-none hairline-glow-soft" />
       <CornerOrnament color="#C9A84C" opacity={0.4} />
 
       <div className="relative z-10 text-center px-6 max-w-lg mx-auto w-full">
-        {/* Pre-title */}
         <motion.p
-          className="text-xs tracking-[0.4em] uppercase mb-4"
-          style={{ color: "#C9A84C", fontFamily: "var(--font-poppins), sans-serif" }}
+          className="text-[0.7rem] tracking-[0.4em] uppercase mb-4 text-gold font-poppins"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
+          transition={enter(0, 0.7)}
         >
           ✦ Mark Your Calendar ✦
         </motion.p>
 
-        {/* Main title */}
-        <motion.h2
-          className="text-4xl md:text-5xl mb-2"
-          style={{ fontFamily: serif, color: "#6B0F1A", fontWeight: 600 }}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-        >
-          Save The Date
-        </motion.h2>
+        <Heading className="mb-2" delay={0.1}>Save The Date</Heading>
 
-        {/* Gold divider */}
-        <motion.div
-          className="mx-auto my-6"
-          style={{ width: 80, height: 1, background: "linear-gradient(90deg, transparent, #C9A84C, transparent)" }}
-          initial={{ opacity: 0, scaleX: 0 }}
-          whileInView={{ opacity: 1, scaleX: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        />
+        <SectionDivider color="#C9A84C" width={200} className="my-6" />
 
-        {/* Instruction hint */}
         <motion.p
-          className="text-xs italic mb-8"
-          style={{ color: "#8B6355", fontFamily: "var(--font-playfair), Georgia, serif" }}
+          className="italic mb-8"
+          style={{ color: "#8B6355", fontFamily: serif, fontSize: "1.05rem" }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
+          transition={enter(0.4, 0.7)}
         >
-          Tap each card to reveal the date
+          Turn each card to reveal the date
         </motion.p>
 
-        {/* Three reveal boxes */}
-        <div className="flex items-stretch justify-center gap-4 mb-10" style={{ minHeight: "180px" }}>
-          <RevealBox value={weddingDay}   label="Day"   delay={0.3}  accentColor="#C9A84C" onReveal={handleReveal} />
-          <RevealBox value={weddingMonth} label="Month" delay={0.45} accentColor="#E8C97A" onReveal={handleReveal} />
-          <RevealBox value={weddingYear}  label="Year"  delay={0.6}  accentColor="#C9A84C" onReveal={handleReveal} />
+        {/* Three flip cards */}
+        <div className="flex items-stretch justify-center gap-4 mb-10" style={{ minHeight: 180 }}>
+          <RevealCard value={weddingDay} label="Day" delay={0.3} onReveal={handleReveal} />
+          <RevealCard value={weddingMonth} label="Month" delay={0.45} onReveal={handleReveal} />
+          <RevealCard value={weddingYear} label="Year" delay={0.6} onReveal={handleReveal} />
         </div>
 
-        {/* Dhol player — appears when all 3 are revealed */}
-        <AnimatePresence>
-          {allRevealed && <DholPlayer />}
-        </AnimatePresence>
+        {/* Dhol player — appears once all three are turned */}
+        <AnimatePresence>{allRevealed && <DholPlayer />}</AnimatePresence>
 
-        {/* Gold divider */}
-        <div
-          className="mx-auto mb-6 mt-6"
-          style={{ width: 80, height: 1, background: "linear-gradient(90deg, transparent, #C9A84C, transparent)" }}
-        />
+        <SectionDivider color="#C9A84C" width={140} className="my-6" />
 
         {/* Couple names */}
         <motion.p
-          className="mb-2"
-          style={{ fontFamily: "var(--font-great-vibes), cursive", color: "#6B0F1A", fontSize: "1.8rem" }}
+          className="mb-2 flex items-center justify-center gap-3"
+          style={{ fontFamily: "var(--font-great-vibes), cursive", color: "#6B0F1A", fontSize: "1.9rem" }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.7 }}
+          transition={enter(0.7, 0.7)}
         >
-          {weddingConfig.groom.firstName} &amp; {weddingConfig.bride.firstName}
+          {weddingConfig.groom.firstName} <Ampersand size="1.5rem" /> {weddingConfig.bride.firstName}
         </motion.p>
 
-        {/* Bottom text */}
         <motion.p
-          className="text-sm italic"
-          style={{ color: "#8B6355", fontFamily: "var(--font-playfair), Georgia, serif" }}
+          className="italic"
+          style={{ color: "#8B6355", fontFamily: serif, fontSize: "1.05rem" }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.9 }}
+          transition={enter(0.9, 0.7)}
         >
           We can&apos;t wait to celebrate with you!
         </motion.p>

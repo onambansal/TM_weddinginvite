@@ -5,6 +5,8 @@ import { MapPin, Navigation, Calendar } from "lucide-react";
 import { venues, ceremonies } from "@/config/weddingConfig";
 import SectionDivider from "./SectionDivider";
 import CornerOrnament from "./CornerOrnament";
+import Heading from "./Heading";
+import Mandala from "./Mandala";
 import Motif, { type MotifName } from "./Motif";
 
 const serif = "var(--font-cormorant), var(--font-playfair), Georgia, serif";
@@ -27,13 +29,14 @@ export default function VenueDetails() {
   return (
     <section
       id="venues"
-      className="relative py-24 px-4 overflow-hidden paper-grain"
+      className="relative py-24 px-4 overflow-hidden paper-grain vignette"
       style={{ background: "linear-gradient(180deg, #FFF8F0 0%, #F5EDE0 100%)" }}
     >
       <div
         className="absolute inset-0 opacity-[0.06] pointer-events-none"
         style={{ backgroundImage: "radial-gradient(circle at 30% 30%, #C9A84C 1px, transparent 1px)", backgroundSize: "28px 28px" }}
       />
+      <Mandala size={1100} opacity={0.09} spin={170} />
       <CornerOrnament color="#C9A84C" opacity={0.35} />
 
       {/* Header */}
@@ -47,16 +50,7 @@ export default function VenueDetails() {
         >
           ✦ Find Your Way ✦
         </motion.p>
-        <motion.h2
-          className="text-4xl md:text-5xl text-maroon"
-          style={{ fontFamily: serif, fontWeight: 600 }}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-        >
-          Venue Details
-        </motion.h2>
+        <Heading delay={0.1}>Venue Details</Heading>
         <SectionDivider color="#C9A84C" width={200} className="my-5" />
         <motion.p
           className="text-maroon/60 italic"

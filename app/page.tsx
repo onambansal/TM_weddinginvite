@@ -8,6 +8,10 @@ import dynamic from "next/dynamic";
 const EnvelopeIntro = dynamic(() => import("@/components/EnvelopeIntro"), { ssr: false });
 
 import FloatingPetals from "@/components/FloatingPetals";
+import FoilProvider from "@/components/FoilProvider";
+import SectionEdge from "@/components/SectionEdge";
+import ScrollLotus from "@/components/ScrollLotus";
+import ViewportFrame from "@/components/ViewportFrame";
 import MusicPlayer, { MusicPlayerHandle } from "@/components/MusicPlayer";
 import CoupleHero from "@/components/CoupleHero";
 import FamilyIntro from "@/components/FamilyIntro";
@@ -38,6 +42,9 @@ export default function Home() {
 
   return (
     <>
+      {/* Drives --foil-x/--foil-y from gyroscope / cursor so gold catches the light */}
+      <FoilProvider />
+
       {/* Envelope intro overlay */}
       <EnvelopeIntro onComplete={handleEnvelopeComplete} onStart={handleEnvelopeStart} />
 
@@ -56,33 +63,57 @@ export default function Home() {
             {/* Global floating petals */}
             <FloatingPetals />
 
-            {/* 1 · The couple — names, photo, date */}
+            {/* Gold progress rail with travelling lotus (tap to jump) */}
+            <ScrollLotus />
+
+            {/* Persistent gold frame around the viewport */}
+            <ViewportFrame />
+
+            {/*
+              Ornamental edges sit between sections. `from` = bottom colour of the
+              section above, `to` = top colour of the section below, so each seam
+              looks like layered card stock rather than a hard cut.
+            */}
+
+            {/* 1 · The couple — names & photo (date is revealed later) */}
             <CoupleHero />
+            <SectionEdge from="#2A0608" to="#FFFDF7" />
 
             {/* 2 · Family Introduction with Ganesh invocation */}
             <FamilyIntro />
+            <SectionEdge from="#FFF8F0" to="#FFF8F0" />
 
             {/* 3 · Save The Date */}
             <SaveTheDate />
+            <SectionEdge from="#F5EDE0" to="#FFF8F0" />
 
             {/* 4 · Countdown timer */}
             <CountdownSection />
+            <SectionEdge from="#F5EDE0" to="#FFFDF7" />
 
             {/* 5 · Sacred Ceremonies in order */}
             <EngagementSection />
+            <SectionEdge from="#F5E6CC" to="#4C1D95" />
             <MehendiSangeet />
+            <SectionEdge from="#0F766E" to="#F9E4E9" />
             <HaldiSection />
+            <SectionEdge from="#B76E79" to="#2A0608" />
             <GhurChariSection />
+            <SectionEdge from="#2A0608" to="#1A0507" />
             <WeddingCeremony />
+            <SectionEdge from="#1A0507" to="#FFF8F0" />
 
             {/* 6 · Venue Details with Google Maps */}
             <VenueDetails />
+            <SectionEdge from="#F5EDE0" to="#FFF8F0" />
 
             {/* 7 · Photo gallery (carousel + grid) */}
             <PhotoMemories />
+            <SectionEdge from="#F5EDE0" to="#2A0608" />
 
             {/* 8 · RSVP */}
             <RSVPSection />
+            <SectionEdge from="#2A0608" to="#FFF8F0" />
 
             {/* 9 · Thank You */}
             <ThankYouSection />
