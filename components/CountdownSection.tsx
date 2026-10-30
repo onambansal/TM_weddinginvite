@@ -12,6 +12,7 @@ import FlipDigit from "./FlipDigit";
 import GoldFirework from "./GoldFirework";
 import Sparkles from "./Sparkles";
 import { useWeddingDay } from "@/lib/useWeddingDay";
+import { useNearViewport } from "@/lib/useNearViewport";
 
 const serif = "var(--font-cormorant), var(--font-playfair), Georgia, serif";
 
@@ -39,14 +40,23 @@ function getTimeLeft(): TimeLeft {
 export default function CountdownSection() {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(getTimeLeft());
   const [mounted, setMounted] = useState(false);
+  const { ref: sectionRef, near } = useNearViewport<HTMLElement>();
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  // Tick once a second — but only while the countdown is on (or near) screen.
+  // Each tick re-renders four FlipDigits; off-screen that work is invisible.
+  // We re-sync immediately on return so the digits are never stale.
+  useEffect(() => {
+    if (!near) return;
+    setTimeLeft(getTimeLeft());
     const timer = setInterval(() => {
       setTimeLeft(getTimeLeft());
     }, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [near]);
 
   const units = [
     { value: timeLeft.days, label: "Days" },
@@ -74,6 +84,7 @@ export default function CountdownSection() {
 
   return (
     <section
+      ref={sectionRef}
       id="countdown"
       className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4 paper-grain vignette"
       style={{ background: "linear-gradient(180deg, #FFF8F0 0%, #F5EDE0 100%)" }}
@@ -88,7 +99,7 @@ export default function CountdownSection() {
         }}
       />
 
-      <Mandala size={1000} opacity={0.1} spin={150} />
+      <Mandala size={1000} opacity={0.1} spin={near ? 150 : 0} />
       <div className="absolute inset-4 md:inset-6 rounded-3xl pointer-events-none hairline-glow-soft" />
       <CornerOrnament color="#C9A84C" opacity={0.4} />
 
@@ -131,8 +142,8 @@ export default function CountdownSection() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           >
-            {isToday && <GoldFirework active={burst} x={50} y={30} count={48} />}
-            <Sparkles count={14} distribution="edges" seed={41} minSize={6} maxSize={14} className="-inset-3" />
+            {isToday && <GoldFirework active={burst && near} x={50} y={30} count={48} />}
+            {near && <Sparkles count={14} distribution="edges" seed={41} minSize={6} maxSize={14} className="-inset-3" />}
             <p className="text-[0.65rem] tracking-[0.4em] uppercase font-poppins mb-3" style={{ color: "rgba(232,201,122,0.8)" }}>
               {isToday ? "✦ It's Today ✦" : "✦ Just Married ✦"}
             </p>

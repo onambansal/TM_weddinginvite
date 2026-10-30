@@ -53,6 +53,16 @@ function MarigoldPetal({ size, color }: { size: number; color: string }) {
 export default function FloatingPetals() {
   const reduceMotion = useReducedMotion();
   const [petals, setPetals] = useState<Petal[]>([]);
+  // Unmount the petal layer entirely while the tab is in the background so the
+  // 12 infinite transforms don't keep the compositor busy for an unseen page.
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const onVisibility = () => setVisible(!document.hidden);
+    onVisibility();
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
 
   useEffect(() => {
     // 12 petals: 4 far, 5 mid, 3 near — mostly background so the effect stays subtle
@@ -74,7 +84,7 @@ export default function FloatingPetals() {
     setPetals(generated);
   }, []);
 
-  if (reduceMotion) return null;
+  if (reduceMotion || !visible) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">

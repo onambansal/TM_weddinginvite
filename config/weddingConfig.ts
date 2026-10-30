@@ -8,8 +8,8 @@ export const weddingConfig = {
   bride: {
     fullName: "Mansi Gupta",
     firstName: "Mansi",
-    father: "Shri ABC Gupta",
-    mother: "Smt. ABC Gupta",
+    father: "Shri Indu Prakash Gupta",
+    mother: "Smt. Suman Gupta",
     grandfather: "Shri ABC Gupta",
     grandmother: "Smt. ABC Gupta",
   },
@@ -64,7 +64,7 @@ export const weddingConfig = {
       titleHindi: "हल्दी",
       date: "4th December 2026",
       day: "Thursday",
-      time: "11:00 AM onwards",
+      time: "10:00 AM onwards",
       venue: "Vaishali Inn",
       address: "Vaishali, Ghaziabad",
       mapUrl: "https://maps.google.com/?q=Vaishali+Inn+Vaishali+Ghaziabad",
@@ -81,7 +81,7 @@ export const weddingConfig = {
       titleHindi: "घुड़चढ़ी",
       date: "5th December 2026",
       day: "Saturday",
-      time: "5:00 PM onwards",
+      time: "4:00 PM onwards",
       venue: "Vaishali Inn",
       address: "Vaishali, Ghaziabad",
       mapUrl: "https://maps.google.com/?q=Vaishali+Inn+Vaishali+Ghaziabad",
@@ -93,7 +93,7 @@ export const weddingConfig = {
       titleHindi: "विवाह",
       date: "5th December 2026",
       day: "Saturday",
-      time: "7:00 PM onwards",
+      time: "6:00 PM onwards",
       venue: "Wedding Crown",
       address: "Sector 76, Noida",
       mapUrl: "https://maps.google.com/?q=Wedding+Crown+Sector+76+Noida",
@@ -105,14 +105,12 @@ export const weddingConfig = {
   // ── Photo Gallery ────────────────────────────────────────
   //  Replace these with your own photos: drop files in /public and use "/photo1.jpg" etc.
   gallery: [
-    { src: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=900&q=80", caption: "A love story written in the stars" },
-    { src: "https://images.unsplash.com/photo-1519741497674-611481863552?w=900&q=80", caption: "Every moment with you is a treasure" },
-    { src: "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=900&q=80", caption: "Together is our favourite place to be" },
-    { src: "https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=900&q=80", caption: "You are my today and all of my tomorrows" },
-    { src: "https://images.unsplash.com/photo-1529636798458-92182e662485?w=900&q=80", caption: "In your arms I have found my home" },
-    { src: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=900&q=80", caption: "You complete me" },
-    { src: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=900&q=80", caption: "Our journey together" },
-    { src: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=900&q=80", caption: "Two hearts, one soul" },
+    { src: "/photo1.jpg", caption: "A love story written in the stars" },
+    { src: "/photo2.jpg", caption: "Every moment with you is a treasure" },
+    { src: "/photo3.jpg", caption: "Together is our favourite place to be" },
+    { src: "/photo4.jpg", caption: "You are my today and all of my tomorrows" },
+    { src: "/photo5.jpg", caption: "In your arms I have found my home" },
+    { src: "/photo6.jpg", caption: "You complete me" },
   ],
 
   // ── Couple photo for the hero screen (place file in /public) ──

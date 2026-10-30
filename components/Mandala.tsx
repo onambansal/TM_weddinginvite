@@ -27,7 +27,9 @@ export default function Mandala({ size = 900, color = "#C9A84C", opacity = 0.06,
   return (
     <motion.div
       className={`absolute left-1/2 top-1/2 pointer-events-none ${className}`}
-      style={{ width: size, height: size, x: "-50%", y: "-50%", opacity }}
+      // willChange promotes the rotating SVG to its own compositor layer once,
+      // so each frame is a GPU transform instead of re-stroking ~110 paths.
+      style={{ width: size, height: size, x: "-50%", y: "-50%", opacity, willChange: spin ? "transform" : undefined }}
       animate={spin && !reduceMotion ? { rotate: 360 } : undefined}
       transition={{ duration: spin, repeat: Infinity, ease: "linear" }}
       aria-hidden="true"

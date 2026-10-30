@@ -8,6 +8,7 @@ import CornerOrnament from "./CornerOrnament";
 import Heading from "./Heading";
 import Mandala from "./Mandala";
 import Motif, { type MotifName } from "./Motif";
+import { useNearViewport } from "@/lib/useNearViewport";
 
 const serif = "var(--font-cormorant), var(--font-playfair), Georgia, serif";
 
@@ -26,8 +27,10 @@ const TIMELINE = [
 }));
 
 export default function VenueDetails() {
+  const { ref: sectionRef, near } = useNearViewport<HTMLElement>();
   return (
     <section
+      ref={sectionRef}
       id="venues"
       className="relative py-24 px-4 overflow-hidden paper-grain vignette"
       style={{ background: "linear-gradient(180deg, #FFF8F0 0%, #F5EDE0 100%)" }}
@@ -36,7 +39,7 @@ export default function VenueDetails() {
         className="absolute inset-0 opacity-[0.06] pointer-events-none"
         style={{ backgroundImage: "radial-gradient(circle at 30% 30%, #C9A84C 1px, transparent 1px)", backgroundSize: "28px 28px" }}
       />
-      <Mandala size={1100} opacity={0.09} spin={170} />
+      <Mandala size={1100} opacity={0.09} spin={near ? 170 : 0} />
       <CornerOrnament color="#C9A84C" opacity={0.35} />
 
       {/* Header */}

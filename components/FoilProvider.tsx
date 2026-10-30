@@ -79,6 +79,8 @@ export default function FoilProvider() {
     // ── Smooth + idle drift ──
     let raf = 0;
     let t = 0;
+    let lastX = "";
+    let lastY = "";
     const tick = () => {
       t += 0.016;
       if (!hasInput.current) {
@@ -88,14 +90,28 @@ export default function FoilProvider() {
       }
       current.current.x += (target.current.x - current.current.x) * 0.08;
       current.current.y += (target.current.y - current.current.y) * 0.08;
-      root.style.setProperty("--foil-x", current.current.x.toFixed(2));
-      root.style.setProperty("--foil-y", current.current.y.toFixed(2));
+      // Only touch the DOM when the value actually changes at 2-dp precision.
+      // Once the lerp has settled (phone resting on a table, cursor still) this
+      // drops to zero style recalcs / repaints of every gold surface per frame.
+      const x = current.current.x.toFixed(2);
+      const y = current.current.y.toFixed(2);
+      if (x !== lastX) { root.style.setProperty("--foil-x", x); lastX = x; }
+      if (y !== lastY) { root.style.setProperty("--foil-y", y); lastY = y; }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
 
+    // Stop the loop entirely while the tab is in the background (browsers throttle
+    // rAF there, but not to zero) and pick up where we left off on return.
+    const onVisibility = () => {
+      cancelAnimationFrame(raf);
+      if (!document.hidden) raf = requestAnimationFrame(tick);
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
     return () => {
       cancelAnimationFrame(raf);
+      document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("pointermove", onPointer);
       window.removeEventListener("deviceorientation", onOrient);
       window.removeEventListener("pointerdown", requestGyro);

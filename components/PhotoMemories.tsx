@@ -11,6 +11,7 @@ import SectionDivider from "./SectionDivider";
 import CornerOrnament from "./CornerOrnament";
 import Heading from "./Heading";
 import Mandala from "./Mandala";
+import { useNearViewport } from "@/lib/useNearViewport";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -26,9 +27,11 @@ export default function PhotoMemories() {
   const [selected, setSelected] = useState<number | null>(null);
   const photos = gallery.map((p, i) => ({ id: i + 1, ...p }));
   const selectedPhoto = selected !== null ? photos.find((p) => p.id === selected) : undefined;
+  const { ref: sectionRef, near } = useNearViewport<HTMLElement>();
 
   return (
     <section
+      ref={sectionRef}
       id="memories"
       className="relative py-24 px-4 overflow-hidden paper-grain vignette"
       style={{ background: "linear-gradient(180deg, #FFF8F0 0%, #F5EDE0 100%)" }}
@@ -37,7 +40,7 @@ export default function PhotoMemories() {
         className="absolute inset-0 opacity-[0.06] pointer-events-none"
         style={{ backgroundImage: "radial-gradient(circle at 30% 30%, #C9A84C 1px, transparent 1px)", backgroundSize: "28px 28px" }}
       />
-      <Mandala size={1100} opacity={0.09} spin={170} />
+      <Mandala size={1100} opacity={0.09} spin={near ? 170 : 0} />
       <CornerOrnament color="#C9A84C" opacity={0.35} />
 
       <div className="relative z-10 max-w-3xl mx-auto">

@@ -12,23 +12,27 @@ import Magnetic from "./Magnetic";
 import LightBeam from "./LightBeam";
 import ShareKeepsake from "./ShareKeepsake";
 import { tap, HAPTIC } from "@/lib/haptics";
+import { useNearViewport } from "@/lib/useNearViewport";
 
 const serif = "var(--font-cormorant), var(--font-playfair), Georgia, serif";
 
 export default function RSVPSection() {
   const reduceMotion = useReducedMotion();
+  const { ref: sectionRef, near } = useNearViewport<HTMLElement>();
+  const ambient = near && !reduceMotion;
   // wa.me expects digits only
   const whatsappUrl = `https://wa.me/${rsvp.whatsappNumber.replace(/\D/g, "")}?text=${encodeURIComponent(rsvp.message)}`;
 
   return (
     <section
+      ref={sectionRef}
       id="rsvp"
       className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4 paper-grain vignette-dark"
       style={{
         background: "linear-gradient(160deg, #2A0608 0%, #4A0A12 35%, #6B0F1A 65%, #2A0608 100%)",
       }}
     >
-      <Mandala size={1000} opacity={0.07} spin={140} />
+      <Mandala size={1000} opacity={0.07} spin={ambient ? 140 : 0} />
       <LightBeam intensity={0.2} />
       <div
         className="absolute inset-0 pointer-events-none"
@@ -36,7 +40,7 @@ export default function RSVPSection() {
       />
 
       {/* Golden particles */}
-      {!reduceMotion && (
+      {ambient && (
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {[...Array(20)].map((_, i) => (
             <motion.div
@@ -79,7 +83,7 @@ export default function RSVPSection() {
         <motion.div
           className="flex justify-center mb-6"
           style={{ filter: "drop-shadow(0 2px 12px rgba(201,168,76,0.45))" }}
-          animate={reduceMotion ? undefined : { y: [0, -5, 0] }}
+          animate={ambient ? { y: [0, -5, 0] } : undefined}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         >
           <Motif name="kalash" size={64} color="#E8C97A" />

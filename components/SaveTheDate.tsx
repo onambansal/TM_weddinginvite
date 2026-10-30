@@ -5,6 +5,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Music } from "lucide-react";
 import { weddingConfig } from "@/config/weddingConfig";
 import { enter } from "@/lib/motion";
+import { useNearViewport } from "@/lib/useNearViewport";
 import CornerOrnament from "./CornerOrnament";
 import SectionDivider from "./SectionDivider";
 import Heading from "./Heading";
@@ -132,6 +133,7 @@ export default function SaveTheDate() {
   const [shower, setShower] = useState(false);
   const allRevealed = revealCount >= 3;
   const handleReveal = () => setRevealCount((c) => c + 1);
+  const { ref: sectionRef, near } = useNearViewport<HTMLElement>();
 
   // Full-screen gold-dust shower the moment the last card is turned
   useEffect(() => {
@@ -143,6 +145,7 @@ export default function SaveTheDate() {
 
   return (
     <section
+      ref={sectionRef}
       id="save-the-date"
       className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 paper-grain vignette"
       style={{ background: "linear-gradient(180deg, #FFF8F0 0%, #F5EDE0 100%)" }}
@@ -157,7 +160,7 @@ export default function SaveTheDate() {
           backgroundSize: "40px 40px",
         }}
       />
-      <Mandala size={1000} opacity={0.1} spin={150} />
+      <Mandala size={1000} opacity={0.1} spin={near ? 150 : 0} />
       <div className="absolute inset-4 md:inset-6 rounded-3xl pointer-events-none hairline-glow-soft" />
       <CornerOrnament color="#C9A84C" opacity={0.4} />
 

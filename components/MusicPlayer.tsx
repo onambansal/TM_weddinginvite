@@ -29,6 +29,43 @@ const MusicPlayer = forwardRef<MusicPlayerHandle>((_, ref) => {
     },
   }));
 
+  /**
+   * Deferred buffering. The <audio> is `preload="none"` so the (large) track
+   * never competes with fonts, JS and the card image for first paint. We kick
+   * off the download once the page is idle — or on the guest's first touch,
+   * whichever comes first — so it is buffered by the time the envelope opens.
+   * Guests with Data Saver on only download when they actually tap play.
+   */
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    if (conn?.saveData) return;
+
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
+      audio.preload = "auto";
+      audio.load();
+      cleanup();
+    };
+    // requestIdleCallback is missing on Safari — fall back to a plain timeout
+    const hasIdle = typeof window.requestIdleCallback === "function";
+    const idle: number = hasIdle
+      ? window.requestIdleCallback(start, { timeout: 4000 })
+      : window.setTimeout(start, 2500);
+    const cleanup = () => {
+      if (hasIdle) window.cancelIdleCallback(idle);
+      else window.clearTimeout(idle);
+      window.removeEventListener("pointerdown", start);
+      window.removeEventListener("touchstart", start);
+    };
+    window.addEventListener("pointerdown", start, { passive: true });
+    window.addEventListener("touchstart", start, { passive: true });
+    return cleanup;
+  }, []);
+
   // Show tooltip hint after 2s if music hasn't started
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -57,7 +94,7 @@ const MusicPlayer = forwardRef<MusicPlayerHandle>((_, ref) => {
   return (
     <>
       {/* Audio element — source from config, loops */}
-      <audio ref={audioRef} loop preload="auto">
+      <audio ref={audioRef} loop preload="none">
         <source src={weddingConfig.music.src} type="audio/mpeg" />
       </audio>
 

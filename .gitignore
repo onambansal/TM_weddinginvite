@@ -20,6 +20,9 @@
 .DS_Store
 *.pem
 
+# full-resolution photo originals (optimised copies live in /public)
+/public/_originals/
+
 # debug
 npm-debug.log*
 yarn-debug.log*

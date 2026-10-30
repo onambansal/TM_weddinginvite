@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import type { Ceremony } from "@/config/weddingConfig";
 import { enter, VIEWPORT_ONCE } from "@/lib/motion";
+import { useNearViewport } from "@/lib/useNearViewport";
 import CeremonyDetails from "./CeremonyDetails";
 import CornerOrnament from "./CornerOrnament";
 import SectionDivider from "./SectionDivider";
@@ -73,7 +74,10 @@ export default function CeremonyCard(props: CeremonyCardProps) {
   } = props;
 
   const reduceMotion = useReducedMotion();
-  const count = reduceMotion ? 0 : particleCount;
+  // Ambient decoration only runs while this section is on (or one screen from) the viewport
+  const { ref: sectionRef, near } = useNearViewport<HTMLElement>();
+  const ambient = near && !reduceMotion;
+  const count = ambient ? particleCount : 0;
 
   const bodyBg = dark
     ? "linear-gradient(160deg, #1A0507 0%, #2C0A0A 100%)"
@@ -83,6 +87,7 @@ export default function CeremonyCard(props: CeremonyCardProps) {
 
   return (
     <section
+      ref={sectionRef}
       id={id}
       className={`relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4 paper-grain ${dark ? "vignette-dark" : "vignette"}`}
       style={{ background: sectionBackground }}
@@ -92,14 +97,14 @@ export default function CeremonyCard(props: CeremonyCardProps) {
       {/* Scroll-driven light shaft (softer on ivory) */}
       <LightBeam intensity={dark ? 0.2 : 0.12} />
 
-      {/* Depth layer 1 — mandala, furthest back, lags the most */}
+      {/* Depth layer 1 — mandala, furthest back, lags the most (spins only while near the viewport) */}
       <Parallax depth={0.35} range={160} className="absolute inset-0 pointer-events-none">
-        <Mandala size={1000} color={mandalaColor} opacity={mandalaOpacity} spin={140} />
+        <Mandala size={1000} color={mandalaColor} opacity={mandalaOpacity} spin={ambient ? 140 : 0} />
       </Parallax>
 
       {/* Ambient particles (mid depth) — or a custom layer such as lanterns */}
       <Parallax depth={0.6} range={120} className="absolute inset-0 overflow-hidden pointer-events-none">
-        {particles ?? Array.from({ length: count }).map((_, i) => (
+        {ambient && (particles ?? Array.from({ length: count }).map((_, i) => (
           <motion.div
             key={i}
             className="absolute rounded-full"
@@ -113,7 +118,7 @@ export default function CeremonyCard(props: CeremonyCardProps) {
             animate={{ opacity: [0.15, 0.75, 0.15], scale: [0.8, 1.4, 0.8] }}
             transition={{ duration: 2.5 + (i % 4), repeat: Infinity, delay: i * 0.22, ease: "easeInOut" }}
           />
-        ))}
+        )))}
       </Parallax>
 
       {/* Hairline frame + corner flourishes — glowing, mid depth */}
@@ -139,18 +144,18 @@ export default function CeremonyCard(props: CeremonyCardProps) {
         {/* Breathing wrapper — 1.000→1.008 over 6s, glow pulses in step */}
         <motion.div
           className="relative"
-          animate={reduceMotion ? undefined : { scale: [1, 1.008, 1] }}
+          animate={ambient ? { scale: [1, 1.008, 1] } : undefined}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         >
           {/* Soft outer gold glow (breathes) */}
           <motion.div
             className="absolute -inset-[3px] rounded-[1.6rem] blur-md"
-            style={{ background: "linear-gradient(135deg, #C9A84C, #E8C97A, #C9A84C)" }}
-            animate={reduceMotion ? undefined : { opacity: [0.42, 0.62, 0.42] }}
+            style={{ background: "linear-gradient(135deg, #C9A84C, #E8C97A, #C9A84C)", opacity: reduceMotion ? undefined : 0.42 }}
+            animate={ambient ? { opacity: [0.42, 0.62, 0.42] } : undefined}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           />
           {/* Twinkling stars catching the card's gold edge */}
-          <Sparkles count={12} distribution="edges" seed={id.length * 17} minSize={6} maxSize={13} className="-inset-3" />
+          {ambient && <Sparkles count={12} distribution="edges" seed={id.length * 17} minSize={6} maxSize={13} className="-inset-3" />}
 
         <div
           className="relative rounded-3xl overflow-hidden"
@@ -190,7 +195,7 @@ export default function CeremonyCard(props: CeremonyCardProps) {
           <div className="py-8 px-7 text-center">
             <motion.div
               className="flex justify-center mb-3"
-              animate={reduceMotion ? undefined : { y: [0, -5, 0] }}
+              animate={ambient ? { y: [0, -5, 0] } : undefined}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               style={{ filter: `drop-shadow(0 2px 10px ${accent}66)` }}
             >

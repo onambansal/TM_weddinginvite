@@ -25,6 +25,8 @@ export default function ThankYouSection() {
   const reduceMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(sectionRef, { amount: 0.55, once: true });
+  // Ambient decoration (mandala spin, diya flicker) only while on / one screen from the viewport
+  const near = useInView(sectionRef, { margin: "100% 0px 100% 0px" });
 
   // ── Lamp-lighting: diyas light left → right once the section is mostly in view
   const [litCount, setLitCount] = useState(0);
@@ -89,12 +91,12 @@ export default function ThankYouSection() {
         }}
       />
 
-      <Mandala size={1000} opacity={0.1} spin={150} />
+      <Mandala size={1000} opacity={0.1} spin={near ? 150 : 0} />
 
       {/* Row of diyas along the bottom — unlit until the section arrives, then lit left → right */}
       <div className="absolute inset-x-0 bottom-[7%] flex justify-around items-end px-6 pointer-events-none">
         {FLICKER.map((f, i) => (
-          <LitDiya key={i} lit={i < litCount} size={i % 2 === 0 ? 32 : 26} flicker={f} />
+          <LitDiya key={i} lit={i < litCount} size={i % 2 === 0 ? 32 : 26} flicker={f} paused={!near} />
         ))}
       </div>
       {/* Soft "all lit" bloom across the floor once the last lamp catches */}

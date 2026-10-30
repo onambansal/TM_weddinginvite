@@ -6,6 +6,7 @@ import { ChevronDown } from "lucide-react";
 import { bride, groom, couplePhoto } from "@/config/weddingConfig";
 import { EASE_LUX } from "@/lib/motion";
 import { useWeddingDay } from "@/lib/useWeddingDay";
+import { useNearViewport } from "@/lib/useNearViewport";
 import CornerOrnament from "./CornerOrnament";
 import SectionDivider from "./SectionDivider";
 import Motif from "./Motif";
@@ -35,9 +36,13 @@ export default function CoupleHero() {
   const { phase } = useWeddingDay();
   const tagline = phase === "today" ? "are getting married today" : phase === "after" ? "are married" : "are getting married";
   const hint = phase === "before" ? "Scroll to discover the day" : "Scroll to relive the celebration";
+  // Ambient decoration pauses once the guest has scrolled well past the hero
+  const { ref: sectionRef, near } = useNearViewport<HTMLElement>();
+  const ambient = near && !reduceMotion;
 
   return (
     <section
+      ref={sectionRef}
       id="couple"
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden py-20 px-6 paper-grain vignette-dark"
       style={{ background: "linear-gradient(160deg, #1A0507 0%, #4A0A12 40%, #6B0F1A 70%, #2A0608 100%)" }}
@@ -46,7 +51,7 @@ export default function CoupleHero() {
 
       {/* Depth 1 — mandala */}
       <Parallax depth={0.35} range={160} className="absolute inset-0 pointer-events-none">
-        <Mandala size={1100} opacity={0.08} spin={160} />
+        <Mandala size={1100} opacity={0.08} spin={ambient ? 160 : 0} />
       </Parallax>
 
       {/* Soft gold glows — the main one follows the foil light source */}
@@ -62,7 +67,7 @@ export default function CoupleHero() {
       />
 
       {/* Depth 2 — ambient gold dust */}
-      {!reduceMotion && (
+      {ambient && (
         <Parallax depth={0.6} range={120} className="absolute inset-0 pointer-events-none overflow-hidden">
           {Array.from({ length: 26 }).map((_, i) => (
             <motion.div
@@ -113,7 +118,7 @@ export default function CoupleHero() {
           <motion.div
             className="absolute -inset-3 rounded-[50%]"
             style={{ border: "1px dashed rgba(201,168,76,0.45)" }}
-            animate={reduceMotion ? undefined : { rotate: 360 }}
+            animate={ambient ? { rotate: 360 } : undefined}
             transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
           />
           {/* Gold bezel — live foil; highlight slides with device tilt */}
@@ -122,7 +127,7 @@ export default function CoupleHero() {
             style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 10px 1px rgba(201,168,76,0.35)" }}
           />
           {/* Specular arc — a bright sliver travels around the rim every ~8s */}
-          {!reduceMotion && (
+          {ambient && (
             <motion.div
               className="absolute -inset-1 rounded-[50%] pointer-events-none"
               style={{
@@ -136,7 +141,7 @@ export default function CoupleHero() {
             />
           )}
           {/* Star sparkles catching the gold bezel */}
-          <Sparkles count={10} distribution="edges" seed={5} minSize={6} maxSize={13} className="-inset-2" />
+          {ambient && <Sparkles count={10} distribution="edges" seed={5} minSize={6} maxSize={13} className="-inset-2" />}
           <div className="absolute inset-0.5 rounded-[50%] overflow-hidden" style={{ background: "#2A0608" }}>
             <Image
               src={couplePhoto}
@@ -152,7 +157,7 @@ export default function CoupleHero() {
 
         {/* Names — written by a gold pen, groom first */}
         <div className="relative inline-block">
-          <Sparkles count={16} distribution="everywhere" seed={21} minSize={5} maxSize={12} />
+          {ambient && <Sparkles count={16} distribution="everywhere" seed={21} minSize={5} maxSize={12} />}
           <div className="relative flex flex-col items-center">
             <HandwrittenName text={groom.firstName} duration={1.6} delay={1.0} fontSize={nameStyle.fontSize as string} />
             <motion.div
@@ -192,7 +197,7 @@ export default function CoupleHero() {
       <motion.div
         className="absolute bottom-6 left-1/2 -translate-x-1/2"
         style={{ color: "rgba(201,168,76,0.6)" }}
-        animate={reduceMotion ? undefined : { y: [0, 8, 0] }}
+        animate={ambient ? { y: [0, 8, 0] } : undefined}
         transition={{ duration: 2, repeat: Infinity }}
       >
         <ChevronDown className="w-6 h-6" />

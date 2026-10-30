@@ -6,6 +6,9 @@ import dynamic from "next/dynamic";
 
 // Envelope intro — loaded dynamically (client-only)
 const EnvelopeIntro = dynamic(() => import("@/components/EnvelopeIntro"), { ssr: false });
+// Photo gallery pulls in Swiper (+ its CSS); it's 7 screens down, so it is
+// split into its own chunk and fetched after the first paint instead of before it.
+const PhotoMemories = dynamic(() => import("@/components/PhotoMemories"), { ssr: false });
 
 import FloatingPetals from "@/components/FloatingPetals";
 import FoilProvider from "@/components/FoilProvider";
@@ -23,7 +26,6 @@ import HaldiSection from "@/components/HaldiSection";
 import GhurChariSection from "@/components/GhurChariSection";
 import WeddingCeremony from "@/components/WeddingCeremony";
 import VenueDetails from "@/components/VenueDetails";
-import PhotoMemories from "@/components/PhotoMemories";
 import RSVPSection from "@/components/RSVPSection";
 import ThankYouSection from "@/components/ThankYouSection";
 

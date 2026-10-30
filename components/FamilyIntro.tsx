@@ -8,6 +8,7 @@ import SectionDivider from "./SectionDivider";
 import Motif from "./Motif";
 import Ampersand from "./Ampersand";
 import Mandala from "./Mandala";
+import { useNearViewport } from "@/lib/useNearViewport";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -19,8 +20,10 @@ const fadeUp: Variants = {
 };
 
 export default function FamilyIntro() {
+  const { ref: sectionRef, near } = useNearViewport<HTMLElement>();
   return (
     <section
+      ref={sectionRef}
       id="family"
       className="relative min-h-screen flex items-center justify-center py-16 px-6 overflow-hidden paper-grain vignette"
       style={{
@@ -39,7 +42,7 @@ export default function FamilyIntro() {
         }}
       />
 
-      <Mandala size={1000} opacity={0.1} spin={150} />
+      <Mandala size={1000} opacity={0.1} spin={near ? 150 : 0} />
 
       {/* Hairline frame + corner flourishes */}
       <div className="absolute inset-4 md:inset-6 rounded-3xl pointer-events-none hairline-glow-soft" />
@@ -71,14 +74,54 @@ export default function FamilyIntro() {
           <p className="text-xl font-devanagari" lang="hi" style={{ color: "#C9A84C", letterSpacing: "0.06rem" }}>
             ॐ गं गणपतये नमः
           </p>
+          {/* A line for the couple */}
+          <p
+            className="italic mt-4 px-4"
+            style={{ fontFamily: "var(--font-cormorant), var(--font-playfair), Georgia, serif", fontSize: "1.05rem", color: "#8B6355", lineHeight: 1.5 }}
+          >
+            &ldquo;By the grace of the Almighty, two hearts are about to tie a pious knot.&rdquo;
+          </p>
         </motion.div>
 
         {/* Gold divider */}
         <SectionDivider color="#C9A84C" width={220} className="my-3" />
 
+        {/* Invitation from the groom's grandparents */}
+        <motion.div
+          className="pt-4 pb-2 flex flex-col gap-1.5"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={fadeUp}
+          custom={1}
+        >
+          <p
+            className="italic text-sm"
+            style={{ fontFamily: "var(--font-cormorant), var(--font-playfair), Georgia, serif", color: "#8B6355" }}
+          >
+            With the heavenly blessings of
+          </p>
+          <div
+            className="flex flex-wrap items-center justify-center gap-1"
+            style={{ fontFamily: "var(--font-cormorant), var(--font-playfair), Georgia, serif", fontSize: "1.1rem", color: "#5C3D2E" }}
+          >
+            <span className="font-medium" style={{ color: "#2C1810" }}>{groom.grandfather}</span>
+            <Ampersand size="1.35em" />
+            <span className="font-medium" style={{ color: "#2C1810" }}>{groom.grandmother}</span>
+          </div>
+          <p
+            className="italic text-sm px-4"
+            style={{ fontFamily: "var(--font-cormorant), var(--font-playfair), Georgia, serif", color: "#8B6355", lineHeight: 1.5 }}
+          >
+            we invite you to the auspicious occasion of the
+            <br />
+            Wedding Ceremony of their Grandson
+          </p>
+        </motion.div>
+
         {/* Groom's Side */}
         <motion.div
-          className="py-6"
+          className="pt-2 pb-6"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
@@ -106,15 +149,6 @@ export default function FamilyIntro() {
               <span className="font-medium" style={{ color: "#2C1810" }}>{groom.father}</span>
               <Ampersand size="1.35em" />
               <span className="font-medium" style={{ color: "#2C1810" }}>{groom.mother}</span>
-            </div>
-            <div
-              className="flex flex-wrap items-center justify-center gap-1"
-              style={{ fontFamily: "var(--font-cormorant), var(--font-playfair), Georgia, serif", fontSize: "1.1rem", color: "#5C3D2E" }}
-            >
-              <span className="italic text-sm" style={{ color: "#8B6355" }}>Grandson of</span>
-              <span className="font-medium" style={{ color: "#2C1810" }}>{groom.grandfather}</span>
-              <Ampersand size="1.35em" />
-              <span className="font-medium" style={{ color: "#2C1810" }}>{groom.grandmother}</span>
             </div>
           </div>
         </motion.div>
@@ -171,15 +205,6 @@ export default function FamilyIntro() {
               <span className="font-medium" style={{ color: "#2C1810" }}>{bride.father}</span>
               <Ampersand size="1.35em" />
               <span className="font-medium" style={{ color: "#2C1810" }}>{bride.mother}</span>
-            </div>
-            <div
-              className="flex flex-wrap items-center justify-center gap-1"
-              style={{ fontFamily: "var(--font-cormorant), var(--font-playfair), Georgia, serif", fontSize: "1.1rem", color: "#5C3D2E" }}
-            >
-              <span className="italic text-sm" style={{ color: "#8B6355" }}>Granddaughter of</span>
-              <span className="font-medium" style={{ color: "#2C1810" }}>{bride.grandfather}</span>
-              <Ampersand size="1.35em" />
-              <span className="font-medium" style={{ color: "#2C1810" }}>{bride.grandmother}</span>
             </div>
           </div>
         </motion.div>

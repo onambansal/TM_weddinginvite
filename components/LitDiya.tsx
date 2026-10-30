@@ -10,15 +10,21 @@ interface LitDiyaProps {
   color?: string;
   /** Per-lamp flicker period so they don't sync */
   flicker?: number;
+  /**
+   * Freeze the infinite flicker loops (lamp stays lit, flame and glow hold
+   * their resting pose). Used while the section is scrolled out of view.
+   */
+  paused?: boolean;
 }
 
 /**
  * A diya that starts unlit (bowl only, dim) and, when `lit` flips true,
  * sparks, grows a flame and settles into a breathing glow.
  */
-export default function LitDiya({ lit, size = 28, color = "#C9A84C", flicker = 0.3 }: LitDiyaProps) {
+export default function LitDiya({ lit, size = 28, color = "#C9A84C", flicker = 0.3, paused = false }: LitDiyaProps) {
   const reduceMotion = useReducedMotion();
   const s = { stroke: color, strokeWidth: 1.5, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, fill: "none" };
+  const flickering = lit && !paused && !reduceMotion;
 
   return (
     <div className="relative" style={{ width: size, height: size }}>
@@ -27,16 +33,16 @@ export default function LitDiya({ lit, size = 28, color = "#C9A84C", flicker = 0
         className="absolute left-1/2 rounded-full pointer-events-none"
         style={{ width: size * 2.6, height: size * 1.2, bottom: -size * 0.2, x: "-50%", background: "radial-gradient(ellipse, rgba(232,201,122,0.45), transparent 70%)" }}
         initial={{ opacity: 0, scale: 0.4 }}
-        animate={lit ? { opacity: [0.5, 0.85, 0.55, 0.8, 0.5], scale: 1 } : { opacity: 0, scale: 0.4 }}
-        transition={lit ? { opacity: { duration: flicker * 5, repeat: Infinity, ease: "easeInOut" }, scale: { duration: 0.8, ease: EASE_LUX } } : { duration: 0.3 }}
+        animate={lit ? { opacity: flickering ? [0.5, 0.85, 0.55, 0.8, 0.5] : 0.65, scale: 1 } : { opacity: 0, scale: 0.4 }}
+        transition={lit ? { opacity: flickering ? { duration: flicker * 5, repeat: Infinity, ease: "easeInOut" } : { duration: 0.4 }, scale: { duration: 0.8, ease: EASE_LUX } } : { duration: 0.3 }}
       />
       {/* Halo around the flame */}
       <motion.span
         className="absolute left-1/2 rounded-full pointer-events-none"
         style={{ width: size * 1.3, height: size * 1.3, top: -size * 0.1, x: "-50%", background: "radial-gradient(circle, rgba(255,241,201,0.7), rgba(232,201,122,0.3) 45%, transparent 70%)" }}
         initial={{ opacity: 0, scale: 0 }}
-        animate={lit ? { opacity: [0.6, 1, 0.7, 0.95, 0.6], scale: [0.95, 1.15, 1, 1.1, 0.95] } : { opacity: 0, scale: 0 }}
-        transition={lit ? { duration: flicker * 4, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
+        animate={lit ? (flickering ? { opacity: [0.6, 1, 0.7, 0.95, 0.6], scale: [0.95, 1.15, 1, 1.1, 0.95] } : { opacity: 0.85, scale: 1.05 }) : { opacity: 0, scale: 0 }}
+        transition={lit ? (flickering ? { duration: flicker * 4, repeat: Infinity, ease: "easeInOut" } : { duration: 0.4 }) : { duration: 0.3 }}
       />
 
       <svg width={size} height={size} viewBox="0 0 64 64" className="relative" aria-hidden="true">
@@ -69,7 +75,7 @@ export default function LitDiya({ lit, size = 28, color = "#C9A84C", flicker = 0
         >
         <motion.g
           style={{ transformBox: "fill-box", transformOrigin: "50% 100%" }}
-          animate={lit && !reduceMotion ? { scaleY: [1, 1.06, 0.96, 1.04, 1], scaleX: [1, 0.97, 1.03, 0.98, 1], x: [0, 0.6, -0.5, 0.4, 0] } : undefined}
+          animate={flickering ? { scaleY: [1, 1.06, 0.96, 1.04, 1], scaleX: [1, 0.97, 1.03, 0.98, 1], x: [0, 0.6, -0.5, 0.4, 0] } : undefined}
           transition={{ duration: flicker, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
         >
           <path d="M32 10c-4 6-6 10-6 14 0 4 3 7 6 7s6-3 6-7c0-4-2-8-6-14z" fill="rgba(255,241,201,0.25)" stroke={color} strokeWidth="1.5" strokeLinejoin="round" />
