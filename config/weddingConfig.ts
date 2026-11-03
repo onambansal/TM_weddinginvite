@@ -23,6 +23,9 @@ export const weddingConfig = {
     grandmother: "Late Smt. Susheela Devi",
   },
 
+  // ── Wedding hashtag (rendered as #TanMan everywhere) ─────
+  hashtag: "TanMan",
+
   // ── Wedding Date ─────────────────────────────────────────
   weddingDate: "2026-12-05T00:00:00",   // ISO format — used for countdown timer
   weddingDateDisplay: "5th December 2026",
@@ -170,7 +173,7 @@ export const weddingConfig = {
 } as const;
 
 // Convenience shorthand
-export const { bride, groom, ceremonies, venues, rsvp, gallery, couplePhoto, weddingDateDisplay, weddingDay, weddingDate } = weddingConfig;
+export const { bride, groom, ceremonies, venues, rsvp, gallery, couplePhoto, weddingDateDisplay, weddingDay, weddingDate, hashtag } = weddingConfig;
 
 /**
  * Shape shared by every ceremony entry — handy for generic components.

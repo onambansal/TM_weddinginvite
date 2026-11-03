@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useInView } from "framer-motion";
-import { bride, groom, weddingDateDisplay, ceremonies } from "@/config/weddingConfig";
+import { bride, groom, weddingDateDisplay, ceremonies, hashtag } from "@/config/weddingConfig";
 import CornerOrnament from "./CornerOrnament";
 import SectionDivider from "./SectionDivider";
 import Motif from "./Motif";
@@ -154,6 +154,22 @@ export default function ThankYouSection() {
           <Ampersand size="1.7rem" />
           <p className="text-3xl md:text-4xl text-maroon" style={{ fontFamily: "var(--font-great-vibes), cursive" }}>
             {bride.firstName}
+          </p>
+        </motion.div>
+
+        {/* Wedding hashtag — where guests need it, when they post afterwards */}
+        <motion.div
+          className="-mt-3 mb-2"
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5, duration: 0.6 }}
+        >
+          <p className="italic text-sm mb-1.5" style={{ fontFamily: serif, color: "#8B6355" }}>
+            Share your moments with us
+          </p>
+          <p className="text-gold-foil font-poppins font-semibold tracking-[0.25em]" style={{ fontSize: "1.05rem" }}>
+            #{hashtag}
           </p>
         </motion.div>
 

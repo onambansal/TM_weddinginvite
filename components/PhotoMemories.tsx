@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ZoomIn } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
-import { gallery } from "@/config/weddingConfig";
+import { gallery, hashtag } from "@/config/weddingConfig";
 import SectionDivider from "./SectionDivider";
 import CornerOrnament from "./CornerOrnament";
 import Heading from "./Heading";
@@ -103,7 +103,9 @@ export default function PhotoMemories() {
         </motion.div>
 
         {/* Masonry grid */}
-        <p className="text-center text-maroon/50 text-xs font-poppins tracking-[0.3em] uppercase mb-5">Tap any photo to view</p>
+        <p className="text-center text-maroon/50 text-xs font-poppins tracking-[0.3em] uppercase mb-5">
+          Tap any photo to view <span className="mx-1.5 text-gold/60">·</span> <span className="text-gold normal-case tracking-[0.2em]">#{hashtag}</span>
+        </p>
         <div className="columns-2 md:columns-3 gap-4">
           {photos.map((photo, i) => (
             <motion.button

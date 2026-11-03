@@ -8,7 +8,7 @@ export const dynamic = "force-static";
  * Names, date, venue, monogram on maroon & gold. Guests share it onward.
  */
 export async function GET() {
-  const { bride, groom, weddingDateDisplay, weddingDay, ceremonies } = weddingConfig;
+  const { bride, groom, weddingDateDisplay, weddingDay, ceremonies, hashtag } = weddingConfig;
   const g = groom.firstName[0];
   const b = bride.firstName[0];
 
@@ -65,6 +65,22 @@ export async function GET() {
         <div style={{ fontSize: 34, marginTop: 70, color: "rgba(255,248,240,0.85)", display: "flex" }}>{ceremonies.wedding.venue}</div>
         <div style={{ fontSize: 26, marginTop: 8, letterSpacing: 4, textTransform: "uppercase", color: "rgba(255,248,240,0.55)", display: "flex" }}>
           {ceremonies.wedding.address}
+        </div>
+
+        {/* Wedding hashtag — gold pill so it survives being forwarded on Stories */}
+        <div
+          style={{
+            display: "flex",
+            marginTop: 70,
+            padding: "16px 44px",
+            borderRadius: 999,
+            border: "2px solid rgba(201,168,76,0.7)",
+            fontSize: 40,
+            letterSpacing: 8,
+            color: "#E8C97A",
+          }}
+        >
+          #{hashtag}
         </div>
       </div>
     ),

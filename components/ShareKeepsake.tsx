@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Share2, Download, Check } from "lucide-react";
-import { bride, groom, weddingDateDisplay } from "@/config/weddingConfig";
+import { bride, groom, weddingDateDisplay, hashtag } from "@/config/weddingConfig";
 import { tap, HAPTIC } from "@/lib/haptics";
 import Magnetic from "./Magnetic";
 
@@ -15,7 +15,7 @@ type State = "idle" | "busy" | "done";
  */
 export default function ShareKeepsake() {
   const [state, setState] = useState<State>("idle");
-  const title = `${groom.firstName} & ${bride.firstName} — ${weddingDateDisplay}`;
+  const title = `${groom.firstName} & ${bride.firstName} — ${weddingDateDisplay} · #${hashtag}`;
 
   const handle = async () => {
     if (state === "busy") return;

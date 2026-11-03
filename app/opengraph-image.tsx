@@ -10,7 +10,7 @@ export const contentType = "image/png";
  * Generated at build/request time — no image file to maintain.
  */
 export default function OpenGraphImage() {
-  const { bride, groom, weddingDateDisplay, ceremonies } = weddingConfig;
+  const { bride, groom, weddingDateDisplay, ceremonies, hashtag } = weddingConfig;
 
   return new ImageResponse(
     (
@@ -69,6 +69,7 @@ export default function OpenGraphImage() {
         <div style={{ fontSize: 22, marginTop: 10, color: "rgba(255,248,240,0.7)", letterSpacing: 4, textTransform: "uppercase", display: "flex" }}>
           {ceremonies.wedding.venue} · {ceremonies.wedding.address}
         </div>
+        <div style={{ fontSize: 24, marginTop: 22, color: "#E8C97A", letterSpacing: 6, display: "flex" }}>#{hashtag}</div>
       </div>
     ),
     { ...size },

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { bride, groom, couplePhoto } from "@/config/weddingConfig";
+import { bride, groom, couplePhoto, hashtag } from "@/config/weddingConfig";
 import { EASE_LUX } from "@/lib/motion";
 import { useWeddingDay } from "@/lib/useWeddingDay";
 import { useNearViewport } from "@/lib/useNearViewport";
@@ -183,12 +183,28 @@ export default function CoupleHero() {
         >
           {tagline}
         </motion.p>
+
+        {/* Wedding hashtag — a small foil-stamped pill under the names */}
+        <motion.p
+          className="inline-flex items-center mt-5 px-4 py-1.5 rounded-full font-poppins text-xs tracking-[0.25em]"
+          style={{
+            border: "1px solid rgba(201,168,76,0.55)",
+            boxShadow: "0 0 14px rgba(201,168,76,0.18), inset 0 0 0 1px rgba(201,168,76,0.15)",
+            background: "rgba(42,6,8,0.35)",
+          }}
+          initial={{ opacity: 0, y: 8, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ delay: 4.9, duration: 0.8, ease: EASE_LUX }}
+        >
+          <span className="text-gold-foil font-semibold">#{hashtag}</span>
+        </motion.p>
+
         <motion.p
           className="uppercase tracking-[0.35em] text-xs font-poppins mt-4"
           style={{ color: "rgba(232,201,122,0.75)" }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 5.0, duration: 0.8 }}
+          transition={{ delay: 5.4, duration: 0.8 }}
         >
           {hint}
         </motion.p>

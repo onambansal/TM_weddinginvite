@@ -105,9 +105,9 @@ export default function FamilyIntro() {
             className="flex flex-wrap items-center justify-center gap-1"
             style={{ fontFamily: "var(--font-cormorant), var(--font-playfair), Georgia, serif", fontSize: "1.1rem", color: "#5C3D2E" }}
           >
-            <span className="font-medium" style={{ color: "#2C1810" }}>{groom.grandfather}</span>
-            <Ampersand size="1.35em" />
             <span className="font-medium" style={{ color: "#2C1810" }}>{groom.grandmother}</span>
+            <span className="italic text-sm" style={{ color: "#8B6355" }}>wife of</span>
+            <span className="font-medium" style={{ color: "#2C1810" }}>{groom.grandfather}</span>
           </div>
           <p
             className="italic text-sm px-4"
@@ -146,9 +146,9 @@ export default function FamilyIntro() {
               style={{ fontFamily: "var(--font-cormorant), var(--font-playfair), Georgia, serif", fontSize: "1.1rem", color: "#5C3D2E" }}
             >
               <span className="italic text-sm" style={{ color: "#8B6355" }}>Son of</span>
-              <span className="font-medium" style={{ color: "#2C1810" }}>{groom.father}</span>
-              <Ampersand size="1.35em" />
               <span className="font-medium" style={{ color: "#2C1810" }}>{groom.mother}</span>
+              <Ampersand size="1.35em" />
+              <span className="font-medium" style={{ color: "#2C1810" }}>{groom.father}</span>
             </div>
           </div>
         </motion.div>
@@ -202,9 +202,9 @@ export default function FamilyIntro() {
               style={{ fontFamily: "var(--font-cormorant), var(--font-playfair), Georgia, serif", fontSize: "1.1rem", color: "#5C3D2E" }}
             >
               <span className="italic text-sm" style={{ color: "#8B6355" }}>Daughter of</span>
-              <span className="font-medium" style={{ color: "#2C1810" }}>{bride.father}</span>
-              <Ampersand size="1.35em" />
               <span className="font-medium" style={{ color: "#2C1810" }}>{bride.mother}</span>
+              <Ampersand size="1.35em" />
+              <span className="font-medium" style={{ color: "#2C1810" }}>{bride.father}</span>
             </div>
           </div>
         </motion.div>
