@@ -23,8 +23,8 @@ export const weddingConfig = {
     grandmother: "Late Smt. Susheela Devi",
   },
 
-  // ── Wedding hashtag (rendered as #TanMan everywhere) ─────
-  hashtag: "TanMan",
+  // ── Wedding hashtag (rendered as #TANMANFOREVER everywhere) ─
+  hashtag: "TANMANFOREVER",
 
   // ── Wedding Date ─────────────────────────────────────────
   weddingDate: "2026-12-05T00:00:00",   // ISO format — used for countdown timer
@@ -106,14 +106,15 @@ export const weddingConfig = {
   },
 
   // ── Photo Gallery ────────────────────────────────────────
-  //  Replace these with your own photos: drop files in /public and use "/photo1.jpg" etc.
+  //  Drop files in /public as photo1.jpg, photo2.jpg … then run `npm run photos`
+  //  (optimises them for mobile and clears Next's image cache). Keep this list
+  //  in sync with the files on disk — one entry per photo, in display order.
   gallery: [
     { src: "/photo1.jpg", caption: "A love story written in the stars" },
     { src: "/photo2.jpg", caption: "Every moment with you is a treasure" },
     { src: "/photo3.jpg", caption: "Together is our favourite place to be" },
     { src: "/photo4.jpg", caption: "You are my today and all of my tomorrows" },
     { src: "/photo5.jpg", caption: "In your arms I have found my home" },
-    { src: "/photo6.jpg", caption: "You complete me" },
   ],
 
   // ── Couple photo for the hero screen (place file in /public) ──

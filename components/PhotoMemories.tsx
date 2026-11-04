@@ -81,7 +81,7 @@ export default function PhotoMemories() {
             className="rounded-2xl overflow-hidden shadow-luxury"
             style={{ border: "1px solid rgba(201,168,76,0.35)" }}
           >
-            {photos.slice(0, 5).map((photo, i, arr) => (
+            {photos.map((photo, i, arr) => (
               <SwiperSlide key={photo.id}>
                 <div className="relative" style={{ aspectRatio: "16/10" }}>
                   <Image src={photo.src} alt={photo.caption} fill sizes="(max-width: 768px) 100vw, 768px" className="object-cover" />
