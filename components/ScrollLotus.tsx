@@ -2,17 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { motion, useScroll, useSpring, useTransform, useReducedMotion } from "framer-motion";
+import { INCLUDES } from "@/config/variants";
 
-/** Sections in page order — ids must match the <section id=…> values */
+/**
+ * Sections in page order — ids must match the <section id=…> values.
+ * Ceremony entries are filtered to the ones this build variant renders.
+ */
 const SECTIONS: { id: string; label: string }[] = [
   { id: "couple", label: "Tanuj & Mansi" },
   { id: "family", label: "Our Families" },
   { id: "save-the-date", label: "Save the Date" },
   { id: "countdown", label: "Countdown" },
-  { id: "engagement", label: "Engagement" },
-  { id: "mehendi-sangeet", label: "Mehendi & Sangeet" },
-  { id: "haldi", label: "Haldi" },
-  { id: "ghurchari", label: "Ghur Chari" },
+  ...(INCLUDES.engagement ? [{ id: "engagement", label: "Engagement" }] : []),
+  ...(INCLUDES.mehendiSangeet ? [{ id: "mehendi-sangeet", label: "Mehendi & Sangeet" }] : []),
+  ...(INCLUDES.haldi ? [{ id: "haldi", label: "Haldi" }] : []),
+  ...(INCLUDES.ghurChari ? [{ id: "ghurchari", label: "Ghur Chari" }] : []),
   { id: "wedding", label: "Wedding" },
   { id: "venues", label: "Venues" },
   { id: "memories", label: "Moments" },

@@ -1,7 +1,8 @@
 import { ImageResponse } from "next/og";
 import { weddingConfig } from "@/config/weddingConfig";
+import { VARIANT_COPY } from "@/config/variants";
 
-export const alt = "Wedding Invitation";
+export const alt = VARIANT_COPY.title;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -49,7 +50,7 @@ export default function OpenGraphImage() {
         />
 
         <div style={{ fontSize: 22, letterSpacing: 10, textTransform: "uppercase", color: "rgba(232,201,122,0.75)", display: "flex" }}>
-          Together with their families
+          {VARIANT_COPY.title}
         </div>
 
         <div style={{ display: "flex", alignItems: "baseline", gap: 36, marginTop: 28 }}>

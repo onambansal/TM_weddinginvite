@@ -28,6 +28,7 @@ import WeddingCeremony from "@/components/WeddingCeremony";
 import VenueDetails from "@/components/VenueDetails";
 import RSVPSection from "@/components/RSVPSection";
 import ThankYouSection from "@/components/ThankYouSection";
+import { INCLUDES } from "@/config/variants";
 
 export default function Home() {
   const [showMain, setShowMain] = useState(false);
@@ -89,19 +90,39 @@ export default function Home() {
             <SaveTheDate />
             <SectionEdge from="#F5EDE0" to="#FFF8F0" />
 
-            {/* 4 · Countdown timer */}
+            {/* 4 · Countdown timer — seam leads into Engagement (ivory) or straight into the Wedding (maroon) */}
             <CountdownSection />
-            <SectionEdge from="#F5EDE0" to="#FFFDF7" />
+            <SectionEdge from="#F5EDE0" to={INCLUDES.engagement ? "#FFFDF7" : "#1A0507"} />
 
-            {/* 5 · Sacred Ceremonies in order */}
-            <EngagementSection />
-            <SectionEdge from="#F5E6CC" to="#4C1D95" />
-            <MehendiSangeet />
-            <SectionEdge from="#0F766E" to="#F9E4E9" />
-            <HaldiSection />
-            <SectionEdge from="#B76E79" to="#2A0608" />
-            <GhurChariSection />
-            <SectionEdge from="#2A0608" to="#1A0507" />
+            {/*
+              5 · Sacred Ceremonies in order — which ones render depends on the
+              build variant (config/variants.ts). Each seam's `to` colour matches
+              the top of the NEXT visible section so every variant blends cleanly.
+            */}
+            {INCLUDES.engagement && (
+              <>
+                <EngagementSection />
+                <SectionEdge from="#F5E6CC" to={INCLUDES.mehendiSangeet ? "#4C1D95" : "#1A0507"} />
+              </>
+            )}
+            {INCLUDES.mehendiSangeet && (
+              <>
+                <MehendiSangeet />
+                <SectionEdge from="#0F766E" to="#F9E4E9" />
+              </>
+            )}
+            {INCLUDES.haldi && (
+              <>
+                <HaldiSection />
+                <SectionEdge from="#B76E79" to="#2A0608" />
+              </>
+            )}
+            {INCLUDES.ghurChari && (
+              <>
+                <GhurChariSection />
+                <SectionEdge from="#2A0608" to="#1A0507" />
+              </>
+            )}
             <WeddingCeremony />
             <SectionEdge from="#1A0507" to="#FFF8F0" />
 

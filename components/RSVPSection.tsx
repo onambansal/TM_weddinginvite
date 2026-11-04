@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { MessageCircle, Heart } from "lucide-react";
-import { rsvp, bride, groom } from "@/config/weddingConfig";
+import { rsvp, bride, groom, weddingDateDisplay } from "@/config/weddingConfig";
 import CornerOrnament from "./CornerOrnament";
 import SectionDivider from "./SectionDivider";
 import Motif from "./Motif";
@@ -13,6 +13,7 @@ import LightBeam from "./LightBeam";
 import ShareKeepsake from "./ShareKeepsake";
 import { tap, HAPTIC } from "@/lib/haptics";
 import { useNearViewport } from "@/lib/useNearViewport";
+import { VARIANT_COPY } from "@/config/variants";
 
 const serif = "var(--font-cormorant), var(--font-playfair), Georgia, serif";
 
@@ -20,8 +21,10 @@ export default function RSVPSection() {
   const reduceMotion = useReducedMotion();
   const { ref: sectionRef, near } = useNearViewport<HTMLElement>();
   const ambient = near && !reduceMotion;
-  // wa.me expects digits only
-  const whatsappUrl = `https://wa.me/${rsvp.whatsappNumber.replace(/\D/g, "")}?text=${encodeURIComponent(rsvp.message)}`;
+  // wa.me expects digits only. Message names the occasion this variant invites to
+  // ("wedding" vs "engagement and wedding") so the family knows which link the guest got.
+  const rsvpMessage = `Hello! I would like to confirm my attendance at ${groom.firstName} & ${bride.firstName}'s ${VARIANT_COPY.occasion} on ${weddingDateDisplay}.`;
+  const whatsappUrl = `https://wa.me/${rsvp.whatsappNumber.replace(/\D/g, "")}?text=${encodeURIComponent(rsvpMessage)}`;
 
   return (
     <section

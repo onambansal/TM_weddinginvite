@@ -9,22 +9,25 @@ import Heading from "./Heading";
 import Mandala from "./Mandala";
 import Motif, { type MotifName } from "./Motif";
 import { useNearViewport } from "@/lib/useNearViewport";
+import { CEREMONY_ORDER, isEventIncluded } from "@/config/variants";
 
 const serif = "var(--font-cormorant), var(--font-playfair), Georgia, serif";
 
-/** Chronological timeline strip derived from the ceremonies config */
-const TIMELINE = [
-  ceremonies.engagement,
-  ceremonies.mehendiSangeet,
-  ceremonies.haldi,
-  ceremonies.ghurChari,
-  ceremonies.wedding,
-].map((c) => ({
+/** Chronological timeline strip — only the ceremonies this build variant includes */
+const TIMELINE = CEREMONY_ORDER.map((k) => ceremonies[k]).map((c) => ({
   title: c.title,
   date: c.date.replace(/\s\d{4}$/, ""), // drop the year for compactness
   time: c.time.replace(/\s*onwards/i, ""),
   venue: c.venue,
 }));
+
+/**
+ * Venue cards filtered to this variant: a venue is shown only if at least one
+ * of its events is included, and its event chips are trimmed to those events.
+ */
+const VENUES = venues
+  .map((v) => ({ ...v, events: v.events.filter(isEventIncluded) }))
+  .filter((v) => v.events.length > 0);
 
 export default function VenueDetails() {
   const { ref: sectionRef, near } = useNearViewport<HTMLElement>();
@@ -106,7 +109,7 @@ export default function VenueDetails() {
 
       {/* Venue cards */}
       <div className="max-w-2xl mx-auto space-y-6 relative z-10">
-        {venues.map((venue, i) => (
+        {VENUES.map((venue, i) => (
           <motion.div
             key={venue.id}
             className="rounded-3xl overflow-hidden"

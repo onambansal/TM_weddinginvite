@@ -169,6 +169,7 @@ export const weddingConfig = {
   // ── RSVP / Contact ───────────────────────────────────────
   rsvp: {
     whatsappNumber: "+919818335572",   // Country code + number, no + or spaces
+    /** Kept for reference — the live message is built per invite variant in RSVPSection.tsx */
     message: "Hello! I would like to confirm my attendance at Tanuj & Mansi's wedding on 5th December 2026.",
   },
 } as const;

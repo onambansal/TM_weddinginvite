@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { weddingConfig } from "@/config/weddingConfig";
+import { VARIANT } from "@/config/variants";
 
 export const dynamic = "force-static";
 
@@ -57,7 +58,7 @@ export async function GET() {
         </div>
 
         <div style={{ fontSize: 34, marginTop: 60, letterSpacing: 10, textTransform: "uppercase", color: "rgba(255,248,240,0.7)", display: "flex" }}>
-          Request the honour of your presence
+          {VARIANT === "engagement-wedding" ? "Engagement & Wedding" : "Request the honour of your presence"}
         </div>
         <div style={{ fontSize: 72, marginTop: 30, color: "#FFF8F0", letterSpacing: 2, display: "flex" }}>{weddingDateDisplay}</div>
         <div style={{ fontSize: 30, marginTop: 10, letterSpacing: 8, textTransform: "uppercase", color: "rgba(232,201,122,0.75)", display: "flex" }}>{weddingDay}</div>
