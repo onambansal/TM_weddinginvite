@@ -138,7 +138,7 @@ export const weddingConfig = {
       address: "Sector-4, Vaishali, Ghaziabad",
       events: ["Mehendi & Sangeet", "Haldi Ceremony", "Ghur Chari"],
       dates: "3 – 5 Dec 2026",
-      motif: "mehendi",
+      motif: "diya",
       color: "#6B0F1A",
       mapUrl: "https://maps.google.com/?q=Vaishali+Inn+Vaishali+Ghaziabad",
     },
