@@ -96,7 +96,7 @@ export const weddingConfig = {
       titleHindi: "विवाह",
       date: "5th December 2026",
       day: "Saturday",
-      time: "6:00 PM onwards",
+      time: "8:00 PM onwards",
       venue: "Wedding Crown",
       address: "Sector 76, Noida",
       mapUrl: "https://maps.google.com/?q=Wedding+Crown+Sector+76+Noida",

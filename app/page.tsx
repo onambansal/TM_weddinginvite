@@ -90,9 +90,9 @@ export default function Home() {
             <SaveTheDate />
             <SectionEdge from="#F5EDE0" to="#FFF8F0" />
 
-            {/* 4 · Countdown timer — seam leads into Engagement (ivory) or straight into the Wedding (maroon) */}
+            {/* 4 · Countdown timer — seam leads into Engagement (ivory) or straight into Ghur Chari (maroon) */}
             <CountdownSection />
-            <SectionEdge from="#F5EDE0" to={INCLUDES.engagement ? "#FFFDF7" : "#1A0507"} />
+            <SectionEdge from="#F5EDE0" to={INCLUDES.engagement ? "#FFFDF7" : "#2A0608"} />
 
             {/*
               5 · Sacred Ceremonies in order — which ones render depends on the
@@ -102,7 +102,7 @@ export default function Home() {
             {INCLUDES.engagement && (
               <>
                 <EngagementSection />
-                <SectionEdge from="#F5E6CC" to={INCLUDES.mehendiSangeet ? "#4C1D95" : "#1A0507"} />
+                <SectionEdge from="#F5E6CC" to={INCLUDES.mehendiSangeet ? "#4C1D95" : "#2A0608"} />
               </>
             )}
             {INCLUDES.mehendiSangeet && (
@@ -117,12 +117,9 @@ export default function Home() {
                 <SectionEdge from="#B76E79" to="#2A0608" />
               </>
             )}
-            {INCLUDES.ghurChari && (
-              <>
-                <GhurChariSection />
-                <SectionEdge from="#2A0608" to="#1A0507" />
-              </>
-            )}
+            {/* Ghur Chari + Wedding are in every variant */}
+            <GhurChariSection />
+            <SectionEdge from="#2A0608" to="#1A0507" />
             <WeddingCeremony />
             <SectionEdge from="#1A0507" to="#FFF8F0" />
 

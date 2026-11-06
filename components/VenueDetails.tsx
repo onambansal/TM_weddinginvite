@@ -21,12 +21,31 @@ const TIMELINE = CEREMONY_ORDER.map((k) => ceremonies[k]).map((c) => ({
   venue: c.venue,
 }));
 
+/** Ceremony date for a given venue-card event label (matches weddingConfig.venues[].events strings) */
+const DATE_BY_EVENT: Record<string, string> = {
+  "Engagement": ceremonies.engagement.date,
+  "Mehendi & Sangeet": ceremonies.mehendiSangeet.date,
+  "Haldi Ceremony": ceremonies.haldi.date,
+  "Ghur Chari": ceremonies.ghurChari.date,
+  "Wedding Ceremony": ceremonies.wedding.date,
+};
+
 /**
  * Venue cards filtered to this variant: a venue is shown only if at least one
  * of its events is included, and its event chips are trimmed to those events.
+ * If the trim removed events, the date line is rebuilt from the remaining
+ * ceremonies (e.g. Vaishali Inn: "3 – 5 Dec" → "5th December 2026" when only
+ * Ghur Chari is shown). Untrimmed venues keep their hand-written date string.
  */
 const VENUES = venues
-  .map((v) => ({ ...v, events: v.events.filter(isEventIncluded) }))
+  .map((v) => {
+    const events = v.events.filter(isEventIncluded);
+    const trimmed = events.length !== v.events.length;
+    const dates = trimmed
+      ? Array.from(new Set(events.map((e) => DATE_BY_EVENT[e]).filter(Boolean))).join(" · ")
+      : v.dates;
+    return { ...v, events, dates };
+  })
   .filter((v) => v.events.length > 0);
 
 export default function VenueDetails() {

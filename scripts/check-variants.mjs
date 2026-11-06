@@ -46,11 +46,12 @@ for (const [i, variant] of VARIANTS.entries()) {
     // Next inlines process.env.NEXT_PUBLIC_INVITE_VARIANT as a string literal:  let e="wedding".trim()…
     const inlined = /let \w=\(?"([a-z-]*)"\)?\.trim\(\)\.toLowerCase\(\)/.exec(bundle)?.[1];
     const resolved = ["full", "engagement-wedding", "wedding"].includes(inlined ?? "") ? inlined : "full";
+    // Mirror of INCLUDES in config/variants.ts
     const includes = {
       engagement: resolved !== "wedding",
       "mehendi-sangeet": resolved === "full",
       haldi: resolved === "full",
-      ghurchari: resolved === "full",
+      ghurchari: true,
       wedding: true,
     };
     console.log("variant baked in bundle:", JSON.stringify(inlined ?? "(unset)"), "→", resolved);

@@ -24,12 +24,12 @@ function resolveVariant(): Variant {
 /** The active variant for this build */
 export const VARIANT: Variant = resolveVariant();
 
-/** Which ceremonies this variant shows */
+/** Which ceremonies this variant shows (Ghur Chari travels with the wedding in every variant) */
 export const INCLUDES: Readonly<Record<CeremonyKey, boolean>> = {
   engagement: VARIANT !== "wedding",
   mehendiSangeet: VARIANT === "full",
   haldi: VARIANT === "full",
-  ghurChari: VARIANT === "full",
+  ghurChari: true,
   wedding: true,
 };
 
