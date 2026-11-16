@@ -98,7 +98,7 @@ export const weddingConfig = {
       day: "Saturday",
       time: "8:00 PM onwards",
       venue: "Wedding Crown",
-      address: "Sector 76, Noida",
+      address: "Sector 74, Noida",
       mapUrl: "https://maps.google.com/?q=Wedding+Crown+Sector+76+Noida",
       /** Place your photo in /public and set the filename, e.g. "/wedding.jpg" */
       image: "/a.jpg",
