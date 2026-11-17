@@ -98,8 +98,8 @@ export const weddingConfig = {
       day: "Saturday",
       time: "8:00 PM onwards",
       venue: "Wedding Crown",
-      address: "Sector 76, Noida",
-      mapUrl: "https://maps.google.com/?q=Wedding+Crown+Sector+76+Noida",
+      address: "Sector 74, Noida",
+      mapUrl: "https://maps.google.com/?q=Wedding+Crown+Sector+74+Noida",
       /** Place your photo in /public and set the filename, e.g. "/wedding.jpg" */
       image: "/a.jpg",
     },
@@ -145,12 +145,12 @@ export const weddingConfig = {
     {
       id: 2,
       name: "Wedding Crown",
-      address: "Sector 76, Noida",
+      address: "Sector 74, Noida",
       events: ["Wedding Ceremony"],
       dates: "5th December 2026",
       motif: "mandap",
       color: "#6B0F1A",
-      mapUrl: "https://maps.google.com/?q=Wedding+Crown+Sector+76+Noida",
+      mapUrl: "https://maps.google.com/?q=Wedding+Crown+Sector+74+Noida",
     },
   ],
 
